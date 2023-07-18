@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { StyledPicture, PreviewImg, PreviewContainer, RemoveButton } from "./picture.style";
 
-const Picture = () => {
-    const [picture, setPicture] = useState();
+const Picture = ({ setPicture }) => {
+    //const [picture, setPicture] = useState();
     const [previewPic, setPreviewPic] = useState()
     const [error, setError] = useState(null)
     const inputRef = useRef();
@@ -48,7 +48,7 @@ const Picture = () => {
             {
                 previewPic && (
                     <PreviewContainer>
-                        <PreviewImg src={previewPic} alt={`${picture.name}`} />
+                        <PreviewImg src={previewPic} alt='profilePreview' />
                         <RemoveButton text={'Remove'} type={'button'} clickHandler={onRemoveHandler}/>
                     </PreviewContainer>
                 )

@@ -1,4 +1,4 @@
-import { registerUserOnServer } from "../../service/api.service";
+import { loginUserOnServer, registerUserOnServer } from "../../service/api.service";
 import { createAction } from "../../utils/helper";
 import { USER_ACTION_TYPE } from "./user.type";
 
@@ -28,3 +28,29 @@ export const fetchUserAsync = (userData) => async (dispatch) => {
         dispatch(fetchUserFailed(error))
     }
 }
+
+const loginUserStart = () => {
+    return createAction(USER_ACTION_TYPE.LOGIN_USER_START)
+}
+
+const loginUserSuccess = (user) => {
+    return createAction(USER_ACTION_TYPE.LOGIN_USER_SUCCESS, user)
+}
+
+const loginUserFailed = (error) => {
+    return createAction(USER_ACTION_TYPE.LOGIN_USER_FAILED, error)
+}
+
+export const loginUserAsync = (userData) => async (dispatch) => {
+    dispatch(loginUserStart())
+    try {
+        const res = await loginUserOnServer(userData)
+        if (res.status !== 200) {
+            throw new Error(res?.message)
+        }
+        return dispatch(loginUserSuccess(res.user))
+    } catch (error) {
+        dispatch(loginUserFailed(error))
+    }
+}
+

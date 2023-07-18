@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux"
 import { Container } from "./home.style"
 import { selectCurrentUser } from "../../store/user/user.selector"
+import { Link } from "react-router-dom"
 
 const Home = () => {
 
@@ -8,7 +9,10 @@ const Home = () => {
     console.log('user : ', user)
 
     return (
-        <Container>HOME</Container>
+        <Container>
+            HOME
+            <Link to={'/login'}>LOGIN</Link>
+        </Container>
     )
 }
 

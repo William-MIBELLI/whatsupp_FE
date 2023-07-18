@@ -7,29 +7,37 @@ import { useForm } from "react-hook-form";
 import Button from "../../components/button/button";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../store/user/user.selector";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Footer } from "./register.style";
 import { fetchUserAsync } from "../../store/user/user.action";
 import Picture from "../../components/auth/picture/picture";
+import { useEffect, useState } from "react";
 
 const Register = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors }
     } = useForm({
         resolver: yupResolver(registerSchema),
         mode: "all",
     });
-
-    console.log(process.env.REACT_APP_API_ENDPOINT);
-    const { isLoading, error } = useSelector(selectUser);
+    
+    const [picture, setPicture] = useState()
+    const { isLoading, error, loggedIn } = useSelector(selectUser);
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     const onSubmitHandler = (data) => {
-        console.log("submithandler dans register, errors : ", data);
-        dispatch(fetchUserAsync(data));
+        console.log("submithandler dans register, errors : ", {...data, picture});
+        dispatch(fetchUserAsync({ ...data, picture }));
     };
+
+    useEffect(() => {
+        if (loggedIn) {
+            navigate('/')
+        }
+    }, [loggedIn])
 
     return (
         <FormContainer>
@@ -73,7 +81,7 @@ const Register = () => {
                     register={register}
                     errors={errors?.status?.message}
                 />
-                <Picture/>
+                <Picture setPicture={setPicture}/>
                 {error && <p>{error.toString()}</p>}
                 <Button type="submit" text={"Signup"} loading={isLoading} />
                 <Footer>
