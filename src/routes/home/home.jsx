@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux"
-import { Container } from "./home.style"
+import { Container, StyledHome } from "./home.style"
 import { selectCurrentUser } from "../../store/user/user.selector"
 import { Link } from "react-router-dom"
+import Sidebar from "../../components/sidebar/sidebar"
 
 const Home = () => {
 
@@ -9,10 +10,11 @@ const Home = () => {
     console.log('user : ', user)
 
     return (
-        <Container>
-            HOME
-            <Link to={'/login'}>LOGIN</Link>
-        </Container>
+        <StyledHome>
+            <Container>
+                <Sidebar/>
+            </Container>
+        </StyledHome>
     )
 }
 

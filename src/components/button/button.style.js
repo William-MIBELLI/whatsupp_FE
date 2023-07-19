@@ -16,3 +16,13 @@ export const BaseButton = styled.button`
         background-color: ${props => props.theme.color.green_2};
     }
 `
+
+export const HomeButton = styled(BaseButton)`
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    &:active{
+        background-color: ${props => props.theme.color.dark_hover_1}
+    }
+`
