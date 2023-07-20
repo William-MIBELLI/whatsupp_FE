@@ -5,7 +5,7 @@ export const BUTTON_TYPE = {
     HOME_BUTTON: 'HOME_BUTTON'
 }
 
-const Button = ({ text, type, children, loading, buttonType, clickHandler, className }) => {
+const Button = ({ text, type, loading, buttonType, clickHandler, className }) => {
 
 
     const getButton = (buttonType = BUTTON_TYPE.BASE_BUTTON) => ({

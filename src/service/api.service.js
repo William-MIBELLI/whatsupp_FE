@@ -41,3 +41,24 @@ export const loginUserOnServer = async (userData) => {
         return error
     }
 }
+
+export const getConversationsFromServer = async (token) => {
+    const CONVERSATION_ENDPOINT = `${process.env.REACT_APP_API_ENDPOINT}/conversation`
+
+    try {
+        const res = await fetch(`${CONVERSATION_ENDPOINT}/getConversation`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        if (res.status !== 200) {
+            const data = await res.json()
+            throw new Error(data.error)
+        }
+        const data = await res.json()
+        return { status: 200, conversations: data}
+    } catch (error) {
+        return error
+    }
+}

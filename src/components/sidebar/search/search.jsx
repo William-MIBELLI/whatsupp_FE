@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ArrowIcon, FilterIcon, ReturnIcon, SearchIcon } from "../../../svg";
-import { Component, Container, Input } from "./search.style";
+import { Component, Container, Input, ReturnContainer } from "./search.style";
 
 const Search = () => {
 
@@ -17,12 +17,15 @@ const Search = () => {
             <Container>
                 {
                     show ? (
-                        <ReturnIcon/>
+                        <ReturnContainer>
+                            <ReturnIcon/>
+                        </ReturnContainer>
                     ) : (
                         <SearchIcon/>
                     )
                 }
                 <Input placeholder="Search or start a new chat"
+                    name="search"
                     onFocus={() => setShow(true)}
                     onBlur={() =>  search.length === 0 && setShow(false)}
                     onChange={onChangeHandler}
