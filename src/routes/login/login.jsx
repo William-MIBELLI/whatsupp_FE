@@ -10,6 +10,8 @@ import { selectUser } from "../../store/user/user.selector";
 import { loginUserAsync } from "../../store/user/user.action";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { Footer } from "./login.style";
+import { Link } from "react-router-dom";
 
 const Login = () => {
     const {
@@ -60,6 +62,10 @@ const Login = () => {
                 />
                 {error && <p>{error.toString()}</p>}
                 <Button text={"Sign in"} isLoading={isLoading} />
+                <Footer>
+                    <p>Don't have account ? Create one</p>
+                    <Link to={"/register"}>Register</Link>
+                </Footer>
             </AuthForm>
         </FormContainer>
     );

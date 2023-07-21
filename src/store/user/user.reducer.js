@@ -23,7 +23,7 @@ export const userReducer = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 error: undefined,
-                currentUser: { ...payload.user },
+                currentUser: payload,
                 loggedIn: true
             }
         case USER_ACTION_TYPE.FETCH_USER_FAILED:

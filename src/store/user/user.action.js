@@ -1,13 +1,15 @@
 import { loginUserOnServer, registerUserOnServer } from "../../service/api.service";
-import { createAction } from "../../utils/helper";
+import { createAction, parsePictureUrl } from "../../utils/helper";
 import { USER_ACTION_TYPE } from "./user.type";
 
 const fetchUserStart = () => {
     return createAction(USER_ACTION_TYPE.FETCH_USER_START)
 }
 
-const fetchUserSuccess = (user) => {
-    return createAction(USER_ACTION_TYPE.FETCH_USER_SUCCESS, user)
+const fetchUserSuccess = (data) => {
+    const mappedPicUrl = parsePictureUrl(data.user.pictureUrl)
+    const newUser = { ...data.user, pictureUrl: mappedPicUrl }
+    return createAction(USER_ACTION_TYPE.FETCH_USER_SUCCESS, newUser)
 }
 
 const fetchUserFailed = (error) => {
@@ -33,8 +35,10 @@ const loginUserStart = () => {
     return createAction(USER_ACTION_TYPE.LOGIN_USER_START)
 }
 
-const loginUserSuccess = (user) => {
-    return createAction(USER_ACTION_TYPE.LOGIN_USER_SUCCESS, user)
+const loginUserSuccess = (data) => {
+    const mappedPicUrl = parsePictureUrl(data.user.pictureUrl)
+    const newUser = { ...data.user, pictureUrl: mappedPicUrl }
+    return createAction(USER_ACTION_TYPE.LOGIN_USER_SUCCESS,  newUser )
 }
 
 const loginUserFailed = (error) => {

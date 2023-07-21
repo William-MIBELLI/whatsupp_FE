@@ -12,7 +12,9 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route index path='/' element={<Home />} />
+        <Route element={<LoggedRoute/>}>
+          <Route index path='/' element={<Home />} />
+        </Route>
         <Route element={<UnLoggedRoute/>}>
           <Route path='/login' element={<Login/>}/>
           <Route path='/register' element={<Register/>}/>

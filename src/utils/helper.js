@@ -36,3 +36,9 @@ export const handleDate = (date) => {
   
   return time
 }
+
+export const parsePictureUrl = (pictureUrl) => {
+  const mappedPicUrl = `${process.env.REACT_APP_API_ENDPOINT}/${pictureUrl}`
+  console.log('mappedpicture dans utils : ', mappedPicUrl)
+  return mappedPicUrl
+}
