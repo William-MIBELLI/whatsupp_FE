@@ -58,3 +58,7 @@ export const loginUserAsync = (userData) => async (dispatch) => {
     }
 }
 
+export const logoutOutUser = () => {
+    return createAction(USER_ACTION_TYPE.LOGOUT_USER)
+}
+

@@ -62,3 +62,27 @@ export const getConversationsFromServer = async (token) => {
         return error
     }
 }
+
+export const searchUserOnDb = async (token, keyword) => {
+
+    const url = process.env.REACT_APP_API_ENDPOINT
+
+    try {
+        const res = await fetch(`${url}/search/${keyword}`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        if (res.status !== 200) {
+            throw new Error('Search failed')
+        }
+
+        const data = await res.json()
+        return data.users
+
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}

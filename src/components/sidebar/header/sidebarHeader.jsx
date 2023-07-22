@@ -2,10 +2,18 @@ import { useSelector } from "react-redux";
 import { Component, Container, HomeButton, List } from "./sidebarHeader.style";
 import { selectCurrentUser } from "../../../store/user/user.selector";
 import { CommunityIcon, StoryIcon, ChatIcon, DotsIcon } from '../../../svg'
+import { useState } from "react";
+import Menu from "../menu/menu";
 
 const SidebarHeader = () => {
 
     const { pictureUrl } = useSelector(selectCurrentUser)
+    const [displayMenu, setDisplayMenu] = useState(false)
+
+    const onBlurHandler = () => {
+        console.log('BLUR HANDLER')
+        setDisplayMenu(false)
+    }
 
     return (
         <Component>
@@ -30,10 +38,13 @@ const SidebarHeader = () => {
                         </HomeButton>
                     </li>
                     <li>
-                        <HomeButton>
+                        <HomeButton onClick={() => setDisplayMenu(!displayMenu)}>
                             <DotsIcon/>
                         </HomeButton>
                     </li>
+                {
+                        displayMenu && <Menu blurHandler={onBlurHandler} />
+                }
                 </List>
             </Container>
         </Component>

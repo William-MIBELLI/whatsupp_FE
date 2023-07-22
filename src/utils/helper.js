@@ -32,13 +32,14 @@ export const handleDate = (date) => {
 
   if(time === 'a day ago') return 'Yesterday'
     
-  if (time.search('days') !== -1) return getDay
+  if (time.search('days') !== -1) return getDay()
   
   return time
 }
 
 export const parsePictureUrl = (pictureUrl) => {
+
   const mappedPicUrl = `${process.env.REACT_APP_API_ENDPOINT}/${pictureUrl}`
-  console.log('mappedpicture dans utils : ', mappedPicUrl)
+
   return mappedPicUrl
 }

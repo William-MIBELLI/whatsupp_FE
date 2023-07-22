@@ -1,10 +1,14 @@
 import { handleDate } from "../../../utils/helper";
-import { Component, ImgContainer, InfoContainer, LeftSide, RightSide, Text } from "./conversation.style";
+import PrimaryText from "../../primary-text/primaryText";
+import SecondaryText from "../../secondary-text/secondaryText";
+import { Component, ImgContainer, InfoContainer, LeftSide, RightSide } from "./conversation.style";
 
 
 const Conversation = ({ convo }) => {
 
     const { sender } = convo.latestMessage
+
+    console.log(handleDate(convo.latestMessage.createdAt))
 
     return (
         <Component>
@@ -13,8 +17,8 @@ const Conversation = ({ convo }) => {
                     <img src={sender.pictureUrl} alt={sender.name}></img>
                 </ImgContainer>
                 <InfoContainer>
-                    <Text primary={true}>{sender.name}</Text>
-                    <Text>{convo.latestMessage.message }</Text>
+                    <PrimaryText>{sender.name}</PrimaryText>
+                    <SecondaryText>{convo.latestMessage.message }</SecondaryText>
                 </InfoContainer>
             </LeftSide>
             <RightSide>

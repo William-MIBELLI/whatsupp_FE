@@ -38,18 +38,18 @@ export const TextContainer = styled.div`
     justify-content: center;
 `
 
-export const PrimaryText = styled.span`
-    font-size: 16px;
-    line-height: 21px;
-    color: ${props => props.theme.color.dark_text_1};
-`
+// export const PrimaryText = styled.span`
+//     font-size: 16px;
+//     line-height: 21px;
+//     color: ${props => props.theme.color.dark_text_1};
+// `
 
-export const SecondaryText = styled.span`
-    font-size: 14px;
-    line-height: 19px;
-    color: ${props => props.theme.color.dark_text_2};
-    margin-top: 0.5rem;
-`
+// export const SecondaryText = styled.span`
+//     font-size: 14px;
+//     line-height: 19px;
+//     color: ${props => props.theme.color.dark_text_2};
+//     margin-top: 0.5rem;
+// `
 
 export const RightSide = styled.div`
     & svg {

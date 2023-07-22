@@ -42,19 +42,6 @@ export const InfoContainer = styled.div`
 
 `
 
-export const Text = styled.span`
-    color: ${props => props.theme.color.dark_text_2};
-    font-size: 0.9rem;
-
-    ${({primary}) => primary && PrimaryText};
-`
-
-export const PrimaryText = css`
-    color: ${props => props.theme.color.dark_text_1};
-    font-weight: 400;
-    font-size: 1.1rem;
-`
-
 export const RightSide = styled.div`
     display: flex;
     align-items: right;

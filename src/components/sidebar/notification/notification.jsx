@@ -1,5 +1,7 @@
 import { CloseIcon, NotificationIcon } from "../../../svg";
-import { Component, Container, LeftSide, RightSide, PrimaryText, SecondaryText, TextContainer } from "./notification.style";
+import { Component, Container, LeftSide, RightSide, TextContainer } from "./notification.style";
+import PrimaryText from "../../primary-text/primaryText";
+import SecondaryText from "../../secondary-text/secondaryText";
 
 const Notification = () => {
     return (
