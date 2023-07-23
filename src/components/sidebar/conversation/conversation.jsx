@@ -7,15 +7,17 @@ import { Component, ImgContainer, InfoContainer, LeftSide, RightSide } from "./c
 import { selectCurrentUser } from '../../../store/user/user.selector'
 import { fetchActiveConversationAsync, fetchConversationsAsync } from "../../../store/chat/chat.action";
 import { getReceiverId } from "../../../utils/helper";
-import { selectChat } from "../../../store/chat/chat.selector";
+import { selectChat, selectConversationById } from "../../../store/chat/chat.selector";
+import { useEffect, useState } from "react";
 
 
-const Conversation = ({ convo }) => {
+const Conversation = ({ convoId }) => {
 
     const dispatch = useDispatch()
     const { accessToken, _id: userId } = useSelector(selectCurrentUser)
     const { conversations } = useSelector(selectChat)
-    
+    const convo = useSelector(selectConversationById(convoId))
+    const { latestMessage } = convo
     const sender = getSender(convo.users, userId)
     const pictureUrl = parsePictureUrl(sender.pictureUrl)
 
@@ -23,6 +25,7 @@ const Conversation = ({ convo }) => {
         const receiver_id = getReceiverId(convo.users, userId)
         dispatch(fetchActiveConversationAsync(accessToken, receiver_id, conversations))
     }
+
 
     return (
         <Component onClick={onClickHandler}>
@@ -32,11 +35,11 @@ const Conversation = ({ convo }) => {
                 </ImgContainer>
                 <InfoContainer>
                     <PrimaryText>{sender?.name}</PrimaryText>
-                    <SecondaryText>{convo?.latestMessage?.message ? convo?.latestMessage?.message : sender.status }</SecondaryText>
+                    <SecondaryText>{latestMessage?.message ? latestMessage?.message : sender.status }</SecondaryText>
                 </InfoContainer>
             </LeftSide>
             <RightSide>
-                {convo?.latestMessage?.createdAt ? handleDate(convo?.latestMessage?.createdAt) : ''}
+                {latestMessage?.createdAt ? handleDate(latestMessage?.createdAt) : ''}
             </RightSide>
         </Component>
     )

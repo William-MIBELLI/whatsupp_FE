@@ -87,7 +87,7 @@ export const searchUserOnDb = async (token, keyword) => {
     }
 }
 
-export const fetchMessages = async (token, conversationId) => {
+export const fetchMessagesFromDb = async (token, conversationId) => {
     try {
         const res = await fetch(`${url}/message/${conversationId}`, {
             method: 'GET',
@@ -125,6 +125,29 @@ export const fetchActiveConversationFromDb = async (token, receiver_id) => {
         console.log('data : ', data)
         return data
     } catch (error) {
+        return error
+    }
+}
+
+export const sendMessageOnServer = async (token, values) => {
+
+    const fd = toFormData(values)
+
+    try {
+        const res = await fetch(`${url}/message`, {
+            method: 'POST',
+            body: fd,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        if (res.status !== 201) {
+            throw new Error('failed to create message on server')
+        }
+        const data = await res.json()
+        return data
+    } catch (error) {
+        console.log(error)
         return error
     }
 }

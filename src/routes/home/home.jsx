@@ -5,10 +5,10 @@ import { Link } from "react-router-dom"
 import Sidebar from "../../components/sidebar/sidebar"
 import { selectChat } from "../../store/chat/chat.selector"
 import HomeDefault from "../../components/home-default/homeDefault"
+import ChatContainer from "../../components/chat/chat-container/chatContainer"
 
 const Home = () => {
 
-    const user = useSelector(selectCurrentUser)
     const { activeConversation } = useSelector(selectChat)
     
     console.log(activeConversation)
@@ -18,7 +18,7 @@ const Home = () => {
             <Container>
                 <Sidebar />
                 {
-                    activeConversation ? 'activeConversation' : <HomeDefault/>
+                    activeConversation ? <ChatContainer/> : <HomeDefault/>
                 }
             </Container>
         </StyledHome>

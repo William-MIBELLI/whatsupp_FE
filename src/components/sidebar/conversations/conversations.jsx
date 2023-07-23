@@ -12,7 +12,7 @@ const Conversations = () => {
             {
                 conversations && conversations.map(convo => {
                     return (
-                        <Conversation convo={convo} key={convo._id}/>
+                        <Conversation convoId={convo._id} key={convo._id}/>
                     )
                 })
             }

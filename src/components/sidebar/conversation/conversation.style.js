@@ -39,7 +39,10 @@ export const InfoContainer = styled.div`
     align-items: left;
     text-align: left;
     margin-left: 1rem;
-
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 
 export const RightSide = styled.div`
