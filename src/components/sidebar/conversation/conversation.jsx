@@ -1,28 +1,42 @@
-import { handleDate } from "../../../utils/helper";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMessages } from "../../../service/api.service";
+import { getSender, handleDate, parsePictureUrl } from "../../../utils/helper";
 import PrimaryText from "../../primary-text/primaryText";
 import SecondaryText from "../../secondary-text/secondaryText";
 import { Component, ImgContainer, InfoContainer, LeftSide, RightSide } from "./conversation.style";
+import { selectCurrentUser } from '../../../store/user/user.selector'
+import { fetchActiveConversationAsync, fetchConversationsAsync } from "../../../store/chat/chat.action";
+import { getReceiverId } from "../../../utils/helper";
+import { selectChat } from "../../../store/chat/chat.selector";
 
 
 const Conversation = ({ convo }) => {
 
-    const { sender } = convo.latestMessage
+    const dispatch = useDispatch()
+    const { accessToken, _id: userId } = useSelector(selectCurrentUser)
+    const { conversations } = useSelector(selectChat)
+    
+    const sender = getSender(convo.users, userId)
+    const pictureUrl = parsePictureUrl(sender.pictureUrl)
 
-    console.log(handleDate(convo.latestMessage.createdAt))
+    const onClickHandler = async () => {
+        const receiver_id = getReceiverId(convo.users, userId)
+        dispatch(fetchActiveConversationAsync(accessToken, receiver_id, conversations))
+    }
 
     return (
-        <Component>
+        <Component onClick={onClickHandler}>
             <LeftSide>
                 <ImgContainer>
-                    <img src={sender.pictureUrl} alt={sender.name}></img>
+                    <img src={pictureUrl} alt={sender?.name}></img>
                 </ImgContainer>
                 <InfoContainer>
-                    <PrimaryText>{sender.name}</PrimaryText>
-                    <SecondaryText>{convo.latestMessage.message }</SecondaryText>
+                    <PrimaryText>{sender?.name}</PrimaryText>
+                    <SecondaryText>{convo?.latestMessage?.message ? convo?.latestMessage?.message : sender.status }</SecondaryText>
                 </InfoContainer>
             </LeftSide>
             <RightSide>
-                {handleDate(convo.latestMessage.createdAt)}
+                {convo?.latestMessage?.createdAt ? handleDate(convo?.latestMessage?.createdAt) : ''}
             </RightSide>
         </Component>
     )

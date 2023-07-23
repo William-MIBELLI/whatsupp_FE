@@ -3,6 +3,8 @@ import { Component, Header } from "./searchList.style";
 
 const SearchList = ({ result }) => {
 
+    console.log('result : ',result)
+
     return (
         <Component>
             <Header>

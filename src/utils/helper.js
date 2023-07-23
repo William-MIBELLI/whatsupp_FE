@@ -43,3 +43,17 @@ export const parsePictureUrl = (pictureUrl) => {
 
   return mappedPicUrl
 }
+
+export const getReceiverId = (users, userId) => {
+  if (users[0]._id === userId) {
+      return users[1]._id
+  }
+  return users[0]._id
+}
+
+export const getSender = (users, userId) => {
+  if (users[0]._id === userId) {
+    return users[1]
+  }
+  return users[0]
+}

@@ -12,7 +12,7 @@ const Menu = ({ blurHandler }) => {
     }
 
     return (
-        <Component onBlur={blurHandler}>
+        <Component onMouseLeave={blurHandler}>
             <MenuItem>
                 <SecondaryText>New group</SecondaryText>
             </MenuItem>

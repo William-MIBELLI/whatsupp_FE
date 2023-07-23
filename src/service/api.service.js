@@ -1,5 +1,7 @@
 import { toFormData } from "../utils/api.utils";
 
+const url = process.env.REACT_APP_API_ENDPOINT
+
 export const registerUserOnServer = async (userData) => {
 
     const url = process.env.REACT_APP_API_ENDPOINT;
@@ -65,8 +67,6 @@ export const getConversationsFromServer = async (token) => {
 
 export const searchUserOnDb = async (token, keyword) => {
 
-    const url = process.env.REACT_APP_API_ENDPOINT
-
     try {
         const res = await fetch(`${url}/search/${keyword}`, {
             method: 'GET',
@@ -75,7 +75,7 @@ export const searchUserOnDb = async (token, keyword) => {
             }
         })
         if (res.status !== 200) {
-            throw new Error('Search failed')
+            throw new Error('Search failed 😢')
         }
 
         const data = await res.json()
@@ -83,6 +83,48 @@ export const searchUserOnDb = async (token, keyword) => {
 
     } catch (error) {
         console.log(error)
+        return []
+    }
+}
+
+export const fetchMessages = async (token, conversationId) => {
+    try {
+        const res = await fetch(`${url}/message/${conversationId}`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        if (res.status !== 200) {
+            throw new Error('failed to get conversation\'s messages')
+        }
+        const data = await res.json()
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
+export const fetchActiveConversationFromDb = async (token, receiver_id) => {
+
+    const fd = new FormData()
+    fd.append('receiver_id', receiver_id)
+
+    try {
+        const res = await fetch(`${url}/conversation`, {
+            method: 'POST',
+            body: fd,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        if (res.status !== 200) {
+            throw new Error('failed to fetch active conversation')
+        }
+        const data = await res.json()
+        console.log('data : ', data)
+        return data
+    } catch (error) {
         return error
     }
 }
