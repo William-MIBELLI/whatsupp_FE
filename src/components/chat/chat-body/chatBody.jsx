@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Component, Container } from "./chatBody.style";
+import { Component, Container, EndDiv } from "./chatBody.style";
 import { selectChat } from "../../../store/chat/chat.selector";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fetchMessagesAsync } from "../../../store/chat/chat.action";
 import { selectCurrentUser } from "../../../store/user/user.selector";
 import Message from "../message/message";
@@ -10,6 +10,7 @@ const ChatBody = () => {
 
     const BgUrl = process.env.REACT_APP_CHAT_BACKGROUND
     const { activeConversation, messages } = useSelector(selectChat)
+    const endRef = useRef()
     const { accessToken, _id: userId } = useSelector(selectCurrentUser)
     const dispatch = useDispatch()
 
@@ -18,8 +19,8 @@ const ChatBody = () => {
     },[activeConversation])
 
     useEffect(() => {
-
-    },[])
+        endRef.current.scrollIntoView({ behavior: 'smooth'})
+    },[messages])
 
     return (
         <Component BgUrl={BgUrl}>
@@ -31,7 +32,7 @@ const ChatBody = () => {
                         )
                     })
                 }
-
+            <EndDiv ref={endRef}></EndDiv>
             </Container>
         </Component>
     )

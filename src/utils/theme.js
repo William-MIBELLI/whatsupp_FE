@@ -23,6 +23,10 @@ export const theme = {
         green_2: "#008069",
         green_3: "#005C4B",
         green_4: "#025144",
-        red_1: '#f5364c'
+        red_1: '#f5364c',
+        contact_icon: '#0EABF4',
+        document_icon: '#5F66CD',
+        camera_icon: '#D3396D',
+        photo_icon: '#BF59CF'
     }
 }

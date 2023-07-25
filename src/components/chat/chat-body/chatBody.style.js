@@ -26,3 +26,9 @@ export const Container = styled.div`
         background-color: ${props => props.theme.color.dark_bg_5};
     }
 `
+
+export const EndDiv = styled.div`
+    margin: 0;
+    padding: 0;
+    height: 0;
+`
