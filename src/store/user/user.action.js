@@ -25,7 +25,8 @@ export const fetchUserAsync = (userData) => async (dispatch) => {
         if (res.status !== 200) {
             throw new Error(res?.message)
         }
-        return dispatch(fetchUserSuccess(res.user))
+        dispatch(fetchUserSuccess(res.user))
+        return res.user
     } catch (error) {
         dispatch(fetchUserFailed(error))
     }
@@ -52,7 +53,8 @@ export const loginUserAsync = (userData) => async (dispatch) => {
         if (res.status !== 200) {
             throw new Error(res?.message)
         }
-        return dispatch(loginUserSuccess(res.user))
+        dispatch(loginUserSuccess(res.user))
+        return res.user
     } catch (error) {
         dispatch(loginUserFailed(error))
     }

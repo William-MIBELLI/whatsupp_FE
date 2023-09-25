@@ -19,6 +19,7 @@ const Sidebar = () => {
 
     useEffect(() => {
         dispatch(fetchConversationsAsync(accessToken));
+        
     }, [accessToken]);
 
     useEffect(() => {

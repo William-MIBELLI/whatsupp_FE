@@ -10,9 +10,9 @@ import { DotsIcon, SearchLargeIcon } from "../../../svg";
 
 const ChatHeader = () => {
 
-    const { activeConversation } = useSelector(selectChat)
+    const { activeConversation, onlineUsers } = useSelector(selectChat)
     const { _id: userId } = useSelector(selectCurrentUser)
-    const user = getSender(activeConversation.users, userId)
+    const user = getSender(activeConversation, userId)
     const pictureUrl = parsePictureUrl(user.pictureUrl)
 
     return (
@@ -23,7 +23,7 @@ const ChatHeader = () => {
                 </ImageButton>
                 <InfoContainer>
                     <PrimaryText>{user.name}</PrimaryText>
-                    <SecondaryText>Online</SecondaryText>
+                    <SecondaryText>{onlineUsers.find(u => u.userId === user._id) ? 'Online' : ''}</SecondaryText>
                 </InfoContainer>
             </Side>
             <Side>

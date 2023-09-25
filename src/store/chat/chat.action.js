@@ -117,13 +117,18 @@ const sendMessageStart = () => {
 };
 
 const sendMessageSuccess = (message, state) => {
+    //console.log("state dans sendmessagesucces : ", state)
     const newMessages = [...state.messages, message];
-    const newConversations = state.conversations.map((convo) => {
-        if (convo._id === message.conversation) {
-            return { ...convo, latestMessage: message };
-        }
-        return convo;
-    });
+    const newConversations = getNewConversationsSorted(
+        state.conversations,
+        message
+    );
+    // const newConversations = state.conversations.map((convo) => {
+    //     if (convo._id === message.conversation._id) {
+    //         return { ...convo, latestMessage: message };
+    //     }
+    //     return convo;
+    // });
     return createAction(CHAT_ACTION_TYPE.SEND_MESSAGE_SUCCESS, {
         messages: newMessages,
         conversations: newConversations,
@@ -143,7 +148,50 @@ export const sendMessageAsync = (token, state, values) => async (dispatch) => {
             throw new Error(res?.message);
         }
         dispatch(sendMessageSuccess(res.message, state));
+        return res.message;
     } catch (error) {
         dispatch(sendMessageFailed(error));
     }
 };
+
+export const handleReceivedMessage = (message, state) => {
+    const { activeConversation, conversations, messages } = state;
+    console.log('message dans action : ', message)
+    // const existingMessage = messages.find(m => m._id === message._id)
+    // if (existingMessage) {
+    //     console.log('LE MESSAGE EXISTE DEJA ', conversations, messages)
+    //     return createAction(CHAT_ACTION_TYPE.HANDLE_MESSAGE_RECEIVED, conversations, messages)
+    // }
+    const newConversations = getNewConversationsSorted(conversations, message);
+    if (message.conversation._id === activeConversation?._id) {
+        const newMessages = [...messages, message];
+        return createAction(CHAT_ACTION_TYPE.HANDLE_MESSAGE_RECEIVED, {
+            conversations: newConversations,
+            messages: newMessages,
+        });
+    }
+    return createAction(CHAT_ACTION_TYPE.HANDLE_MESSAGE_RECEIVED, {
+        conversations: newConversations,
+        messages,
+    });
+};
+
+export const setOnlineUser = (onlineUsers) => async (dispatch) => {
+    const action = createAction(CHAT_ACTION_TYPE.SET_ONLINE_USERS, onlineUsers);
+    dispatch(action);
+};
+
+const getNewConversationsSorted = (conversations, messageToAdd) => {
+    const newConversations = conversations.filter((c) => {
+        return c._id !== messageToAdd.conversation._id;
+    });
+    const convoToUpdate = conversations.find(
+        (c) => c._id === messageToAdd.conversation._id
+    );
+    newConversations.unshift({ ...convoToUpdate, latestMessage: messageToAdd });
+    return newConversations;
+};
+
+export const clearChat = () => {
+    return createAction(CHAT_ACTION_TYPE.CLEAR_CHAT_STATE)
+}

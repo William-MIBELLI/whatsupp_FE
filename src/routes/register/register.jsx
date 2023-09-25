@@ -28,11 +28,11 @@ const Register = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
-    const onSubmitHandler = (data) => {
-        console.log("submithandler dans register, errors : ", {...data, picture});
+    const onSubmitHandler = async (data) => {
         dispatch(fetchUserAsync({ ...data, picture }));
     };
 
+    //On redirige si l'user est deja logué
     useEffect(() => {
         if (loggedIn) {
             navigate('/')

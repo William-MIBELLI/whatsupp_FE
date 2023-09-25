@@ -1,59 +1,61 @@
 import moment from "moment";
+import { loginUserOnServer } from "../service/api.service";
 
 export const createAction = (type, payload = undefined) => {
-  return { type, payload };
+    return { type, payload };
 };
 
 export const handleDate = (date) => {
-  const now = moment()
-  const momentDate = moment(date)
-  const time = momentDate.fromNow()
-  const dateByHourAndMin = momentDate.format('HH:mm')
+    const now = moment();
+    const momentDate = moment(date);
+    const time = momentDate.fromNow();
+    const dateByHourAndMin = momentDate.format("HH:mm");
 
-  const getDay = () => {
-    const days = time.split(' ')[0]
-    if (+days < 8) {
-      return now.subtract(+days, 'days').format('dddd')
+    const getDay = () => {
+        const days = time.split(" ")[0];
+        if (+days < 8) {
+            return now.subtract(+days, "days").format("dddd");
+        }
+        return momentDate.format("DD/MM/YYYY");
+    };
+
+    if (time === "a few seconds") return "Now";
+
+    if (time.search("minute") !== -1) {
+        const mins = time.split(" ")[0];
+        if (mins === "a") {
+            return "1 min";
+        }
+        return `${mins} min`;
     }
-    return momentDate.format('DD/MM/YYYY')
-  }
 
-  if (time === 'a few seconds') return 'Now'
+    if (time.search("hour") !== -1) return dateByHourAndMin;
 
-  if (time.search('minute') !== -1) {
-    const mins = time.split(' ')[0]
-    if (mins === 'a') {
-      return '1 min'
-    }
-    return `${mins} min`
-  }
+    if (time === "a day ago") return "Yesterday";
 
-  if (time.search('hour') !== -1) return dateByHourAndMin
+    if (time.search("days") !== -1) return getDay();
 
-  if(time === 'a day ago') return 'Yesterday'
-    
-  if (time.search('days') !== -1) return getDay()
-  
-  return time
-}
+    return time;
+};
 
 export const parsePictureUrl = (pictureUrl) => {
+    const mappedPicUrl = `${process.env.REACT_APP_API_ENDPOINT}/${pictureUrl}`;
 
-  const mappedPicUrl = `${process.env.REACT_APP_API_ENDPOINT}/${pictureUrl}`
-
-  return mappedPicUrl
-}
+    return mappedPicUrl;
+};
 
 export const getReceiverId = (users, userId) => {
-  if (users[0]._id === userId) {
-      return users[1]._id
-  }
-  return users[0]._id
-}
+    if (users[0]._id === userId) {
+        return users[1]._id;
+    }
+    return users[0]._id;
+};
 
-export const getSender = (users, userId) => {
-  if (users[0]._id === userId) {
-    return users[1]
-  }
-  return users[0]
-}
+export const getSender = (convo, userId) => {
+  const { users } = convo;
+  //console.log(convo, userId)
+    if (users[0]._id === userId) {
+        return users[1];
+    }
+    return users[0];
+};

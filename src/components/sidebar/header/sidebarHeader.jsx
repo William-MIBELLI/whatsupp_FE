@@ -1,54 +1,53 @@
 import { useSelector } from "react-redux";
 import { Component, Container, HomeButton, List } from "./sidebarHeader.style";
 import { selectCurrentUser } from "../../../store/user/user.selector";
-import { CommunityIcon, StoryIcon, ChatIcon, DotsIcon } from '../../../svg'
+import { CommunityIcon, StoryIcon, ChatIcon, DotsIcon } from "../../../svg";
 import { useState } from "react";
 import Menu from "../menu/menu";
 
 const SidebarHeader = () => {
-
-    const { pictureUrl } = useSelector(selectCurrentUser)
-    const [displayMenu, setDisplayMenu] = useState(false)
+    const { pictureUrl } = useSelector(selectCurrentUser);
+    const [displayMenu, setDisplayMenu] = useState(false);
 
     const onBlurHandler = () => {
-        console.log('BLUR HANDLER')
-        setDisplayMenu(false)
-    }
+        console.log("BLUR HANDLER");
+        setDisplayMenu(false);
+    };
 
     return (
         <Component>
             <Container>
                 <HomeButton>
-                    <img src={pictureUrl} alt="profilepic"/>
+                    <img src={pictureUrl} alt="profilepic" />
                 </HomeButton>
                 <List>
                     <li>
                         <HomeButton>
-                            <CommunityIcon/>
+                            <CommunityIcon />
                         </HomeButton>
                     </li>
                     <li>
                         <HomeButton>
-                            <StoryIcon/>
+                            <StoryIcon />
                         </HomeButton>
                     </li>
                     <li>
                         <HomeButton>
-                            <ChatIcon/>
+                            <ChatIcon />
                         </HomeButton>
                     </li>
                     <li>
-                        <HomeButton onClick={() => setDisplayMenu(!displayMenu)}>
-                            <DotsIcon/>
+                        <HomeButton
+                            onClick={() => setDisplayMenu(!displayMenu)}
+                        >
+                            <DotsIcon />
                         </HomeButton>
                     </li>
-                {
-                        displayMenu && <Menu blurHandler={onBlurHandler} />
-                }
+                    {displayMenu && <Menu blurHandler={onBlurHandler} />}
                 </List>
             </Container>
         </Component>
-    )
-}
+    );
+};
 
-export default SidebarHeader
+export default SidebarHeader;

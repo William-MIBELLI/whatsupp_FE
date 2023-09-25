@@ -2,12 +2,14 @@ import { Component, MenuItem } from "./menu.style";
 import SecondaryText from '../../secondary-text/secondaryText'
 import { useDispatch } from "react-redux";
 import { logoutOutUser } from "../../../store/user/user.action";
+import { clearChat } from "../../../store/chat/chat.action";
 
 const Menu = ({ blurHandler }) => {
 
     const dispatch = useDispatch()
 
     const onLogouthandler = () => {
+        dispatch(clearChat())
         dispatch(logoutOutUser())
     }
 

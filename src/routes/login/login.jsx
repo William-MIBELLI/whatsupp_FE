@@ -9,9 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../store/user/user.selector";
 import { loginUserAsync } from "../../store/user/user.action";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Footer } from "./login.style";
 import { Link } from "react-router-dom";
+import { SocketContext } from "../../App";
 
 const Login = () => {
     const {
@@ -26,13 +27,13 @@ const Login = () => {
     const { isLoading, error, loggedIn } = useSelector(selectUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { socket } = useContext(SocketContext)
 
-    const onSubmitHandler = (data) => {
-        console.log(data);
-        dispatch(loginUserAsync(data));
-        console.log("currentUser : ", loggedIn);
+    const onSubmitHandler = async (data) => {
+        dispatch(loginUserAsync(data))
     };
 
+    //On redirige vers Home si l'user est deja loggué
     useEffect(() => {
         if (loggedIn) {
             navigate("/");

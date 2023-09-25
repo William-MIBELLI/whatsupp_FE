@@ -7,7 +7,8 @@ const initialState = {
     conversations: [],
     activeConversation: undefined,
     messages: [],
-    notifications: []
+    notifications: [],
+    onlineUsers: []
 }
 
 export const chatReducer = (state = initialState, action) => {
@@ -60,6 +61,19 @@ export const chatReducer = (state = initialState, action) => {
                 messages: payload.messages,
                 conversations: payload.conversations
             }
+        case CHAT_ACTION_TYPE.HANDLE_MESSAGE_RECEIVED:
+            return {
+                ...state,
+                messages: payload.messages,
+                conversations: payload.conversations
+            }
+        case CHAT_ACTION_TYPE.SET_ONLINE_USERS:
+            return {
+                ...state,
+                onlineUsers: payload
+            }
+        case CHAT_ACTION_TYPE.CLEAR_CHAT_STATE:
+            return initialState
         default:
             return state
     }
