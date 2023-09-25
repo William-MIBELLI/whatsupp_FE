@@ -22,6 +22,7 @@ const ChatFooter = () => {
     const [showAttachment, setShowAttachment] = useState(false);
     const [cursorPosition, setCursorPosition] = useState("");
     const { accessToken } = useSelector(selectCurrentUser);
+    const [typing, setTyping] = useState(false)
     const state = useSelector(selectChat);
     const typeRef = useRef();
     const { activeConversation } = state;
@@ -46,10 +47,21 @@ const ChatFooter = () => {
         setShowEmoji(false);
     };
 
-    //Gestion de l'input
+    //Gestion de l'input et du typing
     const onChangeHandler = (event) => {
         const { value } = event.target;
         setMessage(value);
+        setTyping(true)
+        const lastTimeTyping = Date.now()
+        const timer = 3000;
+        setTimeout(() => {
+            const now = Date.now()
+            const diff = now - lastTimeTyping
+            if (diff >= timer) {
+                console.log('dif : ', diff)
+                setTyping(false)
+            }
+        },timer)
     };
 
     //Affichage du emoji picker
@@ -79,6 +91,16 @@ const ChatFooter = () => {
     useEffect(() => {
         typeRef.current.selectionEnd = cursorPosition;
     }, [cursorPosition]);
+
+    //emit du status typing
+    useEffect(() => {
+        console.log('useeffect du typing : ', typing)
+        if (typing) {
+            socket.emit('typing', activeConversation._id)
+        } else {
+            socket.emit('stop typing', activeConversation._id)
+        }
+    },[typing])
 
     return (
         <Component>

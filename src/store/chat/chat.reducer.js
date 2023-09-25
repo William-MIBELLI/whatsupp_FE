@@ -8,7 +8,8 @@ const initialState = {
     activeConversation: undefined,
     messages: [],
     notifications: [],
-    onlineUsers: []
+    onlineUsers: [],
+    typingUsers: []
 }
 
 export const chatReducer = (state = initialState, action) => {
@@ -74,6 +75,12 @@ export const chatReducer = (state = initialState, action) => {
             }
         case CHAT_ACTION_TYPE.CLEAR_CHAT_STATE:
             return initialState
+        case CHAT_ACTION_TYPE.ADD_TYPING_USER:
+        case CHAT_ACTION_TYPE.REMOVE_TYPING_USER:
+            return {
+                ...state,
+                typingUsers: payload
+            }
         default:
             return state
     }

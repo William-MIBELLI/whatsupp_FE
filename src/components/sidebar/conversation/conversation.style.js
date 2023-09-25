@@ -54,3 +54,9 @@ export const RightSide = styled.div`
     font-size: small;
     color: ${props => props.theme.color.dark_text_2}
 `
+
+export const TypingText = styled.p`
+    color: ${props => props.theme.color.green_1};
+    font-size: 0.9rem;
+    margin: 0;
+`

@@ -8,7 +8,9 @@ import ChatContainer from "../../components/chat/chat-container/chatContainer";
 import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../App";
 import {
+    addTypingUser,
     handleReceivedMessage,
+    removeTypingUser,
     setOnlineUser,
 } from "../../store/chat/chat.action";
 
@@ -42,6 +44,22 @@ const Home = () => {
             dispatch(setOnlineUser(onlineUsers));
         });
     }, []);
+
+    //Listen TYPING
+    useEffect(() => {
+        socket.on('typing', convoId => {
+            const { chat } = store.getState()
+            dispatch(addTypingUser(convoId, chat.typingUsers))
+        })
+    }, [])
+    
+    //Listen STOP TYPING
+    useEffect(() => {
+        socket.on('stop typing', convoId => {
+            const { chat } = store.getState();
+            dispatch(removeTypingUser(convoId, chat.typingUsers))
+        })
+    },[])
 
     return (
         <StyledHome>

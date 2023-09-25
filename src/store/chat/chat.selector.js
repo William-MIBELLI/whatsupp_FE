@@ -10,3 +10,7 @@ export const selectConversationById = (convoId) => (state) => {
     //console.log('conversation dans le state : ', state.chat)
     return convo;
 };
+
+export const selectTypingUser = state => {
+    return state.chat.typingUsers
+}

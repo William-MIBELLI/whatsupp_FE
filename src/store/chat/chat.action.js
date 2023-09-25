@@ -195,3 +195,19 @@ const getNewConversationsSorted = (conversations, messageToAdd) => {
 export const clearChat = () => {
     return createAction(CHAT_ACTION_TYPE.CLEAR_CHAT_STATE)
 }
+
+export const addTypingUser = (convoId, typingUsers) => {
+    //Si l'user est déja en train de type, on ne l'ajoute pas
+    const existingTypingUser = typingUsers.includes(convoId);
+    if (existingTypingUser) {
+        console.log('on najoute pas luser')
+        return createAction(CHAT_ACTION_TYPE.ADD_TYPING_USER, typingUsers)
+    }
+    const newTypingUsers = [...typingUsers, convoId]
+    return createAction(CHAT_ACTION_TYPE.ADD_TYPING_USER, newTypingUsers)
+}
+
+export const removeTypingUser = (convoId, typingUsers) => {
+    const newTypingUsers = typingUsers.filter(t => t !== convoId)
+    return createAction(CHAT_ACTION_TYPE.REMOVE_TYPING_USER, newTypingUsers)
+}

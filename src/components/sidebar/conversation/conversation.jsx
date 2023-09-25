@@ -9,6 +9,7 @@ import {
     InfoContainer,
     LeftSide,
     RightSide,
+    TypingText
 } from "./conversation.style";
 import { selectCurrentUser } from "../../../store/user/user.selector";
 import {
@@ -19,6 +20,7 @@ import { getReceiverId } from "../../../utils/helper";
 import {
     selectChat,
     selectConversationById,
+    selectTypingUser,
 } from "../../../store/chat/chat.selector";
 import { useEffect, useState } from "react";
 
@@ -30,6 +32,8 @@ const Conversation = ({ convoId }) => {
     const { latestMessage } = convo;
     const sender = getSender(convo, userId);
     const pictureUrl = parsePictureUrl(sender.pictureUrl);
+    const typingUsers = useSelector(selectTypingUser)
+    const [typing, setTyping] = useState(false)
 
     //Fetch la conversation en activeConversation
     const onClickHandler = async () => {
@@ -43,6 +47,11 @@ const Conversation = ({ convoId }) => {
         );
     };
 
+    useEffect(() => {
+        const findTypingUser = typingUsers.includes(convoId)
+        setTyping(findTypingUser)
+    }, [typingUsers])
+
     return (
         <Component onClick={onClickHandler}>
             <LeftSide>
@@ -55,11 +64,19 @@ const Conversation = ({ convoId }) => {
                 </ImgContainer>
                 <InfoContainer>
                     <PrimaryText>{sender?.name}</PrimaryText>
-                    <SecondaryText>
-                        {latestMessage?.message
-                            ? latestMessage?.message
-                            : sender.status}
-                    </SecondaryText>
+                    {
+                        typing ? 
+                            <TypingText>
+                                typing...
+                            </TypingText>
+                            :
+                            <SecondaryText>
+                                {latestMessage?.message
+                                    ? latestMessage?.message
+                                    : sender.status}
+                            </SecondaryText>
+
+                    }
                 </InfoContainer>
             </LeftSide>
             <RightSide>
