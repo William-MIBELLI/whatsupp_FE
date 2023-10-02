@@ -4,7 +4,7 @@ export const Component = styled.div`
     width: 100%;
     max-height: calc(100% - 130px);
     min-height: calc(100% - 130px);
-    background: url(${({ BgUrl }) => BgUrl});
+    background: url(${({ bgurl }) => bgurl});
     background-size: cover;
     background-repeat: no-repeat;
     display: flex;

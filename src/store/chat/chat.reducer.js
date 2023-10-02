@@ -9,7 +9,8 @@ const initialState = {
     messages: [],
     notifications: [],
     onlineUsers: [],
-    typingUsers: []
+    typingUsers: [],
+    files: []
 }
 
 export const chatReducer = (state = initialState, action) => {
@@ -80,6 +81,17 @@ export const chatReducer = (state = initialState, action) => {
             return {
                 ...state,
                 typingUsers: payload
+            }
+        case CHAT_ACTION_TYPE.CLEAR_FILES:
+            return {
+                ...state,
+                files: []
+            }
+        case CHAT_ACTION_TYPE.ADD_FILE:
+        case CHAT_ACTION_TYPE.REMOVE_FILE:
+            return {
+                ...state,
+                files: payload
             }
         default:
             return state

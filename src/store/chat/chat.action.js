@@ -211,3 +211,17 @@ export const removeTypingUser = (convoId, typingUsers) => {
     const newTypingUsers = typingUsers.filter(t => t !== convoId)
     return createAction(CHAT_ACTION_TYPE.REMOVE_TYPING_USER, newTypingUsers)
 }
+
+export const addFile = (filesToAdd, files) => {
+    return createAction(CHAT_ACTION_TYPE.ADD_FILE, [...files, ...filesToAdd])
+}
+
+export const removeFile = (fileIndex, files) => {
+    const newFiles = files.filter((f, ind) => ind !== fileIndex)
+    console.log('newFiles : ', newFiles)
+    return createAction(CHAT_ACTION_TYPE.REMOVE_FILE, newFiles)
+}
+
+export const clearFiles = () => {
+    return createAction(CHAT_ACTION_TYPE.CLEAR_FILES)
+}

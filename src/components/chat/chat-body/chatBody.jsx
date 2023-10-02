@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Component, Container, EndDiv } from "./chatBody.style";
-import { selectChat, selectTypingUser } from "../../../store/chat/chat.selector";
+import { selectChat, selectFiles, selectTypingUser } from "../../../store/chat/chat.selector";
 import { useContext, useEffect, useRef, useState } from "react";
 import { fetchMessagesAsync } from "../../../store/chat/chat.action";
 import { selectCurrentUser } from "../../../store/user/user.selector";
 import Message from "../message/message";
 import { SocketContext } from "../../../App";
-import { DotsIcon } from "../../../svg";
+import FilePreview from "../file-preview/filePreview";
 
 const ChatBody = () => {
     const BgUrl = process.env.REACT_APP_CHAT_BACKGROUND;
@@ -16,10 +16,10 @@ const ChatBody = () => {
     const dispatch = useDispatch();
     const { socket } = useContext(SocketContext);
     const typingUsers = useSelector(selectTypingUser)
-    const [ typing, setTyping ] = useState(false)
-
-    console.log('typing user : ', typingUsers)
-
+    const [typing, setTyping] = useState(false)
+    const files = useSelector(selectFiles)
+    const [displayFiles, setDisplayFiles] = useState(false)
+    
     //fetch les messages de l'active conversation
     useEffect(() => {
         dispatch(fetchMessagesAsync(accessToken, activeConversation._id));
@@ -35,15 +35,21 @@ const ChatBody = () => {
         endRef.current.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
+    //Check si l'user est en train de taper
     useEffect(() => {
         const findTypingUser = typingUsers.includes(activeConversation._id)
         setTyping(findTypingUser)
     }, [typingUsers])
 
+    useEffect(() => {
+        setDisplayFiles(files.length !== 0)
+        console.log('files dans chatbody : ', files)
+    },[files])
+
     
 
     return (
-        <Component BgUrl={BgUrl}>
+        <Component bgurl={BgUrl}>
             <Container>
                 {messages &&
                     messages.map((m) => {
@@ -64,6 +70,9 @@ const ChatBody = () => {
                 }
                 <EndDiv ref={endRef}></EndDiv>
             </Container>
+            {
+                files.length > 0 ? <FilePreview/> : ''
+            }
         </Component>
     );
 };

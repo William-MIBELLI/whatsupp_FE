@@ -15,6 +15,7 @@ import EmojiPicker from "emoji-picker-react";
 import Attachment from "../attachment/attachment";
 import { useContext } from "react";
 import { SocketContext } from "../../../App";
+import FileInput from "../file-input/fileInput";
 
 const ChatFooter = () => {
     const [message, setMessage] = useState("");
@@ -25,6 +26,7 @@ const ChatFooter = () => {
     const [typing, setTyping] = useState(false)
     const state = useSelector(selectChat);
     const typeRef = useRef();
+    const fileRef = useRef();
     const { activeConversation } = state;
     const dispatch = useDispatch();
     const { socket } = useContext(SocketContext);
@@ -45,6 +47,7 @@ const ChatFooter = () => {
         socket.emit('send-message', res)
         setMessage("");
         setShowEmoji(false);
+        setTyping(false)
     };
 
     //Gestion de l'input et du typing
@@ -64,6 +67,7 @@ const ChatFooter = () => {
         },timer)
     };
 
+
     //Affichage du emoji picker
     const onEmojiDisplay = () => {
         setShowEmoji(!showEmoji);
@@ -71,10 +75,22 @@ const ChatFooter = () => {
     };
 
     //Affichage du menu fichier
-    const onAttachmentDisplay = () => {
-        setShowAttachment(!showAttachment);
-        setShowEmoji(false);
-    };
+    // const onAttachmentDisplay = () => {
+    //     setShowAttachment(!showAttachment);
+    //     setShowEmoji(false);
+    // };
+
+    //Click sur les bouton du menu attachment
+    const onAttachmentClick = () => {
+        console.log('click sur les boutons')
+        fileRef.current.click()
+    }
+
+    //Gestion du file input
+    const onFileChangeHandler = event => {
+        const file = event.target.files
+        console.log('change input OK : ', file)
+    }
 
     //Selection d'un emoji
     const onEmojiCLickHandler = (data, e) => {
@@ -94,7 +110,6 @@ const ChatFooter = () => {
 
     //emit du status typing
     useEffect(() => {
-        console.log('useeffect du typing : ', typing)
         if (typing) {
             socket.emit('typing', activeConversation._id)
         } else {
@@ -118,10 +133,16 @@ const ChatFooter = () => {
                 <ImageButton clickHandler={onEmojiDisplay}>
                     {showEmoji ? <CloseIcon /> : <EmojiIcon />}
                 </ImageButton>
-                <ImageButton clickHandler={onAttachmentDisplay}>
-                    <AttachmentIcon />
-                    {showAttachment && <Attachment />}
-                </ImageButton>
+                    {/* <AttachmentIcon />
+                    {showAttachment && <Attachment onClickhandler={onAttachmentClick}  />}
+                    <input
+                        type="file"
+                        hidden
+                        ref={fileRef}
+                        onChange={onFileChangeHandler}
+                        multiple
+                    /> */}
+                    <FileInput/>
                 <Input
                     type="text"
                     value={message}

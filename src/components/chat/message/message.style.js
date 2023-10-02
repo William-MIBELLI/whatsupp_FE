@@ -21,6 +21,7 @@ export const Component = styled.div`
     display: flex;
     flex-direction: column;
     justify-content:space-between;
+    word-break: break-all;
 
     ${({me}) => me ? Me : NotMe};
 `

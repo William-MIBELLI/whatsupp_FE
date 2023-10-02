@@ -14,3 +14,16 @@ export const selectConversationById = (convoId) => (state) => {
 export const selectTypingUser = state => {
     return state.chat.typingUsers
 }
+
+export const selectFiles = state => {
+    return state.chat.files
+}
+
+export const selectImagePreview = index => state => {
+    const file = state.chat.files[index]
+    if (file) {
+        return file.preview
+    }
+    console.log('pas de fichier avec cet index : ', index)
+    return undefined
+}
