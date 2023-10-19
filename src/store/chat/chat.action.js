@@ -1,6 +1,5 @@
 import {
     fetchActiveConversationFromDb,
-    fetchMessages,
     fetchMessagesFromDb,
     getConversationsFromServer,
     sendMessageOnServer,
@@ -139,11 +138,11 @@ const sendMessageFailed = (error) => {
     return createAction(CHAT_ACTION_TYPE.SEND_MESSAGE_FAILED, error);
 };
 
-export const sendMessageAsync = (token, state, values) => async (dispatch) => {
+export const sendMessageAsync = (token, state, values, files) => async (dispatch) => {
     dispatch(sendMessageStart());
-
     try {
-        const res = await sendMessageOnServer(token, values);
+        console.log('files dans action : ', files)
+        const res = await sendMessageOnServer(token, values, files);
         if (typeof res === Error) {
             throw new Error(res?.message);
         }

@@ -1,13 +1,12 @@
 import { useSelector } from "react-redux";
 import { Component, Details, Icon } from "./body.style";
-import { selectFiles, selectImagePreview } from "../../../../store/chat/chat.selector";
-import { useState, useEffect } from "react";
+import { selectFiles } from "../../../../store/chat/chat.selector";
 
 const Body = ({ file, index }) => {
 
     const files = useSelector(selectFiles)
     const { fileType } = files[index];
-    
+
 
 
     return (

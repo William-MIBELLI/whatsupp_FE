@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import ImageButton from "../../image-button/imageButton";
-import { Component } from "./fileInput.style";
 import { AttachmentIcon } from "../../../svg";
 import { acceptedMimeType, getFileType } from "../../../utils/file.utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,7 +37,7 @@ const FileInput = () => {
             return fileToSave
   
         })
-        dispatch(addFile(mappedFiles,existingFiles))
+        await dispatch(addFile(mappedFiles,existingFiles))
     }
 
 

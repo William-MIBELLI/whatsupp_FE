@@ -9,45 +9,49 @@ import {
 } from "./chatFooter.style";
 import { useEffect, useRef, useState } from "react";
 import { selectCurrentUser } from "../../../store/user/user.selector";
-import { selectChat } from "../../../store/chat/chat.selector";
-import { sendMessageAsync } from "../../../store/chat/chat.action";
+import { selectChat, selectFiles } from "../../../store/chat/chat.selector";
+import { clearFiles, sendMessageAsync } from "../../../store/chat/chat.action";
 import EmojiPicker from "emoji-picker-react";
-import Attachment from "../attachment/attachment";
 import { useContext } from "react";
 import { SocketContext } from "../../../App";
 import FileInput from "../file-input/fileInput";
 
 const ChatFooter = () => {
+
     const [message, setMessage] = useState("");
     const [showEmoji, setShowEmoji] = useState(false);
-    const [showAttachment, setShowAttachment] = useState(false);
     const [cursorPosition, setCursorPosition] = useState("");
     const { accessToken } = useSelector(selectCurrentUser);
     const [typing, setTyping] = useState(false)
     const state = useSelector(selectChat);
+    const files = useSelector(selectFiles)
     const typeRef = useRef();
-    const fileRef = useRef();
     const { activeConversation } = state;
     const dispatch = useDispatch();
     const { socket } = useContext(SocketContext);
 
 
     //Envoi du message
-    const onSendHandler = async (event) => {
+    const onSubmitHandler = async (event) => {
         event.preventDefault();
-        if (message.trim() === "") {
+        if (message.trim() === "" && files.length <= 0) {
+            console.log('on rentre dans le if')
             return;
         }
         const res = await dispatch(
             sendMessageAsync(accessToken, state, {
                 content: message,
-                conversationId: activeConversation._id,
-            })
+                conversationId: activeConversation._id
+            }, files)
         );
-        socket.emit('send-message', res)
+        console.log('res dans onsendhandler : ', res)
+        if (res) {
+            socket.emit('send-message', res)  
+        }
         setMessage("");
         setShowEmoji(false);
-        setTyping(false)
+        setTyping(false);
+        dispatch(clearFiles())
     };
 
     //Gestion de l'input et du typing
@@ -61,36 +65,15 @@ const ChatFooter = () => {
             const now = Date.now()
             const diff = now - lastTimeTyping
             if (diff >= timer) {
-                console.log('dif : ', diff)
                 setTyping(false)
             }
         },timer)
     };
 
-
     //Affichage du emoji picker
     const onEmojiDisplay = () => {
         setShowEmoji(!showEmoji);
-        setShowAttachment(false);
     };
-
-    //Affichage du menu fichier
-    // const onAttachmentDisplay = () => {
-    //     setShowAttachment(!showAttachment);
-    //     setShowEmoji(false);
-    // };
-
-    //Click sur les bouton du menu attachment
-    const onAttachmentClick = () => {
-        console.log('click sur les boutons')
-        fileRef.current.click()
-    }
-
-    //Gestion du file input
-    const onFileChangeHandler = event => {
-        const file = event.target.files
-        console.log('change input OK : ', file)
-    }
 
     //Selection d'un emoji
     const onEmojiCLickHandler = (data, e) => {
@@ -129,19 +112,10 @@ const ChatFooter = () => {
                     />
                 </EmojiPickContainer>
             )}
-            <Container>
+            <Container encType="multipart/form-data" onSubmit={onSubmitHandler}>
                 <ImageButton clickHandler={onEmojiDisplay}>
                     {showEmoji ? <CloseIcon /> : <EmojiIcon />}
                 </ImageButton>
-                    {/* <AttachmentIcon />
-                    {showAttachment && <Attachment onClickhandler={onAttachmentClick}  />}
-                    <input
-                        type="file"
-                        hidden
-                        ref={fileRef}
-                        onChange={onFileChangeHandler}
-                        multiple
-                    /> */}
                     <FileInput/>
                 <Input
                     type="text"
@@ -150,7 +124,7 @@ const ChatFooter = () => {
                     onChange={onChangeHandler}
                     placeholder="Type your message..."
                 />
-                <ImageButton type="submit" clickHandler={onSendHandler}>
+                <ImageButton type="submit">
                     <SendIcon />
                 </ImageButton>
             </Container>

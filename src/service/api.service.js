@@ -124,15 +124,20 @@ export const fetchActiveConversationFromDb = async (token, receiver_id) => {
     }
 };
 
-export const sendMessageOnServer = async (token, values) => {
-    const fd = toFormData(values);
+export const sendMessageOnServer = async (token, values, files) => {
+    const fd = toFormData(values, files);
 
+    console.log('resultat du formatage')
+    for (const pair of fd.entries()) {
+        console.log(`${pair[0]}, ${pair[1]}`);
+    }
+    
     try {
         const res = await fetch(`${url}/message`, {
             method: "POST",
             body: fd,
             headers: {
-                Authorization: `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`,
             },
         });
         if (res.status !== 201) {

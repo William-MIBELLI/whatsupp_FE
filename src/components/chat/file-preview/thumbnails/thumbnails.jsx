@@ -15,7 +15,6 @@ const Thumbnails = ({ setIndex, onDeleteClick }) => {
         <Component>
             {
                 files.map((file, ind) => {
-                    console.log(file)
                     const index = ind
                     return (
                         <>

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Container } from './filePreview.style'
 import { selectFiles } from '../../../store/chat/chat.selector'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Header from './header/header'
 import Body from './body/body'
 import Thumbnails from './thumbnails/thumbnails'
