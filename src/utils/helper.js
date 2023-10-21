@@ -51,9 +51,9 @@ export const getReceiverId = (users, userId) => {
     return users[0]._id;
 };
 
+//Return l'user de la conversation
 export const getSender = (convo, userId) => {
   const { users } = convo;
-  //console.log(convo, userId)
     if (users[0]._id === userId) {
         return users[1];
     }

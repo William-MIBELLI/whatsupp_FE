@@ -15,6 +15,11 @@ import {
 } from "../../store/chat/chat.action";
 
 import { useStore } from 'react-redux'
+import Ringing from "../../components/call/ringing/ringing";
+import CallContainer from "../../components/call/call-container/callContainer";
+import { selectCall } from "../../store/call/call.selector";
+import { acceptCall, callReceived, declineCall } from "../../store/call/call.action";
+
 
 const Home = () => {
     const state = useSelector(selectChat);
@@ -22,6 +27,13 @@ const Home = () => {
     const { currentUser } = useSelector(selectUser);
     const { socket } = useContext(SocketContext);
     const dispatch = useDispatch();
+    const [call, setCall] = useState({})
+    const [stream, setStream] = useState(null)
+    const callData = useSelector(selectCall)
+
+    useEffect(() => {
+        setCall(callData)
+    },[callData])
 
     //Emit user-connection socket
     useEffect(() => {
@@ -59,14 +71,43 @@ const Home = () => {
             const { chat } = store.getState();
             dispatch(removeTypingUser(convoId, chat.typingUsers))
         })
+    }, [])
+    
+    //Call RECEIVED
+    useEffect(() => {
+        socket.on('call incoming', (caller) => {
+            console.log('on recoit un appel  : ', caller)
+            dispatch(callReceived(caller, currentUser))
+            //setCall({...call, isRinging: true, caller: caller})
+        })
     },[])
+    
+    //Refuser l'appel
+    const onDeclineCall = () => {
+        console.log('on décline le call')
+        dispatch(declineCall())
+        //setCall({...call, isRinging: false})
+    }
 
+    //Accepter l'appel
+    const onAcceptCall = () => {
+        console.log('on accepte le call')
+        dispatch(acceptCall())
+        //setCall({...call, isRinging: false, isActive: true})
+    }
+    
     return (
         <StyledHome>
             <Container>
                 <Sidebar />
                 {state.activeConversation ? <ChatContainer /> : <HomeDefault />}
             </Container>
+            {
+                call.isRinging && <Ringing declineCall={onDeclineCall} acceptCall={onAcceptCall} />
+            }
+            {
+                call.isActive && <CallContainer/>
+            }
         </StyledHome>
     );
 };

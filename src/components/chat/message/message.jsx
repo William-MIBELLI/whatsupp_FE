@@ -4,16 +4,17 @@ import FileMessage from "../file-message/fileMessage";
 
 const Message = ({ message, me }) => {
 
-    const { files } = message
-    if (files.length > 0) {
-        console.log('files dans message : ', files)   
-    }
+    const { files } = message || []
+    
+    // if (files && files.length > 0) {
+    //     console.log('files dans message : ', files)   
+    // }
 
     return (
         <Component me={me}>
             <Content>
                 {
-                    files.length > 0 && files.map(f => {
+                    (files && files.length > 0) && files.map(f => {
                         return (
                             <FileMessage file={f} me={me}/>
                         )
