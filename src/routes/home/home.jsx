@@ -18,7 +18,9 @@ import { useStore } from 'react-redux'
 import Ringing from "../../components/call/ringing/ringing";
 import CallContainer from "../../components/call/call-container/callContainer";
 import { selectCall } from "../../store/call/call.selector";
-import { acceptCall, callReceived, declineCall } from "../../store/call/call.action";
+import { acceptCall, callReceived, declineCall, setPartnerStream } from "../../store/call/call.action";
+import { getMedia } from "../../utils/call.utils";
+import SimplePeer from "simple-peer";
 
 
 const Home = () => {
@@ -28,7 +30,6 @@ const Home = () => {
     const { socket } = useContext(SocketContext);
     const dispatch = useDispatch();
     const [call, setCall] = useState({})
-    const [stream, setStream] = useState(null)
     const callData = useSelector(selectCall)
 
     useEffect(() => {
@@ -44,8 +45,6 @@ const Home = () => {
     useEffect(() => {
         socket.on("receive-message", (message) => {
             const { chat } = store.getState()
-            console.log('!!!!!!!!! USEFFECT MESAGE RECEIVED !!!!!!!!!!!!!!!')
-            console.log(message)
             dispatch(handleReceivedMessage(message, chat));
         });
     }, []);
@@ -75,25 +74,42 @@ const Home = () => {
     
     //Call RECEIVED
     useEffect(() => {
-        socket.on('call incoming', (caller) => {
-            console.log('on recoit un appel  : ', caller)
-            dispatch(callReceived(caller, currentUser))
-            //setCall({...call, isRinging: true, caller: caller})
+        socket.on('call incoming', (caller, signalData) => {
+            dispatch(callReceived(caller, signalData))
         })
     },[])
     
     //Refuser l'appel
     const onDeclineCall = () => {
-        console.log('on décline le call')
+        socket.emit('end call', call.caller)
         dispatch(declineCall())
-        //setCall({...call, isRinging: false})
     }
 
     //Accepter l'appel
-    const onAcceptCall = () => {
-        console.log('on accepte le call')
-        dispatch(acceptCall())
-        //setCall({...call, isRinging: false, isActive: true})
+    const onAcceptCall = async () => {
+        const stream = await getMedia()
+        dispatch(acceptCall(stream))
+        const peer = new SimplePeer({
+            initiator: false,
+            trickle: false,
+            stream: stream
+        })
+
+        peer.on('signal', signal => {
+            socket.emit('accept call', { caller: callData.caller, signal })
+            
+        })
+        
+        peer.on('stream', stream => {
+            dispatch(setPartnerStream(stream))
+        })
+        peer.signal(call?.partnerSignal)
+
+        socket.on('call ended', () => {
+            console.log('peer destroy dans acceptcall')
+            dispatch(declineCall())
+            //peer.destroy()
+        })
     }
     
     return (

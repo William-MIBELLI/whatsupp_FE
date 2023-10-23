@@ -8,7 +8,7 @@ export const Container = styled.div`
     right: 0;
 `
 
-export const UserVideoContainer = styled.video`
+export const PartnerVideoContainer = styled.video`
     width: 100%;
     height: 100%;
 `

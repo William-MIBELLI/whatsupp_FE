@@ -1,39 +1,36 @@
 import { useEffect, useRef, useState } from "react";
-import { Container, MyVideoContainer, UserVideoContainer } from "./callBody.style";
+import { Container, MyVideoContainer, PartnerVideoContainer } from "./callBody.style";
+import { useDispatch, useSelector } from "react-redux";
+import { getStream } from "../../../store/call/call.action";
+import { selectCall } from "../../../store/call/call.selector";
 
 const CallBody = ({ showFooter }) => {
 
     const myVideo = useRef()
-    const userVideo = useRef()
+    const partnerVideo = useRef()
     const [stream, setStream] = useState(null)
+    const dispatch = useDispatch()
+    const { partnerStream, myStream } = useSelector(selectCall)
 
 
-    //On call setupMedia au montage du composant
+   
     useEffect(() => {
-        console.log('useffect de setpudmedia')
-        setupMedia()
-    },[])
-    
-    //On passe le stream en src quand on la recup
-    useEffect(() => {
-        console.log('useffect de srcobject ', myVideo, stream)
-        myVideo.current.srcObject = stream
-    },[stream])
-    
-    //Récupérer la webcam et le micro de l'user
-    const setupMedia = async () => {
-        const st = await navigator.mediaDevices.getUserMedia({
-            video: true,
-        })
-        setStream(st)
-    }
+        console.log('useeffect dans call body : ')
+        if (partnerStream) {
+            console.log('partnerstream :  ', partnerStream)
+            partnerVideo.current.srcObject = partnerStream
+        }
+        if (myStream) {
+            console.log('mystream ', myStream)
+            myVideo.current.srcObject = myStream
+        }
+    },[partnerStream, myStream])
 
 
     return (
         <Container>
-            <UserVideoContainer>
-            </UserVideoContainer>
-            <MyVideoContainer showFooter={showFooter} ref={myVideo} autoPlay/>
+            <PartnerVideoContainer playsInline ref={partnerVideo} autoPlay/>
+            <MyVideoContainer playsInline showFooter={showFooter} ref={myVideo} autoPlay/>
         </Container>
     )
 }

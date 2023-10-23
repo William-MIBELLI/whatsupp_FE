@@ -11,7 +11,6 @@ const Ringing = ({ declineCall, acceptCall }) => {
 
     const { red_1, green_1: green } = theme.color
     const { caller } = useSelector(selectCall)
-    console.log('caller dans ringing : ', caller)
 
     return (
         <Container>

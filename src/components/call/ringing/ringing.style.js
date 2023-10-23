@@ -9,6 +9,7 @@ export const Container = styled.div`
     align-items: center;
     padding: 10px;
     color: white;
+    z-index: 50;
 `
 
 export const PictureCaller = styled.img`
