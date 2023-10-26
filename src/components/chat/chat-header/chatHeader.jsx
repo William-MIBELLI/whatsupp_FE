@@ -7,24 +7,28 @@ import ImageButton from "../../image-button/imageButton";
 import PrimaryText from "../../primary-text/primaryText";
 import SecondaryText from "../../secondary-text/secondaryText";
 import {  DotsIcon, SearchLargeIcon, VideoIcon } from "../../../svg";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../../App";
 import { declineCall, getStream, sendCall, setPartnerStream } from "../../../store/call/call.action";
 import SimplePeer from "simple-peer";
 import { selectCall } from "../../../store/call/call.selector";
 import { getMedia } from "../../../utils/call.utils";
+import ChatMenu from "../chat-menu/chatMenu";
 
 const ChatHeader = () => {
 
     const { activeConversation, onlineUsers } = useSelector(selectChat)
+    const { isGroup, users, pictureUrl: groupPicture, name: groupName } = activeConversation
     const  currentUser  = useSelector(selectCurrentUser)
     const user = getSender(activeConversation, currentUser._id)
     const pictureUrl = parsePictureUrl(user.pictureUrl)
     const { socket } = useContext(SocketContext)
+    const [displayMenu, setDisplayMenu] = useState(false)
     const dispatch = useDispatch()
     const call = useSelector(selectCall)
 
-   
+
+    //GERE LAPPEL VIDEO
     const onVideoCall = async () => {
 
         const stream = await getMedia() //On recuperr le stream de l'user
@@ -57,28 +61,50 @@ const ChatHeader = () => {
         })
     }
 
+    //Gère l'affichage du menu
+    const onMenuClick = () => {
+        setDisplayMenu(!displayMenu)
+    }
+
+
     return (
         <Component>
             <Side>
                 <ImageButton size={'55px'}>
-                    <img src={pictureUrl} alt={user.name}></img>
+                    <img style={{ background: 'white'}} src={ isGroup ? parsePictureUrl(groupPicture) : pictureUrl} alt={user.name}></img>
                 </ImageButton>
                 <InfoContainer>
-                    <PrimaryText>{user.name}</PrimaryText>
+                    <PrimaryText>{isGroup ? groupName : user.name}</PrimaryText>
+                    {
+                        isGroup && <div>
+                            {
+                                users.map(user => <span style={{color: 'grey', fontSize: '0.7rem'}}>{ user.name} </span>)
+                            }
+                        </div> 
+                    }
                     <SecondaryText>{onlineUsers.find(u => u.userId === user._id) ? 'Online' : ''}</SecondaryText>
                 </InfoContainer>
             </Side>
             <Side>
-                <ImageButton clickHandler={onVideoCall}>
-                    <VideoIcon/>
-                </ImageButton>
+                {
+                    !isGroup && (
+                        <ImageButton clickHandler={onVideoCall}>
+                            <VideoIcon/>
+                        </ImageButton>
+                    )
+                }
                 <ImageButton>
                     <SearchLargeIcon/>
                 </ImageButton>
-                <ImageButton>
+                <ImageButton clickHandler={onMenuClick}>
                     <DotsIcon/>
                 </ImageButton>
             </Side>
+            {
+                displayMenu && (
+                    <ChatMenu setDisplayMenu={setDisplayMenu} />
+                )
+            }
         </Component>
     )
 }

@@ -29,7 +29,7 @@ const Conversation = ({ convoId }) => {
     const { accessToken, _id: userId } = useSelector(selectCurrentUser);
     const { conversations, onlineUsers } = useSelector(selectChat);
     const convo = useSelector(selectConversationById(convoId));
-    const { latestMessage } = convo;
+    const { latestMessage, isGroup, name: groupName, pictureUrl: groupPicture } = convo;
     const sender = getSender(convo, userId);
     const pictureUrl = parsePictureUrl(sender.pictureUrl);
     const typingUsers = useSelector(selectTypingUser)
@@ -37,12 +37,14 @@ const Conversation = ({ convoId }) => {
 
     //Fetch la conversation en activeConversation
     const onClickHandler = async () => {
+        console.log('on clique sur la convo pour lafficher : ', convo, convoId)
         const receiver_id = getReceiverId(convo.users, userId);
         dispatch(
             fetchActiveConversationAsync(
                 accessToken,
                 receiver_id,
-                conversations
+                conversations,
+                convoId
             )
         );
     };
@@ -60,10 +62,10 @@ const Conversation = ({ convoId }) => {
                         (c) => c.userId === sender?._id || ""
                     )}
                 >
-                    <img src={pictureUrl} alt={sender?.name}></img>
+                    <img style={{background: 'white'}} src={isGroup ? parsePictureUrl(groupPicture) : pictureUrl} alt={sender?.name}></img>
                 </ImgContainer>
                 <InfoContainer>
-                    <PrimaryText>{sender?.name}</PrimaryText>
+                    <PrimaryText>{isGroup ? groupName  : sender?.name}</PrimaryText>
                     {
                         typing ? 
                             <TypingText>

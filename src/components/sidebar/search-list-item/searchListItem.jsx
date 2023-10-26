@@ -16,6 +16,7 @@ const SearchListItem = ({ user }) => {
     const { conversations } = useSelector(selectChat)
 
     const onClickHandler = () => {
+        console.log(user._id)
         dispatch(fetchActiveConversationAsync(accessToken, user._id, conversations))
     }
 

@@ -101,9 +101,12 @@ export const fetchMessagesFromDb = async (token, conversationId) => {
     }
 };
 
-export const fetchActiveConversationFromDb = async (token, receiver_id) => {
+export const fetchActiveConversationFromDb = async (token, receiver_id, convoId) => {
     const fd = new FormData();
     fd.append("receiver_id", receiver_id);
+    if (convoId) {
+        fd.append('convoId', convoId)
+    }
 
     try {
         const res = await fetch(`${url}/conversation`, {
@@ -150,3 +153,47 @@ export const sendMessageOnServer = async (token, values, files) => {
         return error;
     }
 };
+
+export const createGroupOnDb = async (token, groupName, selectedUsers) => {
+    //const fd = toFormData({ groupName, selectedUsers })
+    const fd = new FormData()
+    fd.append('groupName', groupName)
+    selectedUsers.forEach(userId => {
+        fd.append('selectedUsers', userId)
+    })
+    
+    try {
+        const res = await fetch(`${url}/group/createGroup`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            body: fd,
+            method: 'POST'
+        })
+        const r = await res.json()
+        return r
+    } catch (error) {
+        console.log('error dans creategroup : ', error)
+    }
+}
+
+export const deleteGroupOnDb = async (token, groupId, adminId) => {
+
+    const fd = new FormData() 
+    fd.append('groupId', groupId)
+    fd.append('adminId', adminId)
+
+    try {
+        const res = await fetch(`${url}/group/delete`, {
+            method: 'POST',
+            body: fd,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        const r = await res.json()
+        console.log('r dans service : ', r)
+    } catch (error) {
+        console.log(error)
+    }
+}

@@ -19,6 +19,11 @@ const ChatBody = () => {
     const [typing, setTyping] = useState(false)
     const files = useSelector(selectFiles)
     const [displayFiles, setDisplayFiles] = useState(false)
+
+    // console.log('messages : ', messages)
+    // messages.forEach(m => {
+    //     console.log(Date.parse(m.createdAt))
+    // })
     
     //fetch les messages de l'active conversation
     useEffect(() => {
@@ -57,7 +62,9 @@ const ChatBody = () => {
                             <Message
                                 key={m._id}
                                 message={m}
-                                me={m.sender === userId}
+                                me={m.sender._id === userId}
+                                sender={m.sender}
+                                isGroup={activeConversation.isGroup}
                             />
                         );
                     })}

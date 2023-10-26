@@ -9,8 +9,8 @@ const SidebarHeader = () => {
     const { pictureUrl } = useSelector(selectCurrentUser);
     const [displayMenu, setDisplayMenu] = useState(false);
 
+    //gestion de l'affichage du menu
     const onBlurHandler = () => {
-        console.log("BLUR HANDLER");
         setDisplayMenu(false);
     };
 

@@ -1,31 +1,35 @@
 import moment from "moment";
-import { Component, Content, DateContainer } from "./message.style";
+import { Component, Container, Content, DateContainer, SenderPic } from "./message.style";
 import FileMessage from "../file-message/fileMessage";
+import { parsePictureUrl } from "../../../utils/helper";
 
-const Message = ({ message, me }) => {
+const Message = ({ message, me, isGroup }) => {
 
     const { files } = message || []
-    
-    // if (files && files.length > 0) {
-    //     console.log('files dans message : ', files)   
-    // }
 
+    
     return (
-        <Component me={me}>
-            <Content>
-                {
-                    (files && files.length > 0) && files.map(f => {
-                        return (
-                            <FileMessage file={f} me={me}/>
-                        )
-                    })
-                }
-                {message.message}
-            </Content>
-            <DateContainer>
-                {moment(message.createdAt).format('HH:mm')}
-            </DateContainer>
-        </Component>
+        <Container>
+            {
+                (me === false && isGroup)  && <SenderPic src={parsePictureUrl(message.sender.pictureUrl)}/>
+            }
+            <Component me={me}>
+                <Content>
+                    {
+                        (files && files.length > 0) && files.map(f => {
+                            return (
+                                <FileMessage file={f} me={me}/>
+                            )
+                        })
+                    }
+                    {message.message}
+                </Content>
+                <DateContainer>
+                    {moment(message.createdAt).format('HH:mm')}
+                </DateContainer>
+            </Component>
+
+        </Container>
     )
 }
 

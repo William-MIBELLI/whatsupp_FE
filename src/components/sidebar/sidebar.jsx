@@ -10,12 +10,17 @@ import Conversations from "./conversations/conversations";
 import { useEffect, useState } from "react";
 import SearchList from './search-list/searchList'
 import { searchUserOnDb } from "../../service/api.service";
+import { createContext, useContext } from "react";
+import NewGroupSearch from "./new-group-search/newGroupSearch";
+
+export const CreateNewGroupContext = createContext()
 
 const Sidebar = () => {
     const { accessToken } = useSelector(selectCurrentUser);
     const [keyword, setKeyword] = useState('');
     const [searchResult, setSearchResult] = useState([])
     const dispatch = useDispatch();
+    const [createNewGroup, setCreateNewGroup] = useState(false)
 
     useEffect(() => {
         dispatch(fetchConversationsAsync(accessToken));
@@ -30,15 +35,27 @@ const Sidebar = () => {
         if (keyword !== '') {
             getUsers()
         }
-    },[keyword])
+    }, [keyword])
+    
+    useEffect(() => {
+        console.log('createnewgroup : ', createNewGroup)
+    },[createNewGroup])
 
     return (
-        <StyledSidebar>
-            <SidebarHeader />
-            <Notification />
-            <Search setKeyword={setKeyword} />
-            {keyword ? <SearchList result={searchResult} /> : <Conversations />}
-        </StyledSidebar>
+        <CreateNewGroupContext.Provider value={{setCreateNewGroup, createNewGroup}}>
+            <StyledSidebar>
+                <SidebarHeader />
+                <Notification />
+                {
+                    createNewGroup ? <NewGroupSearch /> : (
+                        <>
+                            <Search setKeyword={setKeyword} />
+                            {keyword ? <SearchList result={searchResult} /> : <Conversations />}
+                        </>
+                    )
+                }
+            </StyledSidebar>
+        </CreateNewGroupContext.Provider>
     );
 };
 

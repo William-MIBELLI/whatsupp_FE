@@ -9,8 +9,11 @@ import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../App";
 import {
     addTypingUser,
+    fetchConversationsAsync,
     handleReceivedMessage,
+    removeConversation,
     removeTypingUser,
+    removeActiveConversation,
     setOnlineUser,
 } from "../../store/chat/chat.action";
 
@@ -45,7 +48,15 @@ const Home = () => {
     useEffect(() => {
         socket.on("receive-message", (message) => {
             const { chat } = store.getState()
-            dispatch(handleReceivedMessage(message, chat));
+            console.log('message dans socket : ', message)
+            const existingConv = chat.conversations.find(c => c._id === message.conversation._id)
+            if (existingConv) {
+                console.log('la convo existe, on ajoute le message')
+                dispatch(handleReceivedMessage(message, chat));         
+            } else {
+                console.log('la convo nexiste pas, on fetch depuis le server')
+                dispatch(fetchConversationsAsync(currentUser.accessToken))
+            }
         });
     }, []);
 
@@ -76,6 +87,23 @@ const Home = () => {
     useEffect(() => {
         socket.on('call incoming', (caller, signalData) => {
             dispatch(callReceived(caller, signalData))
+        })
+    }, [])
+    
+    //GROUP DELETED
+    useEffect(() => {
+        socket.on('group deleted', (groupId) => {
+            const { chat } = store.getState()
+            const { activeConversation, conversations } = chat
+            console.log(groupId, activeConversation)
+            if (groupId === activeConversation?._id) {
+                console.log('le group est en activeC, on fetch toutes les convs')
+                dispatch(removeActiveConversation())
+                dispatch(fetchConversationsAsync(currentUser.accessToken))
+            } else {
+                console.log('le group nest pas actif, on le supprime simplement du state')
+                dispatch(removeConversation(conversations, groupId))
+            }
         })
     },[])
     

@@ -16,7 +16,6 @@ export const Component = styled.div`
     max-width: 45%;
     text-align: justify;
     width: fit-content;
-    margin-top: 10px;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -36,4 +35,17 @@ export const DateContainer = styled.div`
     font-size: small;
     font-weight: 100;
     color: ${props => props.theme.color.dark_text_5};
+`
+
+export const SenderPic = styled.img`
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    margin-right: 5px;
+`
+
+export const Container = styled.div`
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
 `

@@ -7,8 +7,8 @@ import {
 import { createAction } from "../../utils/helper";
 import { CHAT_ACTION_TYPE } from "./chat.type";
 
-export const setActiveConversation = (conversation) => {
-    return createAction(CHAT_ACTION_TYPE.SET_ACTIVE_CONVERSATION, conversation);
+export const removeActiveConversation = () => {
+    return createAction(CHAT_ACTION_TYPE.REMOVE_ACTIVE_CONVERSATION);
 };
 
 const fetchConversationsStart = () => {
@@ -30,12 +30,15 @@ export const fetchConversationsAsync = (token) => async (dispatch) => {
     dispatch(fetchConversationsStart());
 
     try {
-        const res = await getConversationsFromServer(token);
+        const res = await getConversationsFromServer(token); // On request la BDD
         if (res.status !== 200) {
             throw new Error(res.error);
         }
-        console.log("res dans async : ", res);
-        return dispatch(fetchConversationsSuccess(res.conversations));
+        const sortedConvo = res.conversations // On tri les conversations selon la
+        sortedConvo.sort((a, b) => {          // date du dernier message
+            return Date.parse(b?.latestMessage?.createdAt) - Date.parse(a?.latestMessage?.createdAt)
+        })
+        return dispatch(fetchConversationsSuccess(sortedConvo));
     } catch (error) {
         dispatch(fetchConversationsFailed(error));
     }
@@ -68,11 +71,11 @@ const fetchActiveConversationFailed = (error) => {
 };
 
 export const fetchActiveConversationAsync =
-    (token, userId, conversations) => async (dispatch) => {
+    (token, userId, conversations, convoId) => async (dispatch) => {
         dispatch(fetchActiveConversationStart());
 
         try {
-            const res = await fetchActiveConversationFromDb(token, userId);
+            const res = await fetchActiveConversationFromDb(token, userId, convoId);
             if (typeof res === Error) {
                 throw res;
             }
@@ -141,7 +144,7 @@ const sendMessageFailed = (error) => {
 export const sendMessageAsync = (token, state, values, files) => async (dispatch) => {
     dispatch(sendMessageStart());
     try {
-        console.log('files dans action : ', files)
+        //console.log('files dans action : ', files)
         const res = await sendMessageOnServer(token, values, files);
         if (typeof res === Error) {
             throw new Error(res?.message);
@@ -155,7 +158,7 @@ export const sendMessageAsync = (token, state, values, files) => async (dispatch
 
 export const handleReceivedMessage = (message, state) => {
     const { activeConversation, conversations, messages } = state;
-    console.log('message dans action : ', message)
+    //console.log('message dans action : ', message)
     // const existingMessage = messages.find(m => m._id === message._id)
     // if (existingMessage) {
     //     console.log('LE MESSAGE EXISTE DEJA ', conversations, messages)
@@ -199,7 +202,7 @@ export const addTypingUser = (convoId, typingUsers) => {
     //Si l'user est déja en train de type, on ne l'ajoute pas
     const existingTypingUser = typingUsers.includes(convoId);
     if (existingTypingUser) {
-        console.log('on najoute pas luser')
+        //console.log('on najoute pas luser')
         return createAction(CHAT_ACTION_TYPE.ADD_TYPING_USER, typingUsers)
     }
     const newTypingUsers = [...typingUsers, convoId]
@@ -217,10 +220,16 @@ export const addFile = (filesToAdd, files) => {
 
 export const removeFile = (fileIndex, files) => {
     const newFiles = files.filter((f, ind) => ind !== fileIndex)
-    console.log('newFiles : ', newFiles)
+    //console.log('newFiles : ', newFiles)
     return createAction(CHAT_ACTION_TYPE.REMOVE_FILE, newFiles)
 }
 
 export const clearFiles = () => {
     return createAction(CHAT_ACTION_TYPE.CLEAR_FILES)
+}
+
+export const removeConversation = (convos, convoIdToRemove) => {
+    console.log(convos, convoIdToRemove)
+    const newConvo = convos.filter(c => c._id !== convoIdToRemove)
+    return createAction(CHAT_ACTION_TYPE.REMOVE_CONVERSATION, newConvo)
 }

@@ -7,6 +7,7 @@ export const Component = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
 `
 
 export const Side = styled.div`
@@ -24,6 +25,7 @@ export const InfoContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: left;
+    text-align: left;
 
     p:last-child {
         font-size: 0.7rem;

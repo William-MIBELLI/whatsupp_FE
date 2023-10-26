@@ -93,6 +93,16 @@ export const chatReducer = (state = initialState, action) => {
                 ...state,
                 files: payload
             }
+        case CHAT_ACTION_TYPE.REMOVE_CONVERSATION:
+            return {
+                ...state,
+                conversations: payload
+            }
+        case CHAT_ACTION_TYPE.REMOVE_ACTIVE_CONVERSATION:
+            return {
+                ...state,
+                activeConversation: undefined
+            }
         default:
             return state
     }

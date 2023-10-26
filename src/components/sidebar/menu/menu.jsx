@@ -3,19 +3,27 @@ import SecondaryText from '../../secondary-text/secondaryText'
 import { useDispatch } from "react-redux";
 import { logoutOutUser } from "../../../store/user/user.action";
 import { clearChat } from "../../../store/chat/chat.action";
+import { useContext } from "react";
+import { CreateNewGroupContext } from "../sidebar";
 
 const Menu = ({ blurHandler }) => {
 
     const dispatch = useDispatch()
+    const  { setCreateNewGroup}  = useContext(CreateNewGroupContext)
+
 
     const onLogouthandler = () => {
         dispatch(clearChat())
         dispatch(logoutOutUser())
     }
 
+    const onCreateGroupHandler = () => {
+        setCreateNewGroup(true)
+    }
+
     return (
         <Component onMouseLeave={blurHandler}>
-            <MenuItem>
+            <MenuItem onClick={onCreateGroupHandler}>
                 <SecondaryText>New group</SecondaryText>
             </MenuItem>
             <MenuItem>
