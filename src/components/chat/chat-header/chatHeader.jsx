@@ -20,7 +20,7 @@ const ChatHeader = () => {
     const { activeConversation, onlineUsers } = useSelector(selectChat)
     const { isGroup, users, pictureUrl: groupPicture, name: groupName } = activeConversation
     const  currentUser  = useSelector(selectCurrentUser)
-    const user = getSender(activeConversation, currentUser._id)
+    const user = getSender(activeConversation, currentUser._id) 
     const pictureUrl = parsePictureUrl(user.pictureUrl)
     const { socket } = useContext(SocketContext)
     const [displayMenu, setDisplayMenu] = useState(false)

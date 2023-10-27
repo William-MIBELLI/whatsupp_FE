@@ -31,7 +31,7 @@ const Conversation = ({ convoId }) => {
     const convo = useSelector(selectConversationById(convoId));
     const { latestMessage, isGroup, name: groupName, pictureUrl: groupPicture } = convo;
     const sender = getSender(convo, userId);
-    const pictureUrl = parsePictureUrl(sender.pictureUrl);
+    const pictureUrl = isGroup ? parsePictureUrl(groupPicture) : parsePictureUrl(sender.pictureUrl);
     const typingUsers = useSelector(selectTypingUser)
     const [typing, setTyping] = useState(false)
 
@@ -62,7 +62,7 @@ const Conversation = ({ convoId }) => {
                         (c) => c.userId === sender?._id || ""
                     )}
                 >
-                    <img style={{background: 'white'}} src={isGroup ? parsePictureUrl(groupPicture) : pictureUrl} alt={sender?.name}></img>
+                    <img style={{background: 'white'}} src={pictureUrl} alt={sender?.name}></img>
                 </ImgContainer>
                 <InfoContainer>
                     <PrimaryText>{isGroup ? groupName  : sender?.name}</PrimaryText>

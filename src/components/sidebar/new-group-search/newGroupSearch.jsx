@@ -8,14 +8,16 @@ import {
     Body,
     Footer,
     Confirm,
+    Error,
 } from "./newGroupSearch.style";
 import Select from "react-select";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../../store/user/user.selector";
 import { createGroupOnDb, searchUserOnDb } from "../../../service/api.service";
 import { theme } from '../../../utils/theme'
 import { ConfirmIcon } from "../../../svg";
 import { CreateNewGroupContext } from "../sidebar";
+import { fetchConversationsAsync } from "../../../store/chat/chat.action";
 
 const NewGroupSearch = () => {
 
@@ -26,6 +28,8 @@ const NewGroupSearch = () => {
     const { color } = theme
     const { setCreateNewGroup } = useContext(CreateNewGroupContext)
     const [groupeName, setGroupName] = useState('')
+    const dispatch = useDispatch()
+    const [displayError, setDisplayError] = useState(false)
 
     //On récupère l'input du select
     const onInputChangeHandler = (value) => {
@@ -65,14 +69,19 @@ const NewGroupSearch = () => {
 
     //Création du groupe, on requete le backend
     const onCreateGroup = async () => {
+
         if (groupeName.length <= 0 || selectedUsers.length <= 0) {
-            console.log('pas de nom de groupe ou pas duser selected')
+            setDisplayError(true) // Si pas de nom de groupe ou pas d'users selectionnés, on affiche une erreur
             return
         }
-        const mappedUsers = selectedUsers.map(user => user.value)
-        console.log(selectedUsers)
+
+        const mappedUsers = selectedUsers.map(user => user.value) //On récup les usersId
         const res = await createGroupOnDb(accessToken, groupeName, mappedUsers)
-        console.log('res du server : ', res)
+
+        if (res) {      //Si la création du group est OK, on fetchConvo et on ferme longlet
+            dispatch(fetchConversationsAsync(accessToken))
+            setCreateNewGroup(false)
+        }
     }
 
     const onChangeGroupName = (event) => {
@@ -139,6 +148,9 @@ const NewGroupSearch = () => {
             <Footer onClick={onCreateGroup}>
                 <Confirm/>
             </Footer>
+            {
+                displayError && <Error>Please provide a group name and select users</Error>
+            }
         </Container>
     );
 };

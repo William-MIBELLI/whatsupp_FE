@@ -1,3 +1,4 @@
+import { Form } from "react-hook-form";
 import { toFormData } from "../utils/api.utils";
 
 const url = process.env.REACT_APP_API_ENDPOINT;
@@ -170,6 +171,10 @@ export const createGroupOnDb = async (token, groupName, selectedUsers) => {
             body: fd,
             method: 'POST'
         })
+        console.log('res avant json : ', res)
+        if (res.status !== 200) {
+            throw new Error('Failed to create group')
+        }
         const r = await res.json()
         return r
     } catch (error) {
@@ -193,6 +198,28 @@ export const deleteGroupOnDb = async (token, groupId, adminId) => {
         })
         const r = await res.json()
         console.log('r dans service : ', r)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const leaveGroupOnDb = async (token, groupId) => {
+    const fd = new FormData()
+    fd.append('groupId', groupId)
+    
+    try {
+        console.log('on requete le server')
+        const res = await fetch(`${url}/group/leave`, {
+            method: 'PUT',
+            body: fd,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        if (res.status !== 201) {
+            throw new Error('Cant leave group')
+        }
+        return true
     } catch (error) {
         console.log(error)
     }

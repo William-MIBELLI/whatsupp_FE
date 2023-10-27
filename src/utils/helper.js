@@ -45,6 +45,9 @@ export const parsePictureUrl = (pictureUrl) => {
 };
 
 export const getReceiverId = (users, userId) => {
+    if (users.length <= 1) { //Sécurité si la conversation ne contient quun seul user
+        return users[0]?._id
+    }
     if (users[0]._id === userId) {
         return users[1]._id;
     }
@@ -53,7 +56,10 @@ export const getReceiverId = (users, userId) => {
 
 //Return l'user de la conversation
 export const getSender = (convo, userId) => {
-  const { users } = convo;
+    const { users } = convo;
+    if (users.length <= 1) { //Sécurité si la convo ne contient quun seul user
+        return users[0]
+    }
     if (users[0]._id === userId) {
         return users[1];
     }

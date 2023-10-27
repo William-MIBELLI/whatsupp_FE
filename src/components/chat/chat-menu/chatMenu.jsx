@@ -1,19 +1,22 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Container, MenuItem } from "./chatMenu.style";
 import { selectChat } from "../../../store/chat/chat.selector";
 import { selectCurrentUser } from "../../../store/user/user.selector";
-import { deleteGroupOnDb } from "../../../service/api.service";
+import { deleteGroupOnDb, leaveGroupOnDb } from "../../../service/api.service";
+import { fetchConversationsAsync, removeActiveConversation } from "../../../store/chat/chat.action";
 
 const ChatMenu = ({ setDisplayMenu }) => {
 
     const { activeConversation } = useSelector(selectChat)
     const currentUser = useSelector(selectCurrentUser)
+    const { accessToken } = currentUser
     const { isGroup, admin, users, _id: groupId } = activeConversation
+    const dispatch = useDispatch()
 
     console.log(currentUser)
     const onDeleteGroupHandler = async () => {
         console.log('delete groupe')
-        deleteGroupOnDb(currentUser.accessToken, groupId, currentUser._id)
+        deleteGroupOnDb(accessToken, groupId, currentUser._id)
     }
 
     const onRemoveUserHandler = () => {
@@ -24,8 +27,16 @@ const ChatMenu = ({ setDisplayMenu }) => {
         console.log('add user')
     }
 
-    const onLeaveGroupHandler = () => {
+    const onLeaveGroupHandler = async () => {
         console.log('leave groupe')
+        const res = await leaveGroupOnDb(accessToken, groupId)
+        if (!res) {
+            console.log('pas de dispatch')
+            return
+        }
+        console.log('suppression OK, on dispatch')
+        dispatch(removeActiveConversation())
+        dispatch(fetchConversationsAsync(accessToken))
     }
 
     const onMouseLeaveHandler = () => {

@@ -45,4 +45,14 @@ export const Confirm = styled(ConfirmIcon)`
     height: 50px;
     width: 50px;
     cursor: pointer;
+
+    &:hover{
+        transform: scale(1.05);
+    }
+`
+
+export const Error = styled.p`
+    color: ${props => props.theme.color.red_1};
+    font-weight: bold;
+    font-size: 0.8rem;
 `
