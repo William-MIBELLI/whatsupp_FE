@@ -10,4 +10,16 @@ Les appels vidéos utilisent la technologie WebRTC (Simple-peer).
 
 Le back-end est développé en nodeJs avec Express, multer, socket-IO, etc... Vous pouvez retrouver le code source ici : https://github.com/William-MIBELLI/whatsapp_BE
 
-Le projet sera déployé prochainement, vous pouvez tout de même le tester en local.
+03-11-2023
+Le projet est disponible en ligne : https://master--whatsapp-clone-wm.netlify.app/
+
+TODO
+
+-video
+    fix peer.destroy() issue
+    timer
+-user
+    settings page
+    reset password
+    refreshToken 
+    input on Home for change statut
