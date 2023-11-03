@@ -26,12 +26,12 @@ const Menu = ({ blurHandler }) => {
             <MenuItem onClick={onCreateGroupHandler}>
                 <SecondaryText>New group</SecondaryText>
             </MenuItem>
-            <MenuItem>
+            {/* <MenuItem>
                 <SecondaryText>New community</SecondaryText>
             </MenuItem>
             <MenuItem>
                 <SecondaryText>Starred messaged</SecondaryText>
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem>
                 <SecondaryText>Settings</SecondaryText>
             </MenuItem>

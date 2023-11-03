@@ -15,6 +15,7 @@ import {
     removeTypingUser,
     removeActiveConversation,
     setOnlineUser,
+    removeUser,
 } from "../../store/chat/chat.action";
 
 import { useStore } from 'react-redux'
@@ -30,6 +31,7 @@ export const CallContext = createContext(null)
 
 const Home = () => {
     const state = useSelector(selectChat);
+    const { activeConversation, conversations } = state
     const store = useStore()
     const { currentUser } = useSelector(selectUser);
     const { socket } = useContext(SocketContext);
@@ -100,6 +102,30 @@ const Home = () => {
                 dispatch(fetchConversationsAsync(currentUser.accessToken))
             } else {
                 dispatch(removeConversation(conversations, groupId))
+            }
+        })
+    }, [])
+    
+    //Kicked from a group
+    useEffect(() => {
+        socket.on('get kicked from group', groupId => {
+            const { chat } = store.getState()
+            const { activeConversation, conversations } = chat
+            if (groupId === activeConversation._id) {
+                dispatch(removeActiveConversation())
+            }
+            dispatch(removeConversation(conversations, groupId))
+        })
+    }, [])
+    
+    //User kicked d'un group, on le supprime si c'est dans activeConvo
+    useEffect(() => {
+        socket.on('user got kicked', data => {
+            const { groupId, userId } = data
+            const { chat } = store.getState()
+            const { activeConversation } = chat
+            if (groupId === activeConversation._id) {
+                dispatch(removeUser(userId, activeConversation))
             }
         })
     },[])

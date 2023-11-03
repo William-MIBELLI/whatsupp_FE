@@ -216,3 +216,10 @@ export const removeConversation = (convos, convoIdToRemove) => {
     const newConvo = convos.filter(c => c._id !== convoIdToRemove)
     return createAction(CHAT_ACTION_TYPE.REMOVE_CONVERSATION, newConvo)
 }
+
+export const removeUser = (userId, convo) => {
+    const { users } = convo
+    const updatedUsers = users.filter(user => user._id !== userId)
+    const updatedConvo = {...convo, users: updatedUsers}
+    return createAction(CHAT_ACTION_TYPE.REMOVE_USER, updatedConvo)
+}

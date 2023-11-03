@@ -26,11 +26,11 @@ const SidebarHeader = () => {
                             <CommunityIcon />
                         </HomeButton>
                     </li>
-                    <li>
+                    {/* <li>
                         <HomeButton>
                             <StoryIcon />
                         </HomeButton>
-                    </li>
+                    </li> */}
                     <li>
                         <HomeButton>
                             <ChatIcon />

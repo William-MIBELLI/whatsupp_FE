@@ -68,7 +68,7 @@ const NewGroupSearch = () => {
     //Création du groupe, on requete le backend
     const onCreateGroup = async () => {
 
-        if (groupeName.length <= 0 || selectedUsers.length <= 0) {
+        if (groupeName.length <= 0 || selectedUsers.length <= 1) {
             setDisplayError(true) // Si pas de nom de groupe ou pas d'users selectionnés, on affiche une erreur
             return
         }
@@ -147,7 +147,7 @@ const NewGroupSearch = () => {
                 <Confirm/>
             </Footer>
             {
-                displayError && <Error>Please provide a group name and select users</Error>
+                displayError && <Error>Please provide a group name and select atleast 2 users</Error>
             }
         </Container>
     );

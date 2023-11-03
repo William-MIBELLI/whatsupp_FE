@@ -103,6 +103,11 @@ export const chatReducer = (state = initialState, action) => {
                 ...state,
                 activeConversation: undefined
             }
+        case CHAT_ACTION_TYPE.REMOVE_USER:
+            return {
+                ...state,
+                activeConversation: payload
+            }
         default:
             return state
     }

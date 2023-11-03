@@ -262,3 +262,23 @@ export const leaveGroupOnDb = async (token, groupId) => {
         return false
     }
 }
+
+export const removeUserFromGroupOnDb = async (token, userId, groupId) => {
+    const fd = new FormData()
+    fd.append('userIdToDelete', userId)
+    fd.append('groupId', groupId)
+    try {
+        const res = await fetch(`${url}/group/remove-user`, {
+            method: 'DELETE',
+            body: fd,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        if (res.status === 201) {
+            return true
+        }
+    } catch (error) {
+        return false
+    }
+}
