@@ -20,10 +20,6 @@ const ChatBody = () => {
     const files = useSelector(selectFiles)
     const [displayFiles, setDisplayFiles] = useState(false)
 
-    // console.log('messages : ', messages)
-    // messages.forEach(m => {
-    //     console.log(Date.parse(m.createdAt))
-    // })
     
     //fetch les messages de l'active conversation
     useEffect(() => {
@@ -38,7 +34,7 @@ const ChatBody = () => {
     //Scroll jusqu'au dernier message
     useEffect(() => {
         endRef.current.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
+    }, [messages, typing]);
 
     //Check si l'user est en train de taper
     useEffect(() => {
@@ -48,7 +44,6 @@ const ChatBody = () => {
 
     useEffect(() => {
         setDisplayFiles(files.length !== 0)
-        console.log('files dans chatbody : ', files)
     },[files])
 
     

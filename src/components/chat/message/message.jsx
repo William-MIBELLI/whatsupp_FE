@@ -1,7 +1,6 @@
 import moment from "moment";
 import { Component, Container, Content, DateContainer, SenderPic } from "./message.style";
 import FileMessage from "../file-message/fileMessage";
-import { parsePictureUrl } from "../../../utils/helper";
 
 const Message = ({ message, me, isGroup }) => {
 
@@ -11,7 +10,7 @@ const Message = ({ message, me, isGroup }) => {
     return (
         <Container>
             {
-                (me === false && isGroup)  && <SenderPic src={parsePictureUrl(message.sender.pictureUrl)}/>
+                (me === false && isGroup)  && <SenderPic src={message.sender.pictureUrl}/>
             }
             <Component me={me}>
                 <Content>

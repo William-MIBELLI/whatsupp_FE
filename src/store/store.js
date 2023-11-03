@@ -3,7 +3,7 @@ import { rootReducer } from './root-reducer'
 import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 
-const middlewares = [ thunk, logger ]
+const middlewares = [ thunk ]
 
 const composeEnhancer = compose(applyMiddleware(...middlewares))
 

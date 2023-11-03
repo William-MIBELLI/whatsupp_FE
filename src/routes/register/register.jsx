@@ -29,7 +29,7 @@ const Register = () => {
     const navigate = useNavigate()
 
     const onSubmitHandler = async (data) => {
-        dispatch(fetchUserAsync({ ...data, picture }));
+        dispatch(fetchUserAsync({...data}, picture));
     };
 
     //On redirige si l'user est deja logué

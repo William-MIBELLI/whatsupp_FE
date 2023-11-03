@@ -39,13 +39,11 @@ const NewGroupSearch = () => {
     //Quand luser click sur entrée, on lance la recherche dans la db
     const onKeyDownHandler = async (e) => {
         if (inputValue.length <= 0 || e.key !== 'Enter') {
-            console.log('if dans recherche')
             return
         }
         setSearchResult([])
         const res = await searchUserOnDb(accessToken, inputValue)
         if (res) {
-            console.log(res)
             const temp = res.map(user => {
                 return {
                     label: user.name,

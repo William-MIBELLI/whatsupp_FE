@@ -1,26 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
-import { MuteIcon, NoVideoIcon } from "../../../svg";
 import ImageButton from "../../image-button/imageButton";
 import { Arrow, ArrowContainer, Container, IconContainer, Call } from "./callFooter.style";
-import { declineCall } from "../../../store/call/call.action";
 import { useContext } from "react";
-import { SocketContext } from "../../../App";
-import { selectCall } from "../../../store/call/call.selector";
-import { selectCurrentUser } from "../../../store/user/user.selector";
+import { CallContext } from "../../../routes/home/home";
+import { MuteIcon, NoVideoIcon } from "../../../svg";
 
 const CallFooter = () => {
 
-    const dispatch = useDispatch()
-    const {socket} = useContext(SocketContext)
-    const { caller, receiver } = useSelector(selectCall)
-    const { _id } = useSelector(selectCurrentUser)
-
-    //Terminer l'appel
-    const onCloseHandler = () => {
-        const user = caller._id === _id ? receiver : caller
-        socket.emit('end call', user)
-        dispatch(declineCall())
-    }
+    const { onDeclineCall } = useContext(CallContext)
 
     return (
         <Container>
@@ -29,7 +15,7 @@ const CallFooter = () => {
             </ArrowContainer>
             <IconContainer>
                 
-                <ImageButton>
+                <ImageButton> 
                     <MuteIcon/>
                 </ImageButton>
 
@@ -37,7 +23,7 @@ const CallFooter = () => {
                     <NoVideoIcon/>
                 </ImageButton>
 
-                <ImageButton clickHandler={onCloseHandler}>
+                <ImageButton clickHandler={onDeclineCall}>
                     <Call/>
                 </ImageButton>
 

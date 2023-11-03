@@ -38,7 +38,6 @@ const Sidebar = () => {
     }, [keyword])
     
     useEffect(() => {
-        console.log('createnewgroup : ', createNewGroup)
     },[createNewGroup])
 
     return (

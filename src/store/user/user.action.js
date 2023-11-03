@@ -7,21 +7,21 @@ const fetchUserStart = () => {
 }
 
 const fetchUserSuccess = (data) => {
-    const mappedPicUrl = parsePictureUrl(data.user.pictureUrl)
-    const newUser = { ...data.user, pictureUrl: mappedPicUrl }
-    return createAction(USER_ACTION_TYPE.FETCH_USER_SUCCESS, newUser)
+    // const mappedPicUrl = parsePictureUrl(data.user.pictureUrl)
+    // const newUser = { ...data.user, pictureUrl: mappedPicUrl }
+    return createAction(USER_ACTION_TYPE.FETCH_USER_SUCCESS, {...data.user})
 }
 
 const fetchUserFailed = (error) => {
     return createAction(USER_ACTION_TYPE.FETCH_USER_FAILED, error)
 }
 
-export const fetchUserAsync = (userData) => async (dispatch) => {
+export const fetchUserAsync = (userData, picture) => async (dispatch) => {
 
     dispatch(fetchUserStart())
 
     try {
-        const res = await registerUserOnServer(userData)
+        const res = await registerUserOnServer(userData, picture)
         if (res.status !== 200) {
             throw new Error(res?.message)
         }
@@ -37,9 +37,9 @@ const loginUserStart = () => {
 }
 
 const loginUserSuccess = (data) => {
-    const mappedPicUrl = parsePictureUrl(data.user.pictureUrl)
-    const newUser = { ...data.user, pictureUrl: mappedPicUrl }
-    return createAction(USER_ACTION_TYPE.LOGIN_USER_SUCCESS,  newUser )
+    // const mappedPicUrl = parsePictureUrl(data.user.pictureUrl)
+    // const newUser = { ...data.user, pictureUrl: mappedPicUrl }
+    return createAction(USER_ACTION_TYPE.LOGIN_USER_SUCCESS,  {...data.user} )
 }
 
 const loginUserFailed = (error) => {

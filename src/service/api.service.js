@@ -1,12 +1,15 @@
-import { Form } from "react-hook-form";
 import { toFormData } from "../utils/api.utils";
 
 const url = process.env.REACT_APP_API_ENDPOINT;
+const { REACT_APP_CLOUD_SECRET, REACT_APP_CLOUD_NAME } = process.env
 
-export const registerUserOnServer = async (userData) => {
+export const registerUserOnServer = async (userData, picture) => {
     const url = process.env.REACT_APP_API_ENDPOINT;
     const fd = toFormData(userData);
-
+    const pictureUrl = await uploadOnCloudinary(picture)
+    if (pictureUrl) {
+        fd.append('pictureUrl', pictureUrl)
+    }
     try {
         const res = await fetch(`${url}/auth/register`, {
             method: "POST",
@@ -22,6 +25,27 @@ export const registerUserOnServer = async (userData) => {
         return error;
     }
 };
+
+const uploadOnCloudinary = async (file) => {
+
+    
+    const fd = new FormData()
+    fd.append('upload_preset', REACT_APP_CLOUD_SECRET)
+    fd.append('file', file)
+    try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${REACT_APP_CLOUD_NAME}/auto/upload`, {
+            method: 'POST',
+            body: fd
+        })
+        if (res.status === 200) {
+            const { secure_url } = await res.json()
+            return secure_url
+        }
+        return false
+    } catch (error) {
+        return false
+    }
+}
 
 export const loginUserOnServer = async (userData) => {
     const url = process.env.REACT_APP_API_ENDPOINT;
@@ -79,7 +103,6 @@ export const searchUserOnDb = async (token, keyword) => {
         const data = await res.json();
         return data.users;
     } catch (error) {
-        console.log(error);
         return [];
     }
 };
@@ -121,7 +144,6 @@ export const fetchActiveConversationFromDb = async (token, receiver_id, convoId)
             throw new Error("failed to fetch active conversation");
         }
         const data = await res.json();
-        console.log("data : ", data);
         return data;
     } catch (error) {
         return error;
@@ -129,14 +151,12 @@ export const fetchActiveConversationFromDb = async (token, receiver_id, convoId)
 };
 
 export const sendMessageOnServer = async (token, values, files) => {
-    const fd = toFormData(values, files);
 
-    console.log('resultat du formatage')
-    for (const pair of fd.entries()) {
-        console.log(`${pair[0]}, ${pair[1]}`);
-    }
+    const fd = toFormData(values);
     
     try {
+        const filesUrl = await uploadFilesOnCloud(files)
+        fd.append('files',JSON.stringify(filesUrl))
         const res = await fetch(`${url}/message`, {
             method: "POST",
             body: fd,
@@ -150,10 +170,31 @@ export const sendMessageOnServer = async (token, values, files) => {
         const data = await res.json();
         return data;
     } catch (error) {
-        console.log(error);
         return error;
     }
 };
+
+const uploadFilesOnCloud = async (files) => {
+    const filesUrl = []
+    try {
+        for (let i = 0; i < files.length; i++){
+            const fd = new FormData()
+            fd.append('upload_preset', REACT_APP_CLOUD_SECRET)
+            fd.append('file', files[i].file)
+            const f = await fetch(`https://api.cloudinary.com/v1_1/${REACT_APP_CLOUD_NAME}/auto/upload`, {
+                method: 'POST',
+                body: fd
+            })
+            if (f.status === 200) {
+                const data = await f.json()
+                filesUrl.push(data)
+            }
+        }
+        return filesUrl
+    } catch (error) {
+        return false
+    }
+}
 
 export const createGroupOnDb = async (token, groupName, selectedUsers) => {
     //const fd = toFormData({ groupName, selectedUsers })
@@ -171,14 +212,13 @@ export const createGroupOnDb = async (token, groupName, selectedUsers) => {
             body: fd,
             method: 'POST'
         })
-        console.log('res avant json : ', res)
         if (res.status !== 200) {
             throw new Error('Failed to create group')
         }
         const r = await res.json()
         return r
     } catch (error) {
-        console.log('error dans creategroup : ', error)
+        return false
     }
 }
 
@@ -197,9 +237,8 @@ export const deleteGroupOnDb = async (token, groupId, adminId) => {
             }
         })
         const r = await res.json()
-        console.log('r dans service : ', r)
     } catch (error) {
-        console.log(error)
+        return false
     }
 }
 
@@ -208,7 +247,6 @@ export const leaveGroupOnDb = async (token, groupId) => {
     fd.append('groupId', groupId)
     
     try {
-        console.log('on requete le server')
         const res = await fetch(`${url}/group/leave`, {
             method: 'PUT',
             body: fd,
@@ -221,6 +259,6 @@ export const leaveGroupOnDb = async (token, groupId) => {
         }
         return true
     } catch (error) {
-        console.log(error)
+        return false
     }
 }

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { AttachmentIcon, CloseIcon, EmojiIcon, SendIcon } from "../../../svg";
+import { CloseIcon, EmojiIcon, SendIcon } from "../../../svg";
 import ImageButton from "../../image-button/imageButton";
 import {
     Component,
@@ -15,6 +15,7 @@ import EmojiPicker from "emoji-picker-react";
 import { useContext } from "react";
 import { SocketContext } from "../../../App";
 import FileInput from "../file-input/fileInput";
+import {  PulseLoader } from "react-spinners";
 
 const ChatFooter = () => {
 
@@ -26,7 +27,7 @@ const ChatFooter = () => {
     const state = useSelector(selectChat);
     const files = useSelector(selectFiles)
     const typeRef = useRef();
-    const { activeConversation } = state;
+    const { activeConversation, isLoading } = state;
     const dispatch = useDispatch();
     const { socket } = useContext(SocketContext);
 
@@ -34,8 +35,7 @@ const ChatFooter = () => {
     //Envoi du message
     const onSubmitHandler = async (event) => {
         event.preventDefault();
-        if (message.trim() === "" && files.length <= 0) {
-            console.log('on rentre dans le if')
+        if ((message.trim() === "" && files.length <= 0) || isLoading) {
             return;
         }
         const res = await dispatch(
@@ -44,7 +44,6 @@ const ChatFooter = () => {
                 conversationId: activeConversation._id
             }, files)
         );
-        console.log('res dans onsendhandler : ', res)
         if (res) {
             socket.emit('send-message', res)  
         }
@@ -124,9 +123,19 @@ const ChatFooter = () => {
                     onChange={onChangeHandler}
                     placeholder="Type your message..."
                 />
-                <ImageButton type="submit">
-                    <SendIcon />
-                </ImageButton>
+                {
+                    isLoading ? (
+                        <PulseLoader
+                            size={6}
+                            color='white'
+                        />
+                    ) : (
+                        <ImageButton type="submit">
+                            <SendIcon />
+                        </ImageButton>
+                            
+                    )
+                }
             </Container>
         </Component>
     );

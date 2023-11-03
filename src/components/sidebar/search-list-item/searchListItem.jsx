@@ -1,4 +1,3 @@
-import { parsePictureUrl } from "../../../utils/helper";
 import SecondaryText from "../../secondary-text/secondaryText";
 import PrimaryText from "../../primary-text/primaryText";
 import { Component, InfoContainer, PictureContainer, Separator, Container } from "./searchListItem.style";
@@ -10,13 +9,12 @@ import { selectChat } from "../../../store/chat/chat.selector";
 const SearchListItem = ({ user }) => {
 
     const { name, status } = user
-    const pictureUrl = parsePictureUrl(user.pictureUrl)
+    const pictureUrl = user.pictureUrl
     const dispatch = useDispatch()
     const { accessToken } = useSelector(selectCurrentUser)
     const { conversations } = useSelector(selectChat)
 
     const onClickHandler = () => {
-        console.log(user._id)
         dispatch(fetchActiveConversationAsync(accessToken, user._id, conversations))
     }
 

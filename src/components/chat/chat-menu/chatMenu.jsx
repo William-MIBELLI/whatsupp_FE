@@ -10,12 +10,10 @@ const ChatMenu = ({ setDisplayMenu }) => {
     const { activeConversation } = useSelector(selectChat)
     const currentUser = useSelector(selectCurrentUser)
     const { accessToken } = currentUser
-    const { isGroup, admin, users, _id: groupId } = activeConversation
+    const { isGroup, admin, _id: groupId } = activeConversation
     const dispatch = useDispatch()
 
-    console.log(currentUser)
     const onDeleteGroupHandler = async () => {
-        console.log('delete groupe')
         deleteGroupOnDb(accessToken, groupId, currentUser._id)
     }
 
@@ -28,13 +26,10 @@ const ChatMenu = ({ setDisplayMenu }) => {
     }
 
     const onLeaveGroupHandler = async () => {
-        console.log('leave groupe')
         const res = await leaveGroupOnDb(accessToken, groupId)
         if (!res) {
-            console.log('pas de dispatch')
             return
         }
-        console.log('suppression OK, on dispatch')
         dispatch(removeActiveConversation())
         dispatch(fetchConversationsAsync(accessToken))
     }

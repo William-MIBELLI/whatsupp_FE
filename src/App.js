@@ -12,7 +12,6 @@ const socket = new io(process.env.REACT_APP_API_ENDPOINT);
 export const SocketContext = createContext(null);
 
 function App() {
-    //console.log("render APP");
 
     return (
         <SocketContext.Provider value={{ socket }}>

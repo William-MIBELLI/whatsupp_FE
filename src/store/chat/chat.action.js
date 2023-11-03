@@ -119,18 +119,11 @@ const sendMessageStart = () => {
 };
 
 const sendMessageSuccess = (message, state) => {
-    //console.log("state dans sendmessagesucces : ", state)
     const newMessages = [...state.messages, message];
     const newConversations = getNewConversationsSorted(
         state.conversations,
         message
     );
-    // const newConversations = state.conversations.map((convo) => {
-    //     if (convo._id === message.conversation._id) {
-    //         return { ...convo, latestMessage: message };
-    //     }
-    //     return convo;
-    // });
     return createAction(CHAT_ACTION_TYPE.SEND_MESSAGE_SUCCESS, {
         messages: newMessages,
         conversations: newConversations,
@@ -144,7 +137,6 @@ const sendMessageFailed = (error) => {
 export const sendMessageAsync = (token, state, values, files) => async (dispatch) => {
     dispatch(sendMessageStart());
     try {
-        //console.log('files dans action : ', files)
         const res = await sendMessageOnServer(token, values, files);
         if (typeof res === Error) {
             throw new Error(res?.message);
@@ -158,12 +150,6 @@ export const sendMessageAsync = (token, state, values, files) => async (dispatch
 
 export const handleReceivedMessage = (message, state) => {
     const { activeConversation, conversations, messages } = state;
-    //console.log('message dans action : ', message)
-    // const existingMessage = messages.find(m => m._id === message._id)
-    // if (existingMessage) {
-    //     console.log('LE MESSAGE EXISTE DEJA ', conversations, messages)
-    //     return createAction(CHAT_ACTION_TYPE.HANDLE_MESSAGE_RECEIVED, conversations, messages)
-    // }
     const newConversations = getNewConversationsSorted(conversations, message);
     if (message.conversation._id === activeConversation?._id) {
         const newMessages = [...messages, message];
@@ -202,7 +188,6 @@ export const addTypingUser = (convoId, typingUsers) => {
     //Si l'user est déja en train de type, on ne l'ajoute pas
     const existingTypingUser = typingUsers.includes(convoId);
     if (existingTypingUser) {
-        //console.log('on najoute pas luser')
         return createAction(CHAT_ACTION_TYPE.ADD_TYPING_USER, typingUsers)
     }
     const newTypingUsers = [...typingUsers, convoId]
@@ -220,7 +205,6 @@ export const addFile = (filesToAdd, files) => {
 
 export const removeFile = (fileIndex, files) => {
     const newFiles = files.filter((f, ind) => ind !== fileIndex)
-    //console.log('newFiles : ', newFiles)
     return createAction(CHAT_ACTION_TYPE.REMOVE_FILE, newFiles)
 }
 
@@ -229,7 +213,6 @@ export const clearFiles = () => {
 }
 
 export const removeConversation = (convos, convoIdToRemove) => {
-    console.log(convos, convoIdToRemove)
     const newConvo = convos.filter(c => c._id !== convoIdToRemove)
     return createAction(CHAT_ACTION_TYPE.REMOVE_CONVERSATION, newConvo)
 }

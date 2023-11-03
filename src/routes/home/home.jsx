@@ -5,7 +5,7 @@ import Sidebar from "../../components/sidebar/sidebar";
 import { selectChat } from "../../store/chat/chat.selector";
 import HomeDefault from "../../components/home-default/homeDefault";
 import ChatContainer from "../../components/chat/chat-container/chatContainer";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, createContext, useRef } from "react";
 import { SocketContext } from "../../App";
 import {
     addTypingUser,
@@ -25,6 +25,8 @@ import { acceptCall, callReceived, declineCall, setPartnerStream } from "../../s
 import { getMedia } from "../../utils/call.utils";
 import SimplePeer from "simple-peer";
 
+export const CallContext = createContext(null)
+
 
 const Home = () => {
     const state = useSelector(selectChat);
@@ -34,6 +36,7 @@ const Home = () => {
     const dispatch = useDispatch();
     const [call, setCall] = useState({})
     const callData = useSelector(selectCall)
+    const streamRef = useRef()
 
     useEffect(() => {
         setCall(callData)
@@ -48,13 +51,10 @@ const Home = () => {
     useEffect(() => {
         socket.on("receive-message", (message) => {
             const { chat } = store.getState()
-            console.log('message dans socket : ', message)
             const existingConv = chat.conversations.find(c => c._id === message.conversation._id)
             if (existingConv) {
-                console.log('la convo existe, on ajoute le message')
                 dispatch(handleReceivedMessage(message, chat));         
             } else {
-                console.log('la convo nexiste pas, on fetch depuis le server')
                 dispatch(fetchConversationsAsync(currentUser.accessToken))
             }
         });
@@ -85,7 +85,7 @@ const Home = () => {
     
     //Call RECEIVED
     useEffect(() => {
-        socket.on('call incoming', (caller, signalData) => {
+        socket.on('callIncoming', (caller, signalData) => {
             dispatch(callReceived(caller, signalData))
         })
     }, [])
@@ -95,13 +95,10 @@ const Home = () => {
         socket.on('group deleted', (groupId) => {
             const { chat } = store.getState()
             const { activeConversation, conversations } = chat
-            console.log(groupId, activeConversation)
             if (groupId === activeConversation?._id) {
-                console.log('le group est en activeC, on fetch toutes les convs')
                 dispatch(removeActiveConversation())
                 dispatch(fetchConversationsAsync(currentUser.accessToken))
             } else {
-                console.log('le group nest pas actif, on le supprime simplement du state')
                 dispatch(removeConversation(conversations, groupId))
             }
         })
@@ -109,50 +106,60 @@ const Home = () => {
     
     //Refuser l'appel
     const onDeclineCall = () => {
-        socket.emit('end call', call.caller)
+        const u = call.caller._id === currentUser._id ? call.receiver : call.caller
+        socket.emit('endCall', u)
         dispatch(declineCall())
+        if (streamRef.current) {
+            streamRef.current.getTracks().forEach(t => t.stop())   
+        }
     }
 
     //Accepter l'appel
     const onAcceptCall = async () => {
         const stream = await getMedia()
+        streamRef.current = stream
         dispatch(acceptCall(stream))
         const peer = new SimplePeer({
             initiator: false,
             trickle: false,
-            stream: stream
+            stream: streamRef.current
         })
 
         peer.on('signal', signal => {
-            socket.emit('accept call', { caller: callData.caller, signal })
+            socket.emit('acceptCall', { callerId: callData.caller._id, signal })
             
         })
         
         peer.on('stream', stream => {
             dispatch(setPartnerStream(stream))
         })
+
+        peer.on('close', () => {
+            console.log('close stream dans home')
+        })
         peer.signal(call?.partnerSignal)
 
-        socket.on('call ended', () => {
-            console.log('peer destroy dans acceptcall')
+        socket.on('callEnded', () => {
             dispatch(declineCall())
-            //peer.destroy()
+            streamRef.current.getTracks().forEach(t => t.stop())
         })
     }
     
     return (
-        <StyledHome>
-            <Container>
-                <Sidebar />
-                {state.activeConversation ? <ChatContainer /> : <HomeDefault />}
-            </Container>
-            {
-                call.isRinging && <Ringing declineCall={onDeclineCall} acceptCall={onAcceptCall} />
-            }
-            {
-                call.isActive && <CallContainer/>
-            }
-        </StyledHome>
+        <CallContext.Provider value={{onDeclineCall}}>
+            <StyledHome>
+                <Container>
+                    <Sidebar />
+                    {state.activeConversation ? <ChatContainer /> : <HomeDefault />}
+                </Container>
+                {
+                    call.isRinging && <Ringing declineCall={onDeclineCall} acceptCall={onAcceptCall} />
+                }
+                {
+                    call.isActive && <CallContainer/>
+                }
+            </StyledHome>
+        </CallContext.Provider>
     );
 };
 

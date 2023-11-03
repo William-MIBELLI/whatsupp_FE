@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMessages } from "../../../service/api.service";
-import { getSender, handleDate, parsePictureUrl } from "../../../utils/helper";
+import { getSender, handleDate } from "../../../utils/helper";
 import PrimaryText from "../../primary-text/primaryText";
 import SecondaryText from "../../secondary-text/secondaryText";
 import {
@@ -13,8 +12,7 @@ import {
 } from "./conversation.style";
 import { selectCurrentUser } from "../../../store/user/user.selector";
 import {
-    fetchActiveConversationAsync,
-    fetchConversationsAsync,
+    fetchActiveConversationAsync
 } from "../../../store/chat/chat.action";
 import { getReceiverId } from "../../../utils/helper";
 import {
@@ -31,13 +29,12 @@ const Conversation = ({ convoId }) => {
     const convo = useSelector(selectConversationById(convoId));
     const { latestMessage, isGroup, name: groupName, pictureUrl: groupPicture } = convo;
     const sender = getSender(convo, userId);
-    const pictureUrl = isGroup ? parsePictureUrl(groupPicture) : parsePictureUrl(sender.pictureUrl);
+    const pictureUrl = isGroup ? groupPicture : sender.pictureUrl;
     const typingUsers = useSelector(selectTypingUser)
     const [typing, setTyping] = useState(false)
 
     //Fetch la conversation en activeConversation
     const onClickHandler = async () => {
-        console.log('on clique sur la convo pour lafficher : ', convo, convoId)
         const receiver_id = getReceiverId(convo.users, userId);
         dispatch(
             fetchActiveConversationAsync(

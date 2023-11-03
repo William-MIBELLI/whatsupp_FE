@@ -2,7 +2,6 @@ import { createAction } from "../../utils/helper"
 import { CALL_ACTION } from "./call.type"
 
 export const acceptCall = (stream) => {
-    console.log('acceptcall action : ', stream)
     return createAction(CALL_ACTION.ACCEPT_CALL,{stream})
 }
 
@@ -11,7 +10,6 @@ export const declineCall = () => {
 }
 
 export const callReceived = (caller, signal) => {
-    //console.log('caller dans callreceived: ', caller)
     return createAction(CALL_ACTION.CALL_RECEIVED, {caller, signal})
 }
 
