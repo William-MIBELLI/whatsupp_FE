@@ -9,8 +9,6 @@ const CallBody = ({ showFooter }) => {
     const partnerVideo = useRef()
     const { partnerStream, myStream } = useSelector(selectCall)
 
-
-   
     useEffect(() => {
         if (partnerStream) {
             partnerVideo.current.srcObject = partnerStream
@@ -23,7 +21,7 @@ const CallBody = ({ showFooter }) => {
 
     return (
         <Container>
-            <PartnerVideoContainer playsInline ref={partnerVideo} autoPlay muted/>
+            <PartnerVideoContainer playsInline ref={partnerVideo} autoPlay />
             <MyVideoContainer playsInline showFooter={showFooter} ref={myVideo} autoPlay muted/>
         </Container>
     )

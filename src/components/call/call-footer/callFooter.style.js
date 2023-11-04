@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ArrowIcon, CallIcon } from "../../../svg";
+import ImageButton from "../../image-button/imageButton";
 
 export const Container = styled.div`
     background-color: ${props => props.theme.color.dark_bg_3};
@@ -11,10 +12,14 @@ export const Container = styled.div`
     padding: 0 15px;
     box-sizing: border-box;
     z-index: 40;
+    display: flex:
+    align-items: center;
+    justify-content: center;
 
     svg{
         fill: white;
     }
+
 `
 
 export const Arrow = styled(ArrowIcon)`
@@ -29,9 +34,10 @@ export const IconContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
 `
 
 export const Call = styled(CallIcon)`
     fill: ${props => props.theme.color.red_1};
+    cursor: pointer;
 `

@@ -9,6 +9,11 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./utils/theme";
+import * as p from 'process'
+
+window.global = window
+window.process = p
+window.Buffer = []
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

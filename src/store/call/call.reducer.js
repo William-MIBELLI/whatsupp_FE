@@ -9,7 +9,8 @@ const initialCallData = {
     myStream: undefined,
     partnerStream: undefined,
     mySignal: undefined,
-    partnerSignal: undefined
+    partnerSignal: undefined,
+    isAccepted: false
 }
 
 export const callReducer = (state = initialCallData, action) => {
@@ -20,6 +21,7 @@ export const callReducer = (state = initialCallData, action) => {
                 ...state,
                 isRinging: false,
                 isActive: true,
+                isAccepted: true,
                 myStream: payload.stream
             }
         case CALL_ACTION.DECLINE_CALL:
@@ -27,6 +29,7 @@ export const callReducer = (state = initialCallData, action) => {
                 ...state,
                 isRinging: false,
                 isActive: false,
+                isAccepted: false,
                 caller: undefined,
                 receiver: undefined,
                 myStream: undefined,
@@ -59,6 +62,11 @@ export const callReducer = (state = initialCallData, action) => {
             return {
                 ...state,
                 partnerStream: payload.stream
+            }
+        case CALL_ACTION.SET_ACCEPTED_CALL:
+            return {
+                ...state,
+                isAccepted: true
             }
         default:
             return state

@@ -27,4 +27,8 @@ export const Title = styled.div`
     flex-direction: row;
     align-items: center;
     margin: auto;
+
+    &>*{
+        margin: 0 5px;
+    }
 `

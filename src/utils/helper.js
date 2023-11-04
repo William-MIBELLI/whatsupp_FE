@@ -65,3 +65,10 @@ export const getSender = (convo, userId) => {
     }
     return users[0];
 };
+
+//Return le timer du call dans le format 00:00
+export const formatCallDuration = (timer) => {
+    const minutes = (parseInt(timer) / 60).toString().split('.')[0].padStart(2, '0')
+    const seconds = (parseInt(timer) % 60).toString().padStart(2, '0')
+    return `${minutes}:${seconds}`
+}

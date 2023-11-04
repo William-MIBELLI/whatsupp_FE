@@ -13,6 +13,7 @@ import { declineCall, sendCall, setPartnerStream } from "../../../store/call/cal
 import SimplePeer from "simple-peer";
 import { getMedia } from "../../../utils/call.utils";
 import ChatMenu from "../chat-menu/chatMenu";
+import { CallContext } from "../../../routes/home/home";
 
 const ChatHeader = () => {
 
@@ -24,38 +25,9 @@ const ChatHeader = () => {
     const { socket } = useContext(SocketContext)
     const [displayMenu, setDisplayMenu] = useState(false)
     const dispatch = useDispatch()
+    const { onVideoCall } = useContext(CallContext)
 
-    //GERE LAPPEL VIDEO
-    const onVideoCall = async () => {
 
-        const stream = await getMedia() //On recuperr le stream de l'user
-
-        const peer = new SimplePeer({   //On crée un nouveau Peer
-            initiator: true,
-            trickle: false,
-            stream: stream
-        })
-        
-        //On envoie les infos user et le signal au server 
-        peer.on('signal', data => { 
-            socket.emit('callUser', { receiverId: user._id, caller: currentUser, signalData: data })
-            dispatch(sendCall(currentUser, user, data, stream))
-        })
-        
-        peer.on('stream', stream => {
-            dispatch(setPartnerStream(stream))
-        })
-
-        socket.on('callAccepted', signal => {
-            peer.signal(signal)
-        })
-        //connectionRef.current = peer
-
-        socket.on('callEnded', () => {
-            dispatch(declineCall())
-            stream.getTracks().forEach(t => t.stop())
-        })
-    }
 
     //Gère l'affichage du menu
     const onMenuClick = () => {
@@ -84,7 +56,7 @@ const ChatHeader = () => {
             <Side>
                 {
                     !isGroup && (
-                        <ImageButton clickHandler={onVideoCall}>
+                        <ImageButton clickHandler={() => onVideoCall(user)}>
                             <VideoIcon/>
                         </ImageButton>
                     )

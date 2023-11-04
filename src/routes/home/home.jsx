@@ -22,7 +22,7 @@ import { useStore } from 'react-redux'
 import Ringing from "../../components/call/ringing/ringing";
 import CallContainer from "../../components/call/call-container/callContainer";
 import { selectCall } from "../../store/call/call.selector";
-import { acceptCall, callReceived, declineCall, setPartnerStream } from "../../store/call/call.action";
+import { acceptCall, callReceived, declineCall, setPartnerStream, sendCall, setAcceptedCall } from "../../store/call/call.action";
 import { getMedia } from "../../utils/call.utils";
 import SimplePeer from "simple-peer";
 
@@ -38,7 +38,9 @@ const Home = () => {
     const dispatch = useDispatch();
     const [call, setCall] = useState({})
     const callData = useSelector(selectCall)
+
     const streamRef = useRef()
+    const connectionRef = useRef()
 
     useEffect(() => {
         setCall(callData)
@@ -91,6 +93,13 @@ const Home = () => {
             dispatch(callReceived(caller, signalData))
         })
     }, [])
+
+    //call ENDED
+    socket.on('callEnded', () => {
+        console.log('call ended')
+        dispatch(declineCall())
+        streamRef?.current?.getTracks()?.forEach(t => t.stop())
+    })
     
     //GROUP DELETED
     useEffect(() => {
@@ -138,6 +147,7 @@ const Home = () => {
         if (streamRef.current) {
             streamRef.current.getTracks().forEach(t => t.stop())   
         }
+        connectionRef?.current?.destroy()
     }
 
     //Accepter l'appel
@@ -161,18 +171,52 @@ const Home = () => {
         })
 
         peer.on('close', () => {
-            console.log('close stream dans home')
+            socket.off('callAccepted')
         })
-        peer.signal(call?.partnerSignal)
 
-        socket.on('callEnded', () => {
-            dispatch(declineCall())
-            streamRef.current.getTracks().forEach(t => t.stop())
+        peer.signal(call?.partnerSignal)
+        connectionRef.current = peer;
+   
+    }
+
+    //LANCER UN APPEL
+    const onVideoCall = async (user) => {
+
+        console.log('videocall dans home :', user)
+        const stream = await getMedia() //On recuperr le stream de l'user
+        streamRef.current = stream
+        const peer = new SimplePeer({   //On crée un nouveau Peer
+            initiator: true,
+            trickle: false,
+            stream: streamRef.current
         })
+        
+        //On envoie les infos user et le signal au server 
+        peer.on('signal', data => { 
+            socket.emit('callUser', { receiverId: user._id, caller: currentUser, signalData: data })
+            dispatch(sendCall(currentUser, user, data, stream))
+        })
+        
+        peer.on('stream', stream => {
+            dispatch(setPartnerStream(stream))
+        })
+
+        peer.on('close', () => {
+            console.log('close peer dans onvideocall')
+            socket.off('callAccepted')
+        })
+
+        socket.on('callAccepted', signal => {
+            dispatch(setAcceptedCall())
+            peer.signal(signal)
+        })
+
+        connectionRef.current = peer
+
     }
     
     return (
-        <CallContext.Provider value={{onDeclineCall}}>
+        <CallContext.Provider value={{onDeclineCall, onVideoCall}}>
             <StyledHome>
                 <Container>
                     <Sidebar />

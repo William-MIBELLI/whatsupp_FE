@@ -8,8 +8,9 @@ const HomeDefault = () => {
             <Container>
                 <Logo />
                 <h1>Whats App</h1>
-                <SecondaryText>Send and receive messages without keeping your phone online.</SecondaryText>
-                <SecondaryText>Use Whats App on up to 4 linked devices and 1 phone at the same time.</SecondaryText>
+                <SecondaryText>Send and receive messages, share your status and more !</SecondaryText>
+                <SecondaryText>Look for people on search-bar, start chatting as duo or group.</SecondaryText>
+                <SecondaryText>You can even make video call, try it out!</SecondaryText>
             </Container>
         </Component>
     )

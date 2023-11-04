@@ -25,7 +25,7 @@ const Ringing = ({ declineCall, acceptCall }) => {
             <ImageButton bg={red_1} clickHandler={declineCall}>
                 <CloseIcon/>
             </ImageButton>
-            <audio src="../../../../audio/ringtone.mp3" loop></audio>
+            <audio src="../../../../audio/ringtone.mp3" loop autoPlay></audio>
         </Container>
     )
 }

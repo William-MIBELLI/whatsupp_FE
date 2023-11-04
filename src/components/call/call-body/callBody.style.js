@@ -13,6 +13,7 @@ export const PartnerVideoContainer = styled.video`
     height: 100%;
 `
 
+
 export const MyVideoContainer = styled.video`
     position: absolute;
     background-color: black;

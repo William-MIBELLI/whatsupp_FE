@@ -1,5 +1,5 @@
 import ImageButton from "../../image-button/imageButton";
-import { Arrow, ArrowContainer, Container, IconContainer, Call } from "./callFooter.style";
+import { Arrow, ArrowContainer, Container, Call, IconContainer } from "./callFooter.style";
 import { useContext } from "react";
 import { CallContext } from "../../../routes/home/home";
 import { MuteIcon, NoVideoIcon } from "../../../svg";
@@ -11,7 +11,7 @@ const CallFooter = () => {
     return (
         <Container>
             <ArrowContainer>
-                <Arrow/>
+                <Arrow />
             </ArrowContainer>
             <IconContainer>
                 
@@ -23,9 +23,10 @@ const CallFooter = () => {
                     <NoVideoIcon/>
                 </ImageButton>
 
-                <ImageButton clickHandler={onDeclineCall}>
+                <ImageButton  clickHandler={onDeclineCall}>
                     <Call/>
                 </ImageButton>
+               
 
             </IconContainer>
         </Container>
