@@ -18,33 +18,44 @@ import {
     removeUser,
 } from "../../store/chat/chat.action";
 
-import { useStore } from 'react-redux'
+import { useStore } from "react-redux";
 import Ringing from "../../components/call/ringing/ringing";
 import CallContainer from "../../components/call/call-container/callContainer";
 import { selectCall } from "../../store/call/call.selector";
-import { acceptCall, callReceived, declineCall, setPartnerStream, sendCall, setAcceptedCall } from "../../store/call/call.action";
+import {
+    acceptCall,
+    callReceived,
+    declineCall,
+    setPartnerStream,
+    sendCall,
+    setAcceptedCall,
+} from "../../store/call/call.action";
 import { getMedia } from "../../utils/call.utils";
 import SimplePeer from "simple-peer";
 
-export const CallContext = createContext(null)
-
+export const CallContext = createContext(null);
 
 const Home = () => {
-    const state = useSelector(selectChat);
-    const { activeConversation, conversations } = state
-    const store = useStore()
-    const { currentUser } = useSelector(selectUser);
-    const { socket } = useContext(SocketContext);
-    const dispatch = useDispatch();
-    const [call, setCall] = useState({})
-    const callData = useSelector(selectCall)
 
-    const streamRef = useRef()
-    const connectionRef = useRef()
+    const store = useStore();
+    const dispatch = useDispatch();
+
+    const state = useSelector(selectChat);
+    const callData = useSelector(selectCall);
+    const { currentUser } = useSelector(selectUser);
+
+    const { socket } = useContext(SocketContext);
+
+    const [call, setCall] = useState({});
+    const [soundStatus, setSoundStatus] = useState(true)
+    const [videoStatus, setVideoStatus] = useState(true)
+
+    const streamRef = useRef();
+    const connectionRef = useRef();
 
     useEffect(() => {
-        setCall(callData)
-    },[callData])
+        setCall(callData);
+    }, [callData]);
 
     //Emit user-connection socket
     useEffect(() => {
@@ -54,12 +65,14 @@ const Home = () => {
     //Listen receive-message socket
     useEffect(() => {
         socket.on("receive-message", (message) => {
-            const { chat } = store.getState()
-            const existingConv = chat.conversations.find(c => c._id === message.conversation._id)
+            const { chat } = store.getState();
+            const existingConv = chat.conversations.find(
+                (c) => c._id === message.conversation._id
+            );
             if (existingConv) {
-                dispatch(handleReceivedMessage(message, chat));         
+                dispatch(handleReceivedMessage(message, chat));
             } else {
-                dispatch(fetchConversationsAsync(currentUser.accessToken))
+                dispatch(fetchConversationsAsync(currentUser.accessToken));
             }
         });
     }, []);
@@ -73,161 +86,201 @@ const Home = () => {
 
     //Listen TYPING
     useEffect(() => {
-        socket.on('typing', convoId => {
-            const { chat } = store.getState()
-            dispatch(addTypingUser(convoId, chat.typingUsers))
-        })
-    }, [])
-    
+        socket.on("typing", (convoId) => {
+            const { chat } = store.getState();
+            dispatch(addTypingUser(convoId, chat.typingUsers));
+        });
+    }, []);
+
     //Listen STOP TYPING
     useEffect(() => {
-        socket.on('stop typing', convoId => {
+        socket.on("stop typing", (convoId) => {
             const { chat } = store.getState();
-            dispatch(removeTypingUser(convoId, chat.typingUsers))
-        })
-    }, [])
-    
+            dispatch(removeTypingUser(convoId, chat.typingUsers));
+        });
+    }, []);
+
     //Call RECEIVED
     useEffect(() => {
-        socket.on('callIncoming', (caller, signalData) => {
-            dispatch(callReceived(caller, signalData))
-        })
-    }, [])
+        socket.on("callIncoming", (caller, signalData) => {
+            dispatch(callReceived(caller, signalData));
+        });
+    }, []);
 
     //call ENDED
-    socket.on('callEnded', () => {
-        console.log('call ended')
-        dispatch(declineCall())
-        streamRef?.current?.getTracks()?.forEach(t => t.stop())
-    })
-    
+    socket.on("callEnded", () => {
+        console.log("call ended");
+        dispatch(declineCall());
+        streamRef?.current?.getTracks()?.forEach((t) => t.stop());
+        setSoundStatus(true)
+        setVideoStatus(true)
+    });
+
     //GROUP DELETED
     useEffect(() => {
-        socket.on('group deleted', (groupId) => {
-            const { chat } = store.getState()
-            const { activeConversation, conversations } = chat
+        socket.on("group deleted", (groupId) => {
+            const { chat } = store.getState();
+            const { activeConversation, conversations } = chat;
             if (groupId === activeConversation?._id) {
-                dispatch(removeActiveConversation())
-                dispatch(fetchConversationsAsync(currentUser.accessToken))
+                dispatch(removeActiveConversation());
+                dispatch(fetchConversationsAsync(currentUser.accessToken));
             } else {
-                dispatch(removeConversation(conversations, groupId))
+                dispatch(removeConversation(conversations, groupId));
             }
-        })
-    }, [])
-    
+        });
+    }, []);
+
     //Kicked from a group
     useEffect(() => {
-        socket.on('get kicked from group', groupId => {
-            const { chat } = store.getState()
-            const { activeConversation, conversations } = chat
+        socket.on("get kicked from group", (groupId) => {
+            const { chat } = store.getState();
+            const { activeConversation, conversations } = chat;
             if (groupId === activeConversation._id) {
-                dispatch(removeActiveConversation())
+                dispatch(removeActiveConversation());
             }
-            dispatch(removeConversation(conversations, groupId))
-        })
-    }, [])
-    
+            dispatch(removeConversation(conversations, groupId));
+        });
+    }, []);
+
     //User kicked d'un group, on le supprime si c'est dans activeConvo
     useEffect(() => {
-        socket.on('user got kicked', data => {
-            const { groupId, userId } = data
-            const { chat } = store.getState()
-            const { activeConversation } = chat
+        socket.on("user got kicked", (data) => {
+            const { groupId, userId } = data;
+            const { chat } = store.getState();
+            const { activeConversation } = chat;
             if (groupId === activeConversation._id) {
-                dispatch(removeUser(userId, activeConversation))
+                dispatch(removeUser(userId, activeConversation));
             }
-        })
-    },[])
-    
+        });
+    }, []);
+
     //Refuser l'appel
     const onDeclineCall = () => {
-        const u = call.caller._id === currentUser._id ? call.receiver : call.caller
-        socket.emit('endCall', u)
-        dispatch(declineCall())
+        const u =
+            call.caller._id === currentUser._id ? call.receiver : call.caller;
+        socket.emit("endCall", u);
+        dispatch(declineCall());
         if (streamRef.current) {
-            streamRef.current.getTracks().forEach(t => t.stop())   
+            streamRef.current.getTracks().forEach((t) => t.stop());
         }
-        connectionRef?.current?.destroy()
-    }
+        connectionRef?.current?.destroy();
+        setSoundStatus(true)
+        setVideoStatus(true)
+    };
 
     //Accepter l'appel
     const onAcceptCall = async () => {
-        const stream = await getMedia()
-        streamRef.current = stream
-        dispatch(acceptCall(stream))
+        const stream = await getMedia();
+        streamRef.current = stream;
+        dispatch(acceptCall(stream));
         const peer = new SimplePeer({
             initiator: false,
             trickle: false,
-            stream: streamRef.current
-        })
+            stream: streamRef.current,
+        });
 
-        peer.on('signal', signal => {
-            socket.emit('acceptCall', { callerId: callData.caller._id, signal })
-            
-        })
-        
-        peer.on('stream', stream => {
-            dispatch(setPartnerStream(stream))
-        })
+        peer.on("signal", (signal) => {
+            socket.emit("acceptCall", {
+                callerId: callData.caller._id,
+                signal,
+            });
+        });
 
-        peer.on('close', () => {
-            socket.off('callAccepted')
-        })
+        peer.on("stream", (stream) => {
+            dispatch(setPartnerStream(stream));
+        });
 
-        peer.signal(call?.partnerSignal)
+        peer.on("close", () => {
+            socket.off("callAccepted");
+        });
+
+        peer.signal(call?.partnerSignal);
         connectionRef.current = peer;
-   
-    }
+    };
 
     //LANCER UN APPEL
     const onVideoCall = async (user) => {
 
-        console.log('videocall dans home :', user)
-        const stream = await getMedia() //On recuperr le stream de l'user
-        streamRef.current = stream
-        const peer = new SimplePeer({   //On crée un nouveau Peer
+        if (call.isActive) {    // On vérifie si un appel est deja en cours
+            return
+        }
+
+        const stream = await getMedia(); //On recuperr le stream de l'user et on le stocke dans streamRef
+        streamRef.current = stream;
+
+        const peer = new SimplePeer({
+            //On crée un nouveau Peer
             initiator: true,
             trickle: false,
-            stream: streamRef.current
-        })
-        
-        //On envoie les infos user et le signal au server 
-        peer.on('signal', data => { 
-            socket.emit('callUser', { receiverId: user._id, caller: currentUser, signalData: data })
-            dispatch(sendCall(currentUser, user, data, stream))
-        })
-        
-        peer.on('stream', stream => {
-            dispatch(setPartnerStream(stream))
-        })
+            stream: streamRef.current,
+        });
 
-        peer.on('close', () => {
-            console.log('close peer dans onvideocall')
-            socket.off('callAccepted')
-        })
+        //On envoie les infos user et le signal au server
+        peer.on("signal", (data) => {
+            socket.emit("callUser", {
+                receiverId: user._id,
+                caller: currentUser,
+                signalData: data,
+            });
+            dispatch(sendCall(currentUser, user, data, stream));
+        });
 
-        socket.on('callAccepted', signal => {
-            dispatch(setAcceptedCall())
-            peer.signal(signal)
-        })
+        peer.on("stream", (stream) => {
+            dispatch(setPartnerStream(stream));
+        });
 
-        connectionRef.current = peer
+        peer.on("close", () => {
+            console.log("close peer dans onvideocall");
+            socket.off("callAccepted");
+        });
 
-    }
-    
+        socket.on("callAccepted", (signal) => {
+            dispatch(setAcceptedCall());
+            peer.signal(signal);
+        });
+
+        connectionRef.current = peer;
+    };
+
+    //Activer ou couper le son pendant l'appel
+    const onHandleCallSound = () => {
+        console.log("gestion du son");
+        streamRef.current.getTracks()[0].enabled = !soundStatus
+        setSoundStatus(!soundStatus)
+    };
+
+    //Activer ou couper la video pendant l'appel
+    const onHandleCallVideo = () => {
+        console.log("gestion de la video", streamRef.current);
+        streamRef.current.getTracks()[1].enabled = !videoStatus
+        setVideoStatus(!videoStatus)
+    };
+
     return (
-        <CallContext.Provider value={{onDeclineCall, onVideoCall}}>
+        <CallContext.Provider
+            value={{
+                onDeclineCall,
+                onVideoCall,
+                onHandleCallSound,
+                onHandleCallVideo,
+            }}
+        >
             <StyledHome>
                 <Container>
                     <Sidebar />
-                    {state.activeConversation ? <ChatContainer /> : <HomeDefault />}
+                    {state.activeConversation ? (
+                        <ChatContainer />
+                    ) : (
+                        <HomeDefault />
+                    )}
                 </Container>
-                {
-                    call.isRinging && <Ringing declineCall={onDeclineCall} acceptCall={onAcceptCall} />
-                }
-                {
-                    call.isActive && <CallContainer/>
-                }
+                {call.isRinging && (
+                    <Ringing
+                        declineCall={onDeclineCall}
+                        acceptCall={onAcceptCall}
+                    />
+                )}
+                {call.isActive && <CallContainer />}
             </StyledHome>
         </CallContext.Provider>
     );

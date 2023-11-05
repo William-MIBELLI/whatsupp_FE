@@ -6,20 +6,20 @@ import { MuteIcon, NoVideoIcon } from "../../../svg";
 
 const CallFooter = () => {
 
-    const { onDeclineCall } = useContext(CallContext)
+    const { onDeclineCall, onHandleCallSound, onHandleCallVideo } = useContext(CallContext)
 
     return (
         <Container>
-            <ArrowContainer>
+            {/* <ArrowContainer>
                 <Arrow />
-            </ArrowContainer>
+            </ArrowContainer> */}
             <IconContainer>
                 
-                <ImageButton> 
+                <ImageButton clickHandler={onHandleCallSound}> 
                     <MuteIcon/>
                 </ImageButton>
 
-                <ImageButton>
+                <ImageButton clickHandler={onHandleCallVideo}>
                     <NoVideoIcon/>
                 </ImageButton>
 

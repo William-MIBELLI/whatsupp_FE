@@ -29,5 +29,5 @@ export const MyVideoContainer = styled.video`
 `
 
 export const TranslateVideo = css`
-    bottom: 120px;
+    bottom: 100px;
 `

@@ -26,7 +26,7 @@ const CallHeader = () => {
 
     //Cut l'appel si pas de réponse
     useEffect(() => {
-        if (timer >= 20 && !isAccepted) {
+        if (timer >= 200 && !isAccepted) {
             onDeclineCall()
         }
     }, [timer])
