@@ -16,20 +16,32 @@ import { useContext } from "react";
 import { SocketContext } from "../../../App";
 import FileInput from "../file-input/fileInput";
 import {  PulseLoader } from "react-spinners";
+import { getSender } from "../../../utils/helper";
 
 const ChatFooter = () => {
 
     const [message, setMessage] = useState("");
     const [showEmoji, setShowEmoji] = useState(false);
     const [cursorPosition, setCursorPosition] = useState("");
-    const { accessToken } = useSelector(selectCurrentUser);
+    const { accessToken, _id: currentUserID } = useSelector(selectCurrentUser);
     const [typing, setTyping] = useState(false)
     const state = useSelector(selectChat);
     const files = useSelector(selectFiles)
     const typeRef = useRef();
     const { activeConversation, isLoading } = state;
+    const { users } = activeConversation
+    const [userIdToNOtif, setUSerIdToNotif] = useState()
     const dispatch = useDispatch();
     const { socket } = useContext(SocketContext);
+    const lastTimeTyping = useRef()
+    
+    //On récupère l'id de luser a notifer pour le typing
+    useEffect(() => {
+        if (users && currentUserID) {
+            const id = users[0]?._id === currentUserID ? users[1]?._id : users[0]?._id
+            setUSerIdToNotif(id)
+        }
+    }, [state])
 
 
     //Envoi du message
@@ -58,11 +70,11 @@ const ChatFooter = () => {
         const { value } = event.target;
         setMessage(value);
         setTyping(true)
-        const lastTimeTyping = Date.now()
+        lastTimeTyping.current = Date.now()
         const timer = 3000;
         setTimeout(() => {
             const now = Date.now()
-            const diff = now - lastTimeTyping
+            const diff = now - lastTimeTyping.current
             if (diff >= timer) {
                 setTyping(false)
             }
@@ -93,9 +105,9 @@ const ChatFooter = () => {
     //emit du status typing
     useEffect(() => {
         if (typing) {
-            socket.emit('typing', activeConversation._id)
+            socket.emit('typing', {conversationId: activeConversation._id, userId: userIdToNOtif})
         } else {
-            socket.emit('stop typing', activeConversation._id)
+            socket.emit('stop typing', {conversationId: activeConversation._id, userId: userIdToNOtif})
         }
     },[typing])
 

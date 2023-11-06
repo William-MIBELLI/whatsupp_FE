@@ -4,13 +4,19 @@ import Button from '../../button/button'
 export const StyledPicture = styled.div`
     background-color: ${props => props.theme.color.dark_bg_6};
     border-radius: 0.5rem;
-    color: ${props => props.theme.color.dark_text_5};
+    color: ${props => props.theme.color.green_2};
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     cursor: pointer;
     padding: 0.5rem 1rem;
+    margin: 0.5rem auto;
+
+    &:hover{
+        background-color: ${props => props.theme.color.dark_bg_5};
+        color: ${props => props.theme.color.green_1};
+    }
 `
 
 export const PreviewImg = styled.img`
@@ -25,6 +31,7 @@ export const PreviewContainer = styled.div`
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    margin: auto;
 `
 export const RemoveButton = styled(Button)`
     padding: 0.4rem 0.7rem;

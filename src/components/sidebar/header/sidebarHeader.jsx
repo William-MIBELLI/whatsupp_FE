@@ -15,12 +15,12 @@ const SidebarHeader = () => {
     };
 
     return (
-        <Component>
-            <Container>
+        <Component onMouseLeave={onBlurHandler}>
+            <Container >
                 <HomeButton>
                     <img src={pictureUrl} alt="profilepic" />
                 </HomeButton>
-                <List>
+                <List >
                     <li>
                         <HomeButton>
                             <CommunityIcon />

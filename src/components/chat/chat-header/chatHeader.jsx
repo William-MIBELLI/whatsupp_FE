@@ -61,9 +61,9 @@ const ChatHeader = () => {
                         </ImageButton>
                     )
                 }
-                <ImageButton>
+                {/* <ImageButton>
                     <SearchLargeIcon/>
-                </ImageButton>
+                </ImageButton> */}
                 <ImageButton clickHandler={onMenuClick}>
                     <DotsIcon/>
                 </ImageButton>

@@ -15,7 +15,7 @@ import NewGroupSearch from "./new-group-search/newGroupSearch";
 
 export const CreateNewGroupContext = createContext()
 
-const Sidebar = () => {
+const Sidebar = ({ setDisplaySettings }) => {
     const { accessToken } = useSelector(selectCurrentUser);
     const [keyword, setKeyword] = useState('');
     const [searchResult, setSearchResult] = useState([])
@@ -41,7 +41,7 @@ const Sidebar = () => {
     },[createNewGroup])
 
     return (
-        <CreateNewGroupContext.Provider value={{setCreateNewGroup, createNewGroup}}>
+        <CreateNewGroupContext.Provider value={{setCreateNewGroup, createNewGroup, setDisplaySettings}}>
             <StyledSidebar>
                 <SidebarHeader />
                 <Notification />

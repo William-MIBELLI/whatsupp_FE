@@ -5,11 +5,12 @@ import { logoutOutUser } from "../../../store/user/user.action";
 import { clearChat } from "../../../store/chat/chat.action";
 import { useContext } from "react";
 import { CreateNewGroupContext } from "../sidebar";
+import { Link } from "react-router-dom";
 
 const Menu = ({ blurHandler }) => {
 
     const dispatch = useDispatch()
-    const  { setCreateNewGroup}  = useContext(CreateNewGroupContext)
+    const  { setCreateNewGroup, setDisplaySettings }  = useContext(CreateNewGroupContext)
 
 
     const onLogouthandler = () => {
@@ -32,8 +33,8 @@ const Menu = ({ blurHandler }) => {
             <MenuItem>
                 <SecondaryText>Starred messaged</SecondaryText>
             </MenuItem> */}
-            <MenuItem>
-                <SecondaryText>Settings</SecondaryText>
+            <MenuItem onClick={() => setDisplaySettings(true)}>
+                <SecondaryText>⚠️ Settings ⚠️</SecondaryText>
             </MenuItem>
             <MenuItem onClick={onLogouthandler}>
                 <SecondaryText>Logout</SecondaryText>

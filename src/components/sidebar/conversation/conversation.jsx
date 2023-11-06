@@ -20,22 +20,34 @@ import {
     selectConversationById,
     selectTypingUser,
 } from "../../../store/chat/chat.selector";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { CreateNewGroupContext } from "../sidebar";
+import { SocketContext } from "../../../App";
 
 const Conversation = ({ convoId }) => {
     const dispatch = useDispatch();
     const { accessToken, _id: userId } = useSelector(selectCurrentUser);
-    const { conversations, onlineUsers } = useSelector(selectChat);
+    const { conversations, onlineUsers, activeConversation } = useSelector(selectChat);
     const convo = useSelector(selectConversationById(convoId));
     const { latestMessage, isGroup, name: groupName, pictureUrl: groupPicture } = convo;
     const sender = getSender(convo, userId);
     const pictureUrl = isGroup ? groupPicture : sender.pictureUrl;
     const typingUsers = useSelector(selectTypingUser)
     const [typing, setTyping] = useState(false)
+    const { setDisplaySettings } = useContext(CreateNewGroupContext)
+    const { socket } = useContext(SocketContext)
 
     //Fetch la conversation en activeConversation
     const onClickHandler = async () => {
+        setDisplaySettings(false)
         const receiver_id = getReceiverId(convo.users, userId);
+        //On emit stopTyping pour eviter certains cas où le typing saffiche sur la mauvaise convo
+        if (activeConversation) {
+            const { users } = activeConversation
+            users.forEach(user => {
+                socket.emit('stop typing', {conversationId: activeConversation._id, userId: user._id})   
+            })
+        }
         dispatch(
             fetchActiveConversationAsync(
                 accessToken,

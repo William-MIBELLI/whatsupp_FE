@@ -6,8 +6,8 @@ const ConfirmIcon = ({ className }) => {
 
     return (
         <svg
-            width="20px"
-            height="20px"
+            width="40px"
+            height="40px"
             viewBox="0 0 1024 1024"
             class="icon"
             version="1.1"

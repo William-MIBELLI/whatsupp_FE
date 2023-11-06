@@ -32,6 +32,7 @@ import {
 } from "../../store/call/call.action";
 import { getMedia } from "../../utils/call.utils";
 import SimplePeer from "simple-peer";
+import Settings from "../settings/settings";
 
 export const CallContext = createContext(null);
 
@@ -49,9 +50,14 @@ const Home = () => {
     const [call, setCall] = useState({});
     const [soundStatus, setSoundStatus] = useState(true)
     const [videoStatus, setVideoStatus] = useState(true)
+    const [displaySettings, setDisplaySettings] = useState(false)
 
     const streamRef = useRef();
     const connectionRef = useRef();
+
+    useEffect(() => {
+        console.log('displaysettings : ', displaySettings)
+    },[displaySettings])
 
     useEffect(() => {
         setCall(callData);
@@ -65,6 +71,7 @@ const Home = () => {
     //Listen receive-message socket
     useEffect(() => {
         socket.on("receive-message", (message) => {
+            console.log('on recoit un mesage')
             const { chat } = store.getState();
             const existingConv = chat.conversations.find(
                 (c) => c._id === message.conversation._id
@@ -87,6 +94,7 @@ const Home = () => {
     //Listen TYPING
     useEffect(() => {
         socket.on("typing", (convoId) => {
+            console.log('on recoit typing')
             const { chat } = store.getState();
             dispatch(addTypingUser(convoId, chat.typingUsers));
         });
@@ -267,12 +275,21 @@ const Home = () => {
         >
             <StyledHome>
                 <Container>
-                    <Sidebar />
-                    {state.activeConversation ? (
+                    <Sidebar setDisplaySettings={setDisplaySettings} />
+                    {
+                        displaySettings && (
+                            <Settings/>
+                        )
+                    }
+                    {(state.activeConversation && !displaySettings) && (
                         <ChatContainer />
-                    ) : (
-                        <HomeDefault />
-                    )}
+                    ) 
+                    }
+                    {
+                        (!state.activeConversation && !displaySettings) && (
+                            <HomeDefault/>
+                        )
+                    }
                 </Container>
                 {call.isRinging && (
                     <Ringing
