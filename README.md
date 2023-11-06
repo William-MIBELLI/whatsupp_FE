@@ -15,9 +15,6 @@ Le projet est disponible en ligne : https://master--whatsapp-clone-wm.netlify.ap
 
 TODO
 
--video
-    fix peer.destroy() issue
-    timer
 -user
     settings page
     reset password

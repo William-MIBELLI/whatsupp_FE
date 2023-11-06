@@ -29,6 +29,7 @@ export const fetchUserAsync = (userData, picture) => async (dispatch) => {
         return res.user
     } catch (error) {
         dispatch(fetchUserFailed(error))
+        return false
     }
 }
 
@@ -57,6 +58,7 @@ export const loginUserAsync = (userData) => async (dispatch) => {
         return res.user
     } catch (error) {
         dispatch(loginUserFailed(error))
+        return false
     }
 }
 

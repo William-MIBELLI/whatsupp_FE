@@ -2,9 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Container, StyledHome } from "./home.style";
 import { selectUser } from "../../store/user/user.selector";
 import Sidebar from "../../components/sidebar/sidebar";
-import { selectChat } from "../../store/chat/chat.selector";
-import HomeDefault from "../../components/home-default/homeDefault";
-import ChatContainer from "../../components/chat/chat-container/chatContainer";
 import { useContext, useEffect, useState, createContext, useRef } from "react";
 import { SocketContext } from "../../App";
 import {
@@ -32,7 +29,7 @@ import {
 } from "../../store/call/call.action";
 import { getMedia } from "../../utils/call.utils";
 import SimplePeer from "simple-peer";
-import Settings from "../settings/settings";
+import { Outlet } from "react-router-dom";
 
 export const CallContext = createContext(null);
 
@@ -40,28 +37,23 @@ const Home = () => {
 
     const store = useStore();
     const dispatch = useDispatch();
+    const { socket } = useContext(SocketContext);
 
-    const state = useSelector(selectChat);
     const callData = useSelector(selectCall);
     const { currentUser } = useSelector(selectUser);
-
-    const { socket } = useContext(SocketContext);
 
     const [call, setCall] = useState({});
     const [soundStatus, setSoundStatus] = useState(true)
     const [videoStatus, setVideoStatus] = useState(true)
-    const [displaySettings, setDisplaySettings] = useState(false)
 
     const streamRef = useRef();
     const connectionRef = useRef();
 
-    useEffect(() => {
-        console.log('displaysettings : ', displaySettings)
-    },[displaySettings])
-
+    
     useEffect(() => {
         setCall(callData);
     }, [callData]);
+
 
     //Emit user-connection socket
     useEffect(() => {
@@ -275,21 +267,8 @@ const Home = () => {
         >
             <StyledHome>
                 <Container>
-                    <Sidebar setDisplaySettings={setDisplaySettings} />
-                    {
-                        displaySettings && (
-                            <Settings/>
-                        )
-                    }
-                    {(state.activeConversation && !displaySettings) && (
-                        <ChatContainer />
-                    ) 
-                    }
-                    {
-                        (!state.activeConversation && !displaySettings) && (
-                            <HomeDefault/>
-                        )
-                    }
+                    <Sidebar/>
+                    <Outlet/>
                 </Container>
                 {call.isRinging && (
                     <Ringing

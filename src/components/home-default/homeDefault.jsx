@@ -3,6 +3,9 @@ import { Component, Container } from "./homeDefault.style";
 import SecondaryText from "../secondary-text/secondaryText";
 
 const HomeDefault = () => {
+
+    
+
     return (
         <Component>
             <Container>

@@ -30,13 +30,16 @@ const Login = () => {
     const { socket } = useContext(SocketContext)
 
     const onSubmitHandler = async (data) => {
-        dispatch(loginUserAsync(data))
+        const r = await dispatch(loginUserAsync(data))
+        if (r) {
+            navigate('/home')
+        }
     };
 
     //On redirige vers Home si l'user est deja loggué
     useEffect(() => {
         if (loggedIn) {
-            navigate("/");
+            navigate("/home");
         }
     }, [loggedIn]);
 

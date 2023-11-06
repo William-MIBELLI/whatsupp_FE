@@ -28,6 +28,9 @@ export const registerUserOnServer = async (userData, picture) => {
 
 const uploadOnCloudinary = async (file) => {
 
+    if (!file) { //Si pas de photo , on return false pour éviter une requete
+        return false
+    }
     
     const fd = new FormData()
     fd.append('upload_preset', REACT_APP_CLOUD_SECRET)
