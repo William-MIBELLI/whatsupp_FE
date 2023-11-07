@@ -11,7 +11,7 @@ export const Component = styled.div`
     padding: 6px 13px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 
     & svg {
         fill: ${(props) => props.theme.color.dark_svg_1};

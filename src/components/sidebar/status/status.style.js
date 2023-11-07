@@ -1,4 +1,7 @@
 import styled from 'styled-components'
+import { theme } from '../../../utils/theme'
+
+const { color } = theme
 
 export const Component = styled.div`
     height: 90px;
@@ -16,7 +19,7 @@ export const Container = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
 
     & svg {
         fill : ${props => props.theme.color.blue_1}
@@ -25,31 +28,30 @@ export const Container = styled.div`
 
 export const LeftSide = styled.div`
     display: flex;
-    align-items: center;
-    gap: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.4rem;
     text-align: left;
     font-weight: 400;
-
+    width: 80%;
 `
 
-export const TextContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+export const Input = styled.input`
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    background-color: ${color.dark_bg_5};
+    color: white;
+
+    &::placeholder{
+        color: ${color.green_2};
+    }
 `
 
-// export const PrimaryText = styled.span`
-//     font-size: 16px;
-//     line-height: 21px;
-//     color: ${props => props.theme.color.dark_text_1};
-// `
-
-// export const SecondaryText = styled.span`
-//     font-size: 14px;
-//     line-height: 19px;
-//     color: ${props => props.theme.color.dark_text_2};
-//     margin-top: 0.5rem;
-// `
 
 export const RightSide = styled.div`
     & svg {

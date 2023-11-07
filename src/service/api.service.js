@@ -93,7 +93,7 @@ export const getConversationsFromServer = async (token) => {
 
 export const searchUserOnDb = async (token, keyword) => {
     try {
-        const res = await fetch(`${url}/search/${keyword}`, {
+        const res = await fetch(`${url}/user/${keyword}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -282,6 +282,29 @@ export const removeUserFromGroupOnDb = async (token, userId, groupId) => {
             return true
         }
     } catch (error) {
+        return false
+    }
+}
+
+export const updateStatusOnDb = async (token, status) => {
+    const fd = new FormData()
+    fd.append('status', status)
+
+    try {
+        const r = await fetch(`${url}/user/update-status`, {
+            method: 'PUT',
+            body: fd,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        if (r.status !== 201) {
+            throw new Error('something goes wrong')
+        }
+        const resp = await r.json()
+        return resp
+    } catch (error) {
+        console.log(error)
         return false
     }
 }

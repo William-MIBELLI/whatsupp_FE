@@ -1,5 +1,4 @@
 import SidebarHeader from "./header/sidebarHeader";
-import Notification from "./notification/notification";
 import Search from "./search/search";
 import { StyledSidebar } from "./sidebar.style";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +11,7 @@ import SearchList from './search-list/searchList'
 import { searchUserOnDb } from "../../service/api.service";
 import { createContext, useContext } from "react";
 import NewGroupSearch from "./new-group-search/newGroupSearch";
+import Status from "./status/status";
 
 export const CreateNewGroupContext = createContext()
 
@@ -44,7 +44,7 @@ const Sidebar = () => {
         <CreateNewGroupContext.Provider value={{setCreateNewGroup, createNewGroup}}>
             <StyledSidebar>
                 <SidebarHeader />
-                <Notification />
+                <Status/>
                 {
                     createNewGroup ? <NewGroupSearch /> : (
                         <>

@@ -1,4 +1,4 @@
-import { loginUserOnServer, registerUserOnServer } from "../../service/api.service";
+import { loginUserOnServer, registerUserOnServer, updateStatusOnDb } from "../../service/api.service";
 import { createAction, parsePictureUrl } from "../../utils/helper";
 import { USER_ACTION_TYPE } from "./user.type";
 
@@ -66,3 +66,30 @@ export const logoutOutUser = () => {
     return createAction(USER_ACTION_TYPE.LOGOUT_USER)
 }
 
+const updateStatusStart = () => {
+    return createAction(USER_ACTION_TYPE.UPDATE_STATUS_START)
+}
+
+const updateStatusSuccess = (status, user) => {
+    const newUser = {...user, status: status}
+    return createAction(USER_ACTION_TYPE.UPDATE_STATUT_SUCCESS, newUser)
+}
+
+const updateStatusFailed = (error) => {
+    return createAction(USER_ACTION_TYPE.UPDATE_STATUS_FAILED, error)
+}
+
+export const updateStatusAsync = (token, status, user) => async (dispatch) => {
+    dispatch(updateStatusStart())
+    try {
+        const data = await updateStatusOnDb(token, status)
+        if (!data) {
+            throw new Error('Cant update status')
+        }
+        dispatch(updateStatusSuccess(data.status, user))
+        return true
+    } catch (error) {
+        dispatch(updateStatusFailed(error))
+        return false
+    }
+}

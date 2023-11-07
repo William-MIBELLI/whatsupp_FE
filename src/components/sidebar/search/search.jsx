@@ -45,7 +45,6 @@ const Search = ({ setKeyword }) => {
                     
                 />
             </Container>
-            <FilterIcon/>
         </Component>
     )
 }
