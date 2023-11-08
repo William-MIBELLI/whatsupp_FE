@@ -10,9 +10,10 @@ import { selectUser } from "../../store/user/user.selector";
 import { loginUserAsync } from "../../store/user/user.action";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
-import { Footer } from "./login.style";
+import { Footer, ForgetPassDiv, ForgetPassText } from "./login.style";
 import { Link } from "react-router-dom";
 import { SocketContext } from "../../App";
+import SecondaryText from "../../components/secondary-text/secondaryText";
 
 const Login = () => {
     const {
@@ -65,9 +66,14 @@ const Login = () => {
                     errors={errors?.password?.message}
                 />
                 {error && <p>{error.toString()}</p>}
+                <ForgetPassDiv>
+                    <Link to='/forget-password'>
+                        <ForgetPassText>Forget your password ?</ForgetPassText>
+                    </Link>
+                </ForgetPassDiv>
                 <Button text={"Sign in"} isLoading={isLoading} />
                 <Footer>
-                    <p>Don't have account ? Create one</p>
+                    <SecondaryText>Don't have account ? Create one</SecondaryText>
                     <Link to={"/register"}>Register</Link>
                 </Footer>
             </AuthForm>

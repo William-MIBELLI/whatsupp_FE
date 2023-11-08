@@ -304,7 +304,25 @@ export const updateStatusOnDb = async (token, status) => {
         const resp = await r.json()
         return resp
     } catch (error) {
-        console.log(error)
+        return false
+    }
+}
+
+export const forgetPasswordOnDb = async (email) => {
+
+    const fd = new FormData()
+    fd.append('email', email)
+
+    try {
+        const res = await fetch(`${url}/auth/forget-password`, {
+            method: 'PUT',
+            body: fd
+        })
+        if (res.status !== 200) {
+            throw new Error('request failed')
+        }
+        return true
+    } catch (error) {
         return false
     }
 }

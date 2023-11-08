@@ -22,14 +22,22 @@ const Search = ({ setKeyword }) => {
         if (search.length === 0) {
             setKeyword(search)
         }
-    },[search])
+    }, [search])
+    
+
+    //Reset linput search et réaffiche les convos
+    const onReturnClick = () => {
+        console.log('click return')
+        setSearch('')
+        setKeyword('')
+    }
 
     return (
         <Component>
             <Container>
                 {
                     show ? (
-                        <ReturnContainer onClick={() => { setKeyword('')}}>
+                        <ReturnContainer onClick={onReturnClick}>
                             <ReturnIcon/>
                         </ReturnContainer>
                     ) : (
@@ -42,7 +50,7 @@ const Search = ({ setKeyword }) => {
                     onBlur={() =>  search.length === 0 && setShow(false)}
                     onChange={onChangeHandler}
                     onKeyDown={onKeyDownHandler}
-                    
+                    value={search}
                 />
             </Container>
         </Component>

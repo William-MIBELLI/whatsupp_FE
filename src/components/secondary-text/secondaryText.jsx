@@ -1,8 +1,8 @@
 import { Component } from "./secondaryText.style";
 
-const SecondaryText = ({ children }) => {
+const SecondaryText = ({ children, className }) => {
     return (
-        <Component>
+        <Component className={className}>
             {children}
         </Component>
     )

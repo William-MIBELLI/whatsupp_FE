@@ -49,7 +49,7 @@ const Sidebar = () => {
                     createNewGroup ? <NewGroupSearch /> : (
                         <>
                             <Search setKeyword={setKeyword} />
-                            {keyword ? <SearchList result={searchResult} /> : <Conversations />}
+                            {keyword ? <SearchList result={searchResult} setKeyword={setKeyword} /> : <Conversations />}
                         </>
                     )
                 }

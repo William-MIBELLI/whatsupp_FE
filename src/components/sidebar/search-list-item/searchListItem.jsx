@@ -5,17 +5,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchActiveConversationAsync } from "../../../store/chat/chat.action";
 import { selectCurrentUser } from "../../../store/user/user.selector";
 import { selectChat } from "../../../store/chat/chat.selector";
+import { useNavigate } from "react-router-dom";
 
-const SearchListItem = ({ user }) => {
+const SearchListItem = ({ user, setKeyword }) => {
 
     const { name, status } = user
     const pictureUrl = user.pictureUrl
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { accessToken } = useSelector(selectCurrentUser)
     const { conversations } = useSelector(selectChat)
 
-    const onClickHandler = () => {
-        dispatch(fetchActiveConversationAsync(accessToken, user._id, conversations))
+    const onClickHandler = async () => {
+        await dispatch(fetchActiveConversationAsync(accessToken, user._id, conversations))
+        setKeyword('')
+        navigate('/conversation')
     }
 
     return (

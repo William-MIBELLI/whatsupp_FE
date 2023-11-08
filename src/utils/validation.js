@@ -37,3 +37,10 @@ export const updateSchema = yup.object({
         .max(16, "Name have to be under 16 characters."),
     pictureUrl: yup.string().url()
 });
+
+export const emailPasswordSchema = yup.object({
+    email: yup
+        .string()
+        .email("Please put a valid email address.")
+        .required("An address email is required."),
+})
