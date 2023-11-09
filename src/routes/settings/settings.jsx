@@ -19,6 +19,7 @@ import Picture from "../../components/auth/picture/picture";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updateSchema } from "../../utils/validation";
+import { Link } from "react-router-dom";
 
 const initialData = {
     name: "",
@@ -79,10 +80,12 @@ const Settings = () => {
                 <PictureContainer>
                     <Picture setPicture={setPicture}/>
                 </PictureContainer>
-                <ChangePassword>Reset your password</ChangePassword>
             </Form>
-            <Footer>
                 <Confirm />
+            <Footer>
+                <Link to={'/change-password'}>
+                    <ChangePassword>Change your password</ChangePassword>
+                </Link>
             </Footer>
         </Container>
     );

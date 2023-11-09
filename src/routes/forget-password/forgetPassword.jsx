@@ -6,8 +6,6 @@ import {
     Input,
     Error,
     Title,
-    Success,
-    Header
 } from "./forgetPassword.style";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -17,6 +15,7 @@ import { useState } from "react";
 import { ConfirmIcon } from "../../svg";
 import { Link } from "react-router-dom";
 import PrimaryText from "../../components/primary-text/primaryText";
+import Success from "../../components/success/success";
 
 const ForgetPassword = () => {
     const [loading, setLoading] = useState(false);
@@ -48,18 +47,13 @@ const ForgetPassword = () => {
     return (
         <Component>
             {success ? (
-                <Success>
-                    <Header>
-                        <Title>Email sent </Title>
-                        <ConfirmIcon/>
-                    </Header>
-                    <SecondaryText>
-                        An email has been sent with instructions for reset your password.
-                    </SecondaryText>
-                    <Link to={'/login'}>
-                        <PrimaryText>Back to login</PrimaryText>
-                    </Link>
-                </Success>
+                <Success
+                    link={"login"}
+                    title={"Email sent"}
+                    content={
+                        "An email has been sent with instructions for reset your password."
+                    }
+                />
             ) : (
                 <Container onSubmit={handleSubmit(onSubmitHandler)}>
                     <Title>Forget password ?</Title>
@@ -80,8 +74,8 @@ const ForgetPassword = () => {
                     />
                     {error && (
                         <Error>Something goes wrong, please try again</Error>
-                        )}
-                    <Link to={'/login'}>
+                    )}
+                    <Link to={"/login"}>
                         <SecondaryText>Back to login</SecondaryText>
                     </Link>
                 </Container>

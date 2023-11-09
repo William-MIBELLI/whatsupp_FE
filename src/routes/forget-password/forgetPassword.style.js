@@ -71,21 +71,3 @@ export const SendButton = styled.button`
 
     }
 `
-
-export const Success = styled(Container)`
-    width: 400px;
-
-    p{ margin: 0;}
-`
-
-export const Header = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-
-    >*{
-        margin-top: 0;
-    }
-    
-`

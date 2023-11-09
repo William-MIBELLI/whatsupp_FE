@@ -39,4 +39,5 @@ export const Title = styled.h2`
 export const Description = styled.p`
     margin-top: 0;
     font-size: 0.875rem;
+    color: ${props => props.theme.color.dark_text_2};
 `

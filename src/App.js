@@ -12,7 +12,9 @@ import HomeDefault from "./components/home-default/homeDefault";
 import ChatContainer from "./components/chat/chat-container/chatContainer";
 import { useDispatch } from "react-redux";
 import { logoutOutUser } from "./store/user/user.action";
-import ResetPassword from "./routes/forget-password/forgetPassword";
+import ForgetPassword from "./routes/forget-password/forgetPassword";
+import ResetPassword from "./routes/reset-password/resetPassword";
+import ChangePassword from "./routes/change-password/changePassword";
 
 const socket = new io(process.env.REACT_APP_API_ENDPOINT);
 export const SocketContext = createContext(null);
@@ -24,7 +26,6 @@ function App() {
     //Si luser veut back quand il est sur Home, on le logout
     useEffect(() => {
         window.addEventListener('popstate', (data) => {
-            console.log('data dans window listenner ', data)
             if (data.target.location.pathname === '/' || data.target.location.pathname === '') {    
                 dispatch(logoutOutUser())
             }
@@ -40,12 +41,14 @@ function App() {
                             <Route index path="home" element={<HomeDefault/> } />
                             <Route path="conversation" element={<ChatContainer/> } />
                             <Route path="settings" element={<Settings />} />
+                            <Route path="change-password" element={<ChangePassword/> } />
                         </Route>
                     </Route>
                     <Route element={<UnLoggedRoute />}>
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
-                        <Route path="/forget-password" element={<ResetPassword/> } />
+                        <Route path="/forget-password" element={<ForgetPassword/> } />
+                        <Route path="/reset-password/:token" element={<ResetPassword/> } />
                     </Route>
                     <Route element={<LoggedRoute />}></Route>
                 </Routes>

@@ -1,9 +1,9 @@
 import {  Container, Description, Header, Title, Wrapper } from './authForm.style'
 import Form from '../../form/form'
 
-const AuthForm = ({ title, description, children, submitHandler }) => {
+const AuthForm = ({ title, description, children, submitHandler, className }) => {
     return (
-        <Wrapper>
+        <Wrapper className={className}>
             <Container>
                 <Header>
                     <Title>{title}</Title>

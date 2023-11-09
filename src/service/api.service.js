@@ -326,3 +326,40 @@ export const forgetPasswordOnDb = async (email) => {
         return false
     }
 }
+
+export const resetPasswordOnDb = async (data) => {
+    const fd = toFormData(data)
+    try {
+        const r = await fetch(`${url}/auth/reset-password`, {
+            method: 'PUT',
+            body: fd
+        })
+        if (r.status !== 201) {
+            throw new Error()
+        }
+        return true
+    } catch (error) {
+        return false
+    }
+
+}
+
+export const changePasswordOnDb = async (token, data) => {
+    const fd = toFormData(data)
+    try {
+        const r = await fetch(`${url}/auth/change-password`, {
+            method: 'PUT',
+            body: fd,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        if (r.status !== 201) {
+            throw new Error()
+        }
+        return true
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}

@@ -7,10 +7,11 @@ const { color } = theme
 export const Container = styled.div`
     height: 100%;
     width: 100%;
-    background-color: ${color.dark_bg_3};
+    background-color: ${color.dark_bg_4};
     box-sizing: border-box;
     border-left: 2px solid ${color.dark_border_1};
     overflow-y: auto;
+    position: relative;
 `
 
 export const Title = styled.h1`
@@ -31,7 +32,7 @@ export const Form = styled.form`
 export const Input = styled.input`
     width: 100%;
     height: 2.5rem;
-    background-color: ${color.dark_bg_5};
+    background-color: ${color.dark_bg_3};
     border-radius: 0.5rem;
     padding-left: 1rem;
     outline: none;
@@ -92,5 +93,9 @@ export const Confirm = styled(ConfirmIcon)`
 `
 
 export const Footer = styled.div`
-    margin-top: 10px;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
 `
