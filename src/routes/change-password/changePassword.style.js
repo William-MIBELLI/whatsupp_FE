@@ -6,7 +6,7 @@ const { color } = theme
 
 
 export const Container = styled.div`
-    background-color: ${color.dark_bg_4};
+    background-color: ${color.dark_bg_2};
     border-left:2px solid ${color.dark_border_1};
     width: 100%;
 `
@@ -36,7 +36,7 @@ export const Error = styled.p`
     font-size: 1rem;
 `
 export const StyledSuccess = styled(Success)`
-    width: 100%;
     border-radius: 0;
     padding-top: 70px;
+    margin: auto;
 `

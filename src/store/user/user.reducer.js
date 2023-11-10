@@ -20,6 +20,7 @@ export const userReducer = (state = initialState, action) => {
             }
         case USER_ACTION_TYPE.FETCH_USER_SUCCESS:
         case USER_ACTION_TYPE.LOGIN_USER_SUCCESS:
+        case USER_ACTION_TYPE.UPDATE_CURRENT_USER:
             return {
                 ...state,
                 isLoading: false,

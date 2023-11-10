@@ -36,7 +36,7 @@ const Menu = ({ blurHandler }) => {
             </MenuItem> */}
             <Link to={'settings'}>
                 <MenuItem >
-                    <SecondaryText>⚠️ Settings ⚠️</SecondaryText>
+                    <SecondaryText>Settings</SecondaryText>
                 </MenuItem>
             </Link>
             <MenuItem onClick={onLogouthandler}>

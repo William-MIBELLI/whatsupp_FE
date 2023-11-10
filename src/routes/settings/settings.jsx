@@ -1,92 +1,123 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SecondaryText from "../../components/secondary-text/secondaryText";
 import {
     Container,
     Title,
     Form,
     Footer,
-    Label,
-    Input,
-    InputContainer,
     ChangePassword,
-    Confirm,
+    Error,
     Header,
     PictureContainer,
+    StyledAuthInput,
+    StyledSucces,
+    TurnOffSuccess
 } from "./settings.style";
 import { selectCurrentUser } from "../../store/user/user.selector";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import Picture from "../../components/auth/picture/picture";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updateSchema } from "../../utils/validation";
 import { Link } from "react-router-dom";
+import Button from "../../components/button/button";
+import { updateUserOnDb } from "../../service/api.service";
+import { updateCurrentUser } from "../../store/user/user.action";
 
-const initialData = {
-    name: "",
-    status: "",
-    pictureUrl: "",
-};
 
 const Settings = () => {
+    const { name, status, accessToken } = useSelector(selectCurrentUser);
+    const [newPicture, setNewPicture] = useState();
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
 
-    const currentUser = useSelector(selectCurrentUser);
-    const [userData, setUserdata] = useState(initialData);
-    const [picture, setPicture] = useState()
+    console.log('accesstoken au montage : ', accessToken)
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
         resolver: yupResolver(updateSchema),
-        mode: 'all'
-    })
-    
-    //On recupère les valeurs des inputs dans le usestate
-    const onChangeHandler = (event) => {
-        const { name, value } = event.target;
-        setUserdata({ ...userData, [name]: value });
-        console.log(userData);
+        mode: "all",
+        defaultValues: {
+            name: name,
+            status: status,
+        },
+    });
+
+    const onSubmitHandler = async (data) => {
+        setLoading(true);
+        setError(false);
+        setSuccess(false);
+        const user = await updateUserOnDb(accessToken, data, newPicture);
+        setLoading(false);
+        if (user) {
+            setSuccess(true);
+            return dispatch(updateCurrentUser(user, accessToken));
+        }
+        setError(true);
     };
-
-    //On envoie les datas au server
-    const onSubmitHandler = async () => {
-
-    }
-    
-    //On récupère les infos du currentUser que lon stocke dans le usestate
-    useEffect(() => {
-        const { name, status, pictureUrl } = currentUser;
-        setUserdata({
-            name,
-            status,
-            pictureUrl,
-        });
-    }, [currentUser]);
 
     return (
         <Container>
-            <Header>
-                <Title>Settings</Title>
-                <SecondaryText>
-                    You can manage your user's informations here.
-                </SecondaryText>
-            </Header>
-            <Form>
-                <InputContainer>
-                    <Label>Name</Label>
-                    <Input value={userData.name} name="name" onChange={onChangeHandler}/>
-                </InputContainer>
-                <InputContainer>
-                    <Label>Your status</Label>
-                    <Input value={userData.status} name="status" onChange={onChangeHandler}/>
-                </InputContainer>
-                <PictureContainer>
-                    <Picture setPicture={setPicture}/>
-                </PictureContainer>
-            </Form>
-                <Confirm />
-            <Footer>
-                <Link to={'/change-password'}>
-                    <ChangePassword>Change your password</ChangePassword>
-                </Link>
-            </Footer>
+            {success ? (
+                <StyledSucces
+                    title={"Profile updated"}
+                    content={
+                        "Your informations has been updated successfully !"
+                    }
+                >
+                    <TurnOffSuccess clickHandler={() => setSuccess(false)} >Back to settings</TurnOffSuccess>
+                </StyledSucces>
+            ) : (
+                <>
+                    <Header>
+                        <Title>Settings</Title>
+                        <SecondaryText>
+                            You can manage your user's informations here.
+                        </SecondaryText>
+                    </Header>
+                    <Form onSubmit={handleSubmit(onSubmitHandler)}>
+                        <StyledAuthInput
+                            errors={errors?.name?.message}
+                            label={"Your name"}
+                            name={"name"}
+                            register={register}
+                            type={"text"}
+                        />
+                        <StyledAuthInput
+                            errors={errors?.status?.message}
+                            label={"Your status"}
+                            name={"status"}
+                            register={register}
+                            type={"text"}
+                        />
+                        <PictureContainer>
+                            <Picture setPicture={setNewPicture} />
+                        </PictureContainer>
+                        <Button
+                            text={"Save changes"}
+                            type={"submit"}
+                            loading={loading}
+                        />
+                        {error && (
+                            <Error>
+                                Something goes wrong, please try again.
+                            </Error>
+                        )}
+                    </Form>
+                    <Footer>
+                        <Link to={"/change-password"}>
+                            <ChangePassword>
+                                Change your password
+                            </ChangePassword>
+                        </Link>
+                    </Footer>
+                </>
+            )}
         </Container>
     );
 };

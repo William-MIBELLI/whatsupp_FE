@@ -65,7 +65,7 @@ const ChatMenu = ({ setDisplayMenu }) => {
                                     {
                                         users.map(user => {
                                             return user._id !== currentUser._id &&(
-                                                <RemoveItem onClick={() => onRemoveUserHandler(user._id)}>
+                                                <RemoveItem key={user._id} onClick={() => onRemoveUserHandler(user._id)}>
                                                     <Mini src={user.pictureUrl} />
                                                     <p>{ user.name}</p>
                                                 </RemoveItem>

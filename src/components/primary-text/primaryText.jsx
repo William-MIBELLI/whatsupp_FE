@@ -1,8 +1,8 @@
 import { Component } from "./primaryText.style";
 
-const PrimaryText = ({ children }) => {
+const PrimaryText = ({ children, clickHandler, className }) => {
     return (
-        <Component>
+        <Component onClick={clickHandler} className={className}>
             {children}
         </Component>
     )

@@ -6,9 +6,10 @@ const { REACT_APP_CLOUD_SECRET, REACT_APP_CLOUD_NAME } = process.env
 export const registerUserOnServer = async (userData, picture) => {
     const url = process.env.REACT_APP_API_ENDPOINT;
     const fd = toFormData(userData);
-    const pictureUrl = await uploadOnCloudinary(picture)
-    if (pictureUrl) {
-        fd.append('pictureUrl', pictureUrl)
+    const pictureData = await uploadOnCloudinary(picture)
+    console.log('picture apres upload: ', pictureData)
+    if (pictureData) {
+        fd.append('picture', pictureData)
     }
     try {
         const res = await fetch(`${url}/auth/register`, {
@@ -41,8 +42,8 @@ const uploadOnCloudinary = async (file) => {
             body: fd
         })
         if (res.status === 200) {
-            const { secure_url } = await res.json()
-            return secure_url
+            const { secure_url, public_id } = await res.json()
+            return JSON.stringify({secure_url, public_id})
         }
         return false
     } catch (error) {
@@ -239,7 +240,7 @@ export const deleteGroupOnDb = async (token, groupId, adminId) => {
                 Authorization: `Bearer ${token}`
             }
         })
-        const r = await res.json()
+        await res.json()
     } catch (error) {
         return false
     }
@@ -358,6 +359,37 @@ export const changePasswordOnDb = async (token, data) => {
             throw new Error()
         }
         return true
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
+export const updateUserOnDb = async (token, data, newPicture = undefined) => {
+   
+    const fd = toFormData(data)
+    
+    try {
+        if (newPicture) {//Si il ya  une nouvelle picture, on lupdate sur le cloud et on recupere les data pour la db
+            const newPictureData = await uploadOnCloudinary(newPicture)
+            if (newPictureData) {
+                fd.append('pictureData', newPictureData)
+            }
+            
+        }
+        console.log('on lance la requete')
+        const r = await fetch(`${url}/user/update-user`, {
+            method: 'PUT',
+            body: fd,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        if (r.status !== 201) {
+            throw new Error()
+        }
+        const { user } = await r.json() // On return user pour metre a jour le state
+        return user
     } catch (error) {
         console.log(error)
         return false

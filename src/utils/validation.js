@@ -32,17 +32,15 @@ export const loginSchema = yup.object({
 export const updateSchema = yup.object({
     name: yup
         .string()
-        .required("Name is required.")
         .min(3, "Name need atleast 3 characters.")
         .max(16, "Name have to be under 16 characters."),
-    pictureUrl: yup.string().url()
 });
 
 export const emailPasswordSchema = yup.object({
     email: yup
         .string()
         .email("Please put a valid email address.")
-        .required("An address email is required."),
+        .required("An address email is required.")
 })
 
 export const resetPasswordSchema = yup.object({

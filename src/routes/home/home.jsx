@@ -10,7 +10,6 @@ import {
     handleReceivedMessage,
     removeConversation,
     removeTypingUser,
-    removeActiveConversation,
     setOnlineUser,
     removeUser,
 } from "../../store/chat/chat.action";
@@ -29,7 +28,7 @@ import {
 } from "../../store/call/call.action";
 import { getMedia } from "../../utils/call.utils";
 import SimplePeer from "simple-peer";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 export const CallContext = createContext(null);
 
@@ -38,6 +37,7 @@ const Home = () => {
     const store = useStore();
     const dispatch = useDispatch();
     const { socket } = useContext(SocketContext);
+    const navigate = useNavigate()
 
     const callData = useSelector(selectCall);
     const { currentUser } = useSelector(selectUser);
@@ -48,6 +48,7 @@ const Home = () => {
 
     const streamRef = useRef();
     const connectionRef = useRef();
+    const currentUserRef = useRef(currentUser)
 
     
     useEffect(() => {
@@ -57,7 +58,9 @@ const Home = () => {
 
     //Emit user-connection socket
     useEffect(() => {
-        socket.emit("user-connection", currentUser._id);
+        if (currentUser._id !== currentUserRef.current._id) {
+            socket.emit("user-connection", currentUser._id);     
+        }
     }, [currentUser]);
 
     //Listen receive-message socket
@@ -122,7 +125,7 @@ const Home = () => {
             const { chat } = store.getState();
             const { activeConversation, conversations } = chat;
             if (groupId === activeConversation?._id) {
-                dispatch(removeActiveConversation());
+                navigate('/home')
                 dispatch(fetchConversationsAsync(currentUser.accessToken));
             } else {
                 dispatch(removeConversation(conversations, groupId));
@@ -136,7 +139,7 @@ const Home = () => {
             const { chat } = store.getState();
             const { activeConversation, conversations } = chat;
             if (groupId === activeConversation._id) {
-                dispatch(removeActiveConversation());
+                navigate('/home')
             }
             dispatch(removeConversation(conversations, groupId));
         });

@@ -1,5 +1,5 @@
 import { loginUserOnServer, registerUserOnServer, updateStatusOnDb } from "../../service/api.service";
-import { createAction, parsePictureUrl } from "../../utils/helper";
+import { createAction } from "../../utils/helper";
 import { USER_ACTION_TYPE } from "./user.type";
 
 const fetchUserStart = () => {
@@ -92,4 +92,9 @@ export const updateStatusAsync = (token, status, user) => async (dispatch) => {
         dispatch(updateStatusFailed(error))
         return false
     }
+}
+
+export const updateCurrentUser = (user, token) => {
+    const newUser = { ...user, accessToken: token }
+    return createAction(USER_ACTION_TYPE.UPDATE_CURRENT_USER, newUser)
 }

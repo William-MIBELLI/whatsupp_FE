@@ -1,17 +1,23 @@
 import styled from "styled-components";
 import { theme } from "../../utils/theme";
 import { ConfirmIcon } from "../../svg";
+import AuthInput from "../../components/auth/auth-input/authInput";
+import Success from "../../components/success/success";
+import PrimaryText from "../../components/primary-text/primaryText";
 
 const { color } = theme
 
 export const Container = styled.div`
     height: 100%;
     width: 100%;
-    background-color: ${color.dark_bg_4};
+    background-color: ${color.dark_bg_2};
     box-sizing: border-box;
     border-left: 2px solid ${color.dark_border_1};
     overflow-y: auto;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `
 
 export const Title = styled.h1`
@@ -25,9 +31,15 @@ export const Header = styled.div`
 
 export const Form = styled.form`
     display: flex;
+    width: 60%;
+    margin:0 auto;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
+
+    button{
+        width: 100%;
+    }
 `
 export const Input = styled.input`
     width: 100%;
@@ -43,22 +55,11 @@ export const Input = styled.input`
     box-sizing: border-box;
     margin-top: 5px;
 `
-export const Label = styled.label`
-    font-weight: bold;
-    color: white;
-    font-size: 0.875rem;
-`
 
-export const InputContainer = styled.div`
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    margin: 10px auto;
-`
 
-export const PictureContainer = styled(InputContainer)`
+export const PictureContainer = styled.div`
+    width: 100%;
+    margin: 10px 0;
     &>*{
         width: 100%;
         box-sizing: border-box;
@@ -68,7 +69,7 @@ export const PictureContainer = styled(InputContainer)`
 export const ChangePassword = styled.div`
     background-color: ${color.dark_bg_1};
     color: ${color.red_1};
-    width: 80%;
+    width: 60%;
     margin: 10px auto;
     border-radius: 0.5rem;
     height: 2.5rem;
@@ -98,4 +99,20 @@ export const Footer = styled.div`
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
+`
+
+export const StyledAuthInput = styled(AuthInput)`
+    width: 100%;
+`
+
+export const Error = styled.p`
+    font-size: 0.8rem;
+    color: ${color.red_1};
+`
+
+export const StyledSucces = styled(Success)`
+    margin: auto;
+`
+export const TurnOffSuccess = styled(PrimaryText)`
+    cursor: pointer;
 `

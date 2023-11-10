@@ -16,7 +16,7 @@ Le projet est disponible en ligne : https://master--whatsapp-clone-wm.netlify.ap
 TODO
 
 -user
-    settings page
-    reset password
+    settings page ✅
+    reset password ✅
     refreshToken 
-    input on Home for change statut
+    input on Home for change statut ✅

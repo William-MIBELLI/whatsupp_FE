@@ -1,8 +1,8 @@
 import { StyledAuthInput, ErrorMessage } from "./authInput.style";
 
-const AuthInput = ({ name, label, type, register, errors }) => {
+const AuthInput = ({ name, label, type, register, errors, className }) => {
   return (
-    <StyledAuthInput>
+    <StyledAuthInput className={className}>
       <label htmlFor={name}>{label}</label>
       <input
         type={type}
