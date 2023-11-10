@@ -26,9 +26,6 @@ export const Form = styled.form`
     margin: auto;
     margin-top: 30px;
 
-    button{
-        margin-top: 40px;
-    }
 `
 
 export const Error = styled.p`
@@ -39,4 +36,11 @@ export const StyledSuccess = styled(Success)`
     border-radius: 0;
     padding-top: 70px;
     margin: auto;
+`
+
+export const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
 `

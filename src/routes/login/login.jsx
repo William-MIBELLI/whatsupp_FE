@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../store/user/user.selector";
 import { loginUserAsync } from "../../store/user/user.action";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Footer, ForgetPassDiv, ForgetPassText } from "./login.style";
 import { Link } from "react-router-dom";
 import { SocketContext } from "../../App";
@@ -28,7 +28,7 @@ const Login = () => {
     const { isLoading, error, loggedIn } = useSelector(selectUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { socket } = useContext(SocketContext)
+    
 
     const onSubmitHandler = async (data) => {
         const r = await dispatch(loginUserAsync(data))
@@ -71,7 +71,7 @@ const Login = () => {
                         <ForgetPassText>Forget your password ?</ForgetPassText>
                     </Link>
                 </ForgetPassDiv>
-                <Button text={"Sign in"} isLoading={isLoading} />
+                <Button text={"Sign in"} loading={isLoading} />
                 <Footer>
                     <SecondaryText>Don't have account ? Create one</SecondaryText>
                     <Link to={"/register"}>Register</Link>

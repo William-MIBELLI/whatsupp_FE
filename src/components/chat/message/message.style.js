@@ -20,7 +20,7 @@ export const Component = styled.div`
     display: flex;
     flex-direction: column;
     justify-content:space-between;
-    word-break: break-all;
+    word-break: break-word;
 
     ${({me}) => me ? Me : NotMe};
 `

@@ -6,15 +6,14 @@ import {
     Input,
     Error,
     Title,
+    ButtonContainer,
 } from "./forgetPassword.style";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { emailPasswordSchema } from "../../utils/validation";
 import { forgetPasswordOnDb } from "../../service/api.service";
 import { useState } from "react";
-import { ConfirmIcon } from "../../svg";
 import { Link } from "react-router-dom";
-import PrimaryText from "../../components/primary-text/primaryText";
 import Success from "../../components/success/success";
 
 const ForgetPassword = () => {
@@ -67,11 +66,13 @@ const ForgetPassword = () => {
                     {errors.email?.message && (
                         <Error>{errors.email?.message}</Error>
                     )}
-                    <Button
-                        text={"Send reset email"}
-                        type={"submit"}
-                        loading={loading}
-                    />
+                    <ButtonContainer>
+                        <Button
+                            text={"Send reset email"}
+                            type={"submit"}
+                            loading={loading}
+                        />
+                    </ButtonContainer>
                     {error && (
                         <Error>Something goes wrong, please try again</Error>
                     )}
