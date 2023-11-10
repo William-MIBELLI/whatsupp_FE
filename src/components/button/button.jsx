@@ -21,7 +21,6 @@ const Button = ({
         }[buttonType]);
 
     const CustomButton = getButton(buttonType);
-    console.log('loading dans button' , loading)
 
     return loading ? (
         <PulseLoader color="white" size={8} />

@@ -16,7 +16,7 @@ const Header = ({ name }) => {
             <CloseButton onClick={onCloseHandler}>
                 <CloseIcon/>
             </CloseButton>
-            {name}
+            {/* {name} */}
         </Component>
     )
 }

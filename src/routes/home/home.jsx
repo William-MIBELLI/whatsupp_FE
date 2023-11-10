@@ -57,10 +57,9 @@ const Home = () => {
     }, [callData]);
 
 
-    //Emit user-connection socket
+    //Emit user-connection socket UNIQUEMENT quand l'user se connecte
     useEffect(() => {
         if (currentUser._id !== currentUserRef.current._id || firstConnection.current) {
-            console.log('on emit userconnection a la premier co')
             firstConnection.current = false
             socket.emit("user-connection", currentUser._id);     
         }

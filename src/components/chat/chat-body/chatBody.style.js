@@ -14,7 +14,7 @@ export const Component = styled.div`
 export const Container = styled.div`
     overflow: auto;
     padding: 2rem;
-
+    position: relative;
     overflow-y: auto;
 
     &::-webkit-scrollbar {

@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getSender, handleDate } from "../../../utils/helper";
-import PrimaryText from "../../primary-text/primaryText";
-import SecondaryText from "../../secondary-text/secondaryText";
 import {
     Component,
+    ContactName,
     ImgContainer,
     InfoContainer,
+    LastMessage,
     LeftSide,
     RightSide,
     TypingText
@@ -79,18 +79,18 @@ const Conversation = ({ convoId }) => {
                     <img style={{background: 'white'}} src={pictureUrl} alt={sender?.name}></img>
                 </ImgContainer>
                 <InfoContainer>
-                    <PrimaryText>{isGroup ? groupName  : sender?.name}</PrimaryText>
+                    <ContactName>{isGroup ? groupName  : sender?.name}</ContactName>
                     {
                         typing ? 
                             <TypingText>
                                 typing...
                             </TypingText>
                             :
-                            <SecondaryText>
+                            <LastMessage>
                                 {latestMessage?.message
                                     ? latestMessage?.message
                                     : sender.status}
-                            </SecondaryText>
+                            </LastMessage>
 
                     }
                 </InfoContainer>

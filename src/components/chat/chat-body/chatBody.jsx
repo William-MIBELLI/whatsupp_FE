@@ -33,7 +33,7 @@ const ChatBody = () => {
 
     //Scroll jusqu'au dernier message
     useEffect(() => {
-        endRef.current.scrollIntoView({ behavior: "smooth" });
+        endRef.current.scrollIntoView({ behavior: "smooth", block: 'start'  });
     }, [messages, typing]);
 
     //Check si l'user est en train de taper
@@ -46,7 +46,9 @@ const ChatBody = () => {
         setDisplayFiles(files.length !== 0)
     },[files])
 
-    
+    useEffect(() => {
+        console.log('endref : ', endRef.current.target)
+    },[endRef.current])
 
     return (
         <Component bgurl={BgUrl}>
@@ -73,7 +75,7 @@ const ChatBody = () => {
                 <EndDiv ref={endRef}></EndDiv>
             </Container>
             {
-                files.length > 0 ? <FilePreview/> : ''
+                files.length > 0 && <FilePreview/>
             }
         </Component>
     );

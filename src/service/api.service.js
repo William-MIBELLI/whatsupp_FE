@@ -180,6 +180,7 @@ export const sendMessageOnServer = async (token, values, files) => {
 
 const uploadFilesOnCloud = async (files) => {
     const filesUrl = []
+    console.log('file dans upload' , files)
     try {
         for (let i = 0; i < files.length; i++){
             const fd = new FormData()

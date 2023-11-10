@@ -33,3 +33,7 @@ export const Description = styled.div`
     flex-direction: column;
     padding: 10px 20px;
 `
+
+export const PicPreview = styled.img`
+    width:100%;
+`
