@@ -49,6 +49,7 @@ const Home = () => {
     const streamRef = useRef();
     const connectionRef = useRef();
     const currentUserRef = useRef(currentUser)
+    const firstConnection = useRef(true)
 
     
     useEffect(() => {
@@ -58,7 +59,9 @@ const Home = () => {
 
     //Emit user-connection socket
     useEffect(() => {
-        if (currentUser._id !== currentUserRef.current._id) {
+        if (currentUser._id !== currentUserRef.current._id || firstConnection.current) {
+            console.log('on emit userconnection a la premier co')
+            firstConnection.current = false
             socket.emit("user-connection", currentUser._id);     
         }
     }, [currentUser]);

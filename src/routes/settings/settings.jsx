@@ -29,11 +29,11 @@ const Settings = () => {
     const { name, status, accessToken } = useSelector(selectCurrentUser);
     const [newPicture, setNewPicture] = useState();
     const dispatch = useDispatch();
+    
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
 
-    console.log('accesstoken au montage : ', accessToken)
 
     const {
         register,
