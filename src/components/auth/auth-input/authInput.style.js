@@ -30,8 +30,3 @@ export const StyledAuthInput = styled.div`
     }
 `
 
-export const ErrorMessage = styled.p`
-    color: red;
-    font-size: 0.7rem;
-    margin: 0;
-`

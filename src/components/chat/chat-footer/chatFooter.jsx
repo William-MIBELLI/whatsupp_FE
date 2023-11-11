@@ -44,6 +44,7 @@ const ChatFooter = () => {
     }, [state])
 
 
+
     //Envoi du message
     const onSubmitHandler = async (event) => {
         event.preventDefault();

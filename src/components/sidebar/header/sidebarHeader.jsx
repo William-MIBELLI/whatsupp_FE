@@ -13,6 +13,7 @@ const SidebarHeader = () => {
 
     //gestion de l'affichage du menu
     const onBlurHandler = () => {
+        console.log('blur sidebarheader')
         setDisplayMenu(false);
     };
 

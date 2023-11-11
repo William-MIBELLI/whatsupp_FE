@@ -94,6 +94,7 @@ export const getConversationsFromServer = async (token) => {
 
 export const searchUserOnDb = async (token, keyword) => {
     try {
+        console.log('keyword dans searchuser : ', keyword)
         const res = await fetch(`${url}/user/${keyword}`, {
             method: "GET",
             headers: {

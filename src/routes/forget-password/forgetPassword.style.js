@@ -51,12 +51,6 @@ export const Input = styled.input`
     }
 `
 
-export const Error = styled.p`
-    color: ${color.red_1};
-    margin: 10px 0;
-`
-
-
 
 export const SendButton = styled.button`
     border-radius: 1.5rem;

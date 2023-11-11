@@ -28,10 +28,6 @@ export const Form = styled.form`
 
 `
 
-export const Error = styled.p`
-    color: ${color.red_1};
-    font-size: 1rem;
-`
 export const StyledSuccess = styled(Success)`
     border-radius: 0;
     padding-top: 70px;

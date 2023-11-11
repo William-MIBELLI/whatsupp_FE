@@ -4,7 +4,6 @@ import {
     Component,
     Container,
     Input,
-    Error,
     Title,
     ButtonContainer,
 } from "./forgetPassword.style";
@@ -15,6 +14,7 @@ import { forgetPasswordOnDb } from "../../service/api.service";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Success from "../../components/success/success";
+import ErrorMEssage from "../../components/error/error";
 
 const ForgetPassword = () => {
     const [loading, setLoading] = useState(false);
@@ -64,7 +64,7 @@ const ForgetPassword = () => {
                         {...register("email")}
                     />
                     {errors.email?.message && (
-                        <Error>{errors.email?.message}</Error>
+                            <ErrorMEssage message={errors.email?.message } />
                     )}
                     <ButtonContainer>
                         <Button
@@ -74,7 +74,7 @@ const ForgetPassword = () => {
                         />
                     </ButtonContainer>
                     {error && (
-                        <Error>Something goes wrong, please try again</Error>
+                        <ErrorMEssage message={'Something goes wrong, please try again.'} />
                     )}
                     <Link to={"/login"}>
                         <SecondaryText>Back to login</SecondaryText>

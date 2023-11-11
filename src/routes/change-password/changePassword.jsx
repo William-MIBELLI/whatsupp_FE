@@ -4,7 +4,6 @@ import {
     Header,
     Title,
     Form,
-    Error,
     StyledSuccess,
     ButtonContainer,
 } from "./changePassword.style";
@@ -17,6 +16,7 @@ import { useState } from "react";
 import { changePasswordOnDb } from "../../service/api.service";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../store/user/user.selector";
+import ErrorMEssage from "../../components/error/error";
 
 const ChangePassword = () => {
     const [loading, setLoading] = useState(false);
@@ -65,10 +65,9 @@ const ChangePassword = () => {
                         </SecondaryText>
                     </Header>
                     <Form onSubmit={handleSubmit(onSubmitHandler)}>
-                        <Error>
-                            ⚠️ For security reasons, you have to provide your
-                            current password.
-                        </Error>
+                        <ErrorMEssage message='⚠️ For security reasons, you have to provide your
+                            current password.'/>
+                            
                         <AuthInput
                             label={"Your password"}
                             name={"password"}
@@ -98,9 +97,7 @@ const ChangePassword = () => {
                             />
                         </ButtonContainer>
                         {error && (
-                            <Error>
-                                Something goes wrong, please try again
-                            </Error>
+                            <ErrorMEssage message='Something goes wrong, please try again.'/>
                         )}
                     </Form>
                 </>

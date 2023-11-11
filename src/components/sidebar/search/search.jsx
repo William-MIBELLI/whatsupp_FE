@@ -7,21 +7,15 @@ const Search = ({ setKeyword }) => {
     const [show, setShow] = useState(false)
     const [search, setSearch] = useState('')
 
+    //On récupère la value de linput quand lsuer rentre un caractère
     const onChangeHandler = (event) => {
         const { value } = event.target
         setSearch(value)
     }
-
-    const onKeyDownHandler = (event) => {
-        if (event.key === 'Enter') {
-            setKeyword(search)
-        }
-    }
-
+    
+    //Quand la value de linput change , on lenvoie a setKeyword pour lancer la recherche
     useEffect(() => {
-        if (search.length === 0) {
-            setKeyword(search)
-        }
+        setKeyword(search)
     }, [search])
     
 
@@ -49,7 +43,6 @@ const Search = ({ setKeyword }) => {
                     onFocus={() => setShow(true)}
                     onBlur={() =>  search.length === 0 && setShow(false)}
                     onChange={onChangeHandler}
-                    onKeyDown={onKeyDownHandler}
                     value={search}
                 />
             </Container>

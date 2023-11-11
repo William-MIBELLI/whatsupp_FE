@@ -28,8 +28,12 @@ const ChatHeader = () => {
         setDisplayMenu(!displayMenu)
     }
 
+    const onBlurHandler = () => {
+        setDisplayMenu(false)
+    }
+
     return (
-        <Component onMouseLeave={() => setDisplayMenu(false)}>
+        <Component onMouseLeave={onBlurHandler}>
             <Side>
                 <ImageButton size={'55px'}>
                     <img style={{ background: 'white'}} src={ isGroup ? groupPicture : pictureUrl} alt={user.name}></img>
@@ -57,12 +61,12 @@ const ChatHeader = () => {
                 <ImageButton clickHandler={onMenuClick}>
                     <DotsIcon/>
                 </ImageButton>
-            </Side>
             {
                 displayMenu && (
-                    <ChatMenu setDisplayMenu={setDisplayMenu} />
+                    <ChatMenu blurHandler={onBlurHandler} />
                 )
             }
+            </Side>
         </Component>
     )
 }

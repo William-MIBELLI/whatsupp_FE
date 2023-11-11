@@ -8,6 +8,7 @@ export const Container = styled.div`
     position: absolute;
     top: 100%;
     right: 0;
+    z-index: 100;
 `
 
 export const MenuItem = styled.div`

@@ -6,7 +6,6 @@ import {
     Form,
     Footer,
     ChangePassword,
-    Error,
     Header,
     PictureContainer,
     StyledAuthInput,
@@ -23,6 +22,7 @@ import { Link } from "react-router-dom";
 import Button from "../../components/button/button";
 import { updateUserOnDb } from "../../service/api.service";
 import { updateCurrentUser } from "../../store/user/user.action";
+import ErrorMEssage from "../../components/error/error";
 
 
 const Settings = () => {
@@ -104,9 +104,7 @@ const Settings = () => {
                             loading={loading}
                         />
                         {error && (
-                            <Error>
-                                Something goes wrong, please try again.
-                            </Error>
+                            <ErrorMEssage message='Something goes wrong, please try again.'/>
                         )}
                     </Form>
                     <Footer>

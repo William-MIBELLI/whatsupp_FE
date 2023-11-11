@@ -15,6 +15,7 @@ export const Side = styled.div`
     align-items: center;
     gap: 1rem;
     padding: 0 20px;
+    height: 100%;
 
     svg{
         fill: ${props => props.theme.color.dark_svg_1};

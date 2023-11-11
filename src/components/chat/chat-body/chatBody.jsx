@@ -31,9 +31,14 @@ const ChatBody = () => {
         socket.emit("join-conversation", activeConversation._id);
     }, [activeConversation]);
 
+
+    // !!!!!    TODO       !!!!!!!!
+    //Le scroll ne va pas jusqu'au bout
+
     //Scroll jusqu'au dernier message
     useEffect(() => {
-        endRef.current.scrollIntoView({ behavior: "smooth", block: 'start'  });
+        endRef.current.scrollIntoView({ behavior: "smooth", block: 'end'  });
+        //endRef.current.scrollTo({ bottom: '0', behavior: 'smooth'})
     }, [messages, typing]);
 
     //Check si l'user est en train de taper

@@ -105,10 +105,6 @@ export const StyledAuthInput = styled(AuthInput)`
     width: 100%;
 `
 
-export const Error = styled.p`
-    font-size: 0.8rem;
-    color: ${color.red_1};
-`
 
 export const StyledSucces = styled(Success)`
     margin: auto;

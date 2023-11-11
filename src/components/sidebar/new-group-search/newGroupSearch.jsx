@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import {
     Arrow,
     ArrowContainer,
@@ -7,17 +7,16 @@ import {
     Input,
     Body,
     Footer,
-    Confirm,
-    Error,
 } from "./newGroupSearch.style";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../../store/user/user.selector";
 import { createGroupOnDb, searchUserOnDb } from "../../../service/api.service";
 import { theme } from '../../../utils/theme'
-import { ConfirmIcon } from "../../../svg";
 import { CreateNewGroupContext } from "../sidebar";
 import { fetchConversationsAsync } from "../../../store/chat/chat.action";
+import ErrorMessage from "../../error/error";
+import Button from "../../button/button";
 
 const NewGroupSearch = () => {
 
@@ -37,12 +36,30 @@ const NewGroupSearch = () => {
     }
 
     //Quand luser click sur entrée, on lance la recherche dans la db
-    const onKeyDownHandler = async (e) => {
-        if (inputValue.length <= 0 || e.key !== 'Enter') {
+    // const onKeyDownHandler = async (e) => {
+    //     // if (inputValue.length <= 0 || e.key !== 'Enter') {
+    //     //     return
+    //     // }
+    //     setSearchResult([])
+    //     const res = await searchUserOnDb(accessToken, inputValue)
+    //     if (res) {
+    //         const temp = res.map(user => {
+    //             return {
+    //                 label: user.name,
+    //                 value: user._id,
+    //                 picture: user.pictureUrl
+    //             }
+    //         })
+    //         setSearchResult(temp)
+    //     }
+    // }
+
+    const searchUser = async () => {
+        setSearchResult([])//On reset searchResult
+        if (inputValue === '') { //Si linput est vide, on return pour éviter une request inutile
             return
         }
-        setSearchResult([])
-        const res = await searchUserOnDb(accessToken, inputValue)
+        const res = await searchUserOnDb(accessToken, inputValue) //On call le backend
         if (res) {
             const temp = res.map(user => {
                 return {
@@ -51,9 +68,14 @@ const NewGroupSearch = () => {
                     picture: user.pictureUrl
                 }
             })
-            setSearchResult(temp)
+            setSearchResult(temp) //On stocke le resultat dans searchResult
         }
     }
+
+    //Quand luser cherche un user, on lance la recherche a chaque fois que la valeur change
+    useEffect(() => {
+        searchUser()
+    },[inputValue])
 
     //Stocke les users selectionnés dans un state
     const onChangeHandler = (userArray) => {
@@ -82,6 +104,7 @@ const NewGroupSearch = () => {
         }
     }
 
+    //Gestion de linput pour le nom du groupe
     const onChangeGroupName = (event) => {
         setGroupName(event.target.value)
     }
@@ -136,18 +159,17 @@ const NewGroupSearch = () => {
                     isMulti
                     placeholder='Look for users...' 
                     onInputChange={onInputChangeHandler}
-                    onKeyDown={onKeyDownHandler}
                     onChange={onChangeHandler}
                     menuShouldBlockScroll={false}
                     menuShouldScrollIntoView={false}
                     
                 />
             </Body>
-            <Footer onClick={onCreateGroup}>
-                <Confirm/>
+            <Footer >
+                <Button text={'Create group'} clickHandler={onCreateGroup}/>
             </Footer>
             {
-                displayError && <Error>Please provide a group name and select atleast 2 users</Error>
+                displayError && <ErrorMessage message='Please provide a group name and select atleast 2 users.' />
             }
         </Container>
     );

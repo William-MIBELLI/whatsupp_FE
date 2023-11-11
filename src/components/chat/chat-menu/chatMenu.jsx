@@ -10,7 +10,7 @@ import {
 } from "../../../store/chat/chat.action";
 import { useState } from "react";
 
-const ChatMenu = ({ setDisplayMenu }) => {
+const ChatMenu = ({ blurHandler }) => {
     const { activeConversation } = useSelector(selectChat);
     const currentUser = useSelector(selectCurrentUser);
     const { accessToken } = currentUser;
@@ -42,12 +42,8 @@ const ChatMenu = ({ setDisplayMenu }) => {
         dispatch(fetchConversationsAsync(accessToken));
     };
 
-    const onMouseLeaveHandler = () => {
-        setDisplayMenu(false);
-    };
-
     return (
-        <Container onMouseLeave={onMouseLeaveHandler}>
+        <Container onMouseLeave={blurHandler} >
             {!isGroup ? (
                 <MenuItem>Options coming soon 😎</MenuItem>
             ) : admin === currentUser._id ? (
