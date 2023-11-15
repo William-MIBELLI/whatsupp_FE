@@ -8,7 +8,7 @@ import {
 } from "./status.style";
 import PrimaryText from "../../primary-text/primaryText";
 import ImageButton from "../../image-button/imageButton";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     selectUser,
@@ -16,11 +16,13 @@ import {
 import { updateStatusAsync } from "../../../store/user/user.action";
 import { PulseLoader } from "react-spinners";
 import SecondaryText from "../../secondary-text/secondaryText";
+import { ThemeContext } from "styled-components";
 
 const Status = () => {
     const [newStatus, setNewStatus] = useState("");
     const { currentUser: user, isLoading } = useSelector(selectUser);
     const dispatch = useDispatch();
+    const color = useContext(ThemeContext)
     
     //Gestion de l'input
     const onChangeHandler = (event) => {
@@ -63,7 +65,7 @@ const Status = () => {
                 </LeftSide>
                 <RightSide>
                     {isLoading ? (
-                        <PulseLoader size={6} color="white" />
+                        <PulseLoader size={6} color={color.text_1} />
                     ) : (
                         <ImageButton clickHandler={onSendStatus}>
                             <SendIcon />

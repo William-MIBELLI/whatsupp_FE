@@ -13,7 +13,7 @@ const NotMe = css`
 export const Component = styled.div`
     color: ${props => props.theme.text_1};
     padding: 15px 10px;
-    max-width: 45%;
+    max-width: 65%;
     text-align: justify;
     width: fit-content;
     border-radius: 8px;

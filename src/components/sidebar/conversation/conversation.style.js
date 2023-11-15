@@ -30,16 +30,17 @@ export const ImgContainer = styled.div`
     max-height: 40px;
     min-width: 40px;
     min-height: 40px;
+    width: 40px;
+    height: 40px;
     overflow: hidden;
     border-radius: 50%;
-    background-color: blue;
 
     & img {
         width: 100%;
         height: 100%;
     }
 
-    border: ${({ isOnline }) => (isOnline ? `4px solid ${props => props.theme.green_1}` : "")};
+    border: ${(props) => (props.isonline ? `4px solid ${props.theme.green_1}` : "")};
 `;
 
 export const InfoContainer = styled.div`

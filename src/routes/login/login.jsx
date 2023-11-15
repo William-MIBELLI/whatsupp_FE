@@ -10,11 +10,19 @@ import { selectUser } from "../../store/user/user.selector";
 import { loginUserAsync } from "../../store/user/user.action";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
-import { Footer, ForgetPassDiv, ForgetPassText, Description } from "./login.style";
+import {
+    Footer,
+    ForgetPassDiv,
+    ForgetPassText,
+    Description,
+    SwitchIcon,
+    SwitchContainer,
+} from "./login.style";
 import { Link } from "react-router-dom";
 import PrimaryText from "../../components/primary-text/primaryText";
-import Switch from 'react-switch'
+import Switch from "react-switch";
 import { SelectThemeContext } from "../../App";
+import { ThemeContext } from "styled-components";
 
 const Login = () => {
     const {
@@ -29,13 +37,13 @@ const Login = () => {
     const { isLoading, error, loggedIn } = useSelector(selectUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { theme, setTheme } = useContext(SelectThemeContext)
-    
+    const { theme, setTheme } = useContext(SelectThemeContext);
+    const color = useContext(ThemeContext)
 
     const onSubmitHandler = async (data) => {
-        const r = await dispatch(loginUserAsync(data))
+        const r = await dispatch(loginUserAsync(data));
         if (r) {
-            navigate('/home')
+            navigate("/home");
         }
     };
 
@@ -69,7 +77,7 @@ const Login = () => {
                 />
                 {error && <p>{error.toString()}</p>}
                 <ForgetPassDiv>
-                    <Link to='/forget-password'>
+                    <Link to="/forget-password">
                         <ForgetPassText>Forget your password ?</ForgetPassText>
                     </Link>
                 </ForgetPassDiv>
@@ -80,7 +88,17 @@ const Login = () => {
                         <PrimaryText>Register</PrimaryText>
                     </Link>
                 </Footer>
-                <Switch onChange={(checked) => setTheme(checked)} checked={theme} width={40} height={20}/>
+                <SwitchContainer>
+                    <Switch
+                        onChange={(checked) => setTheme(checked)}
+                        checked={theme}
+                        width={53}
+                        height={25}
+                        checkedIcon={<SwitchIcon>😎</SwitchIcon>}
+                        uncheckedIcon={<SwitchIcon>🌚</SwitchIcon>}
+                        onColor={color.green_1}
+                    />
+                </SwitchContainer>
             </AuthForm>
         </FormContainer>
     );

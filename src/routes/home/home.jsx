@@ -29,6 +29,7 @@ import {
 import { getMedia } from "../../utils/call.utils";
 import SimplePeer from "simple-peer";
 import { Outlet, useNavigate } from "react-router-dom";
+import Footer from "../../components/footer/footer";
 
 export const CallContext = createContext(null);
 
@@ -299,6 +300,7 @@ const Home = () => {
                     />
                 )}
                 {call.isActive && <CallContainer />}
+                <Footer/>
             </StyledHome>
         </CallContext.Provider>
     );

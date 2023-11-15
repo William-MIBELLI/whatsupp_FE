@@ -40,6 +40,8 @@ const Conversation = ({ convoId }) => {
     const pictureUrl = isGroup ? groupPicture : sender.pictureUrl;
     const [typing, setTyping] = useState(false)
 
+    console.log('ONLINEUSER : ', onlineUsers)
+
     //Fetch la conversation en activeConversation
     const onClickHandler = async () => {
         const receiver_id = getReceiverId(convo.users, userId);
@@ -72,7 +74,7 @@ const Conversation = ({ convoId }) => {
         <Component onClick={onClickHandler}>
             <LeftSide>
                 <ImgContainer
-                    isOnline={onlineUsers.find(
+                    isonline={onlineUsers.find(
                         (c) => c.userId === sender?._id || ""
                     )}
                 >

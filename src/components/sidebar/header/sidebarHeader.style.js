@@ -52,3 +52,13 @@ export const List = styled.ul`
     column-gap: 0.625rem;
     list-style: none;
 `;
+
+export const SwitchIcon = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+    height: 100%;
+    width: 100%;
+`

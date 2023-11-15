@@ -42,7 +42,7 @@ export const Input = styled.input`
     border: none;
     outline: none;
     background-color: ${props => props.theme.bg_5};
-    color: white;
+    color: ${props => props.theme.text_1};
 
     &::placeholder {
         color: ${props => props.theme.green_2};

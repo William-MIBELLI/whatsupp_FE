@@ -13,27 +13,33 @@ import { selectChat, selectFiles } from "../../../store/chat/chat.selector";
 import { clearFiles, sendMessageAsync } from "../../../store/chat/chat.action";
 import EmojiPicker from "emoji-picker-react";
 import { useContext } from "react";
-import { SocketContext } from "../../../App";
+import { SelectThemeContext, SocketContext } from "../../../App";
 import FileInput from "../file-input/fileInput";
 import {  PulseLoader } from "react-spinners";
 import { getSender } from "../../../utils/helper";
+import { Theme } from "emoji-picker-react";
+import { ThemeContext } from "styled-components";
 
 const ChatFooter = () => {
+
+    const { accessToken, _id: currentUserID } = useSelector(selectCurrentUser);
+    const state = useSelector(selectChat);
+    const files = useSelector(selectFiles)
+    const typeRef = useRef();
+    const dispatch = useDispatch();
+    const lastTimeTyping = useRef()
+    const { socket } = useContext(SocketContext);
+    const { theme } = useContext(SelectThemeContext)
+    const color = useContext(ThemeContext)
 
     const [message, setMessage] = useState("");
     const [showEmoji, setShowEmoji] = useState(false);
     const [cursorPosition, setCursorPosition] = useState("");
-    const { accessToken, _id: currentUserID } = useSelector(selectCurrentUser);
     const [typing, setTyping] = useState(false)
-    const state = useSelector(selectChat);
-    const files = useSelector(selectFiles)
-    const typeRef = useRef();
+    const [userIdToNOtif, setUSerIdToNotif] = useState()
+
     const { activeConversation, isLoading } = state;
     const { users } = activeConversation
-    const [userIdToNOtif, setUSerIdToNotif] = useState()
-    const dispatch = useDispatch();
-    const { socket } = useContext(SocketContext);
-    const lastTimeTyping = useRef()
     
     //On récupère l'id de luser a notifer pour le typing
     useEffect(() => {
@@ -43,7 +49,7 @@ const ChatFooter = () => {
         }
     }, [state])
 
-
+    console.log('emoji theme : ', Theme)
 
     //Envoi du message
     const onSubmitHandler = async (event) => {
@@ -120,7 +126,8 @@ const ChatFooter = () => {
                         onEmojiClick={onEmojiCLickHandler}
                         width={"100%"}
                         emojiStyle="twitter"
-                        theme="dark"
+                        theme={theme ? 'light' : 'dark'}
+                        
                     />
                 </EmojiPickContainer>
             )}
@@ -140,7 +147,7 @@ const ChatFooter = () => {
                     isLoading ? (
                         <PulseLoader
                             size={6}
-                            color='white'
+                            color={color.text_1}
                         />
                     ) : (
                         <ImageButton type="submit">

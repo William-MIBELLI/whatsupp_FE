@@ -35,3 +35,18 @@ export const ForgetPassText = styled(SecondaryText)`
     }
 `
 
+export const SwitchIcon = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+    height: 100%;
+    width: 100%;
+`
+
+export const SwitchContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`
+

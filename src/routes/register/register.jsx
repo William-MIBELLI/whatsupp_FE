@@ -98,7 +98,6 @@ const Register = () => {
                         <PrimaryText>Login</PrimaryText>
                     </Link>
                 </Footer>
-                <Switch onChange={(checked) => setTheme(checked)} checked={theme} width={40} height={20}/>
             </AuthForm>
         </FormContainer>
     );
