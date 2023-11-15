@@ -7,12 +7,11 @@ import {
     PollIcon,
     StickerIcon,
 } from "../../../svg";
-import { theme } from "../../../utils/theme";
+import { globalTheme } from "../../../utils/theme";
 import ImageButton from "../../image-button/imageButton";
 import { Component } from "./attachement.style";
 
 const Attachment = ({ onClickhandler }) => {
-    
     const color = theme.color;
     const size = "50px";
 

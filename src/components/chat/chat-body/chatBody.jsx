@@ -9,7 +9,7 @@ import { SocketContext } from "../../../App";
 import FilePreview from "../file-preview/filePreview";
 
 const ChatBody = () => {
-    const BgUrl = process.env.REACT_APP_CHAT_BACKGROUND;
+    //const BgUrl = process.env.REACT_APP_CHAT_BACKGROUND;
     const { activeConversation, messages } = useSelector(selectChat);
     const endRef = useRef();
     const { accessToken, _id: userId } = useSelector(selectCurrentUser);
@@ -56,7 +56,7 @@ const ChatBody = () => {
     },[endRef.current])
 
     return (
-        <Component bgurl={BgUrl}>
+        <Component>
             <Container>
                 {messages &&
                     messages.map((m) => {

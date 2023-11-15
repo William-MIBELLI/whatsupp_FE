@@ -5,7 +5,7 @@ export const StyledAuthInput = styled.div`
     text-align: left;
     display: flex;
     flex-direction: column;
-    color: ${props => props.theme.color.dark_text_1};
+    color: ${props => props.theme.text_1};
 
     & > * {
         margin-top: 0.25rem;
@@ -19,14 +19,14 @@ export const StyledAuthInput = styled.div`
     }
 
     input {
-        background-color: ${props => props.theme.color.dark_bg_3};
+        background-color: ${props => props.theme.bg_3};
         padding: 0.5rem 1rem;
         border-radius: 0.5rem;
         outline: none;
         font-size: 1rem;
         line-height: 1.5em;
         border: none;
-        color: white;
+        color: ${props => props.theme.text_1};
     }
 `
 

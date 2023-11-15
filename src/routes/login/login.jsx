@@ -9,11 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../store/user/user.selector";
 import { loginUserAsync } from "../../store/user/user.action";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import { Footer, ForgetPassDiv, ForgetPassText } from "./login.style";
+import { useContext, useEffect } from "react";
+import { Footer, ForgetPassDiv, ForgetPassText, Description } from "./login.style";
 import { Link } from "react-router-dom";
-import { SocketContext } from "../../App";
-import SecondaryText from "../../components/secondary-text/secondaryText";
+import PrimaryText from "../../components/primary-text/primaryText";
+import Switch from 'react-switch'
+import { SelectThemeContext } from "../../App";
 
 const Login = () => {
     const {
@@ -28,6 +29,7 @@ const Login = () => {
     const { isLoading, error, loggedIn } = useSelector(selectUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { theme, setTheme } = useContext(SelectThemeContext)
     
 
     const onSubmitHandler = async (data) => {
@@ -48,7 +50,7 @@ const Login = () => {
         <FormContainer>
             <AuthForm
                 title={"Login"}
-                description={"Get sign in and start chating !"}
+                description={"Get sign in and start chatting !"}
                 submitHandler={handleSubmit(onSubmitHandler)}
             >
                 <AuthInput
@@ -73,9 +75,12 @@ const Login = () => {
                 </ForgetPassDiv>
                 <Button text={"Sign in"} loading={isLoading} />
                 <Footer>
-                    <SecondaryText>Don't have account ? Create one</SecondaryText>
-                    <Link to={"/register"}>Register</Link>
+                    <Description>Don't have account ? Create one</Description>
+                    <Link to={"/register"}>
+                        <PrimaryText>Register</PrimaryText>
+                    </Link>
                 </Footer>
+                <Switch onChange={(checked) => setTheme(checked)} checked={theme} width={40} height={20}/>
             </AuthForm>
         </FormContainer>
     );

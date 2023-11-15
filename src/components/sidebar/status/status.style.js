@@ -1,19 +1,16 @@
-import styled from 'styled-components'
-import { theme } from '../../../utils/theme'
-
-const { color } = theme
+import styled from "styled-components";
 
 export const Component = styled.div`
     height: 90px;
-    background-color: ${props => props.theme.color.dark_bg_3};
+    background-color: ${(props) => props.theme.bg_3};
     display: flex;
     align-items: center;
     padding: 13px;
 
-    & svg{
+    & svg {
         cursor: pointer;
     }
-`
+`;
 
 export const Container = styled.div`
     width: 100%;
@@ -22,9 +19,9 @@ export const Container = styled.div`
     justify-content: space-around;
 
     & svg {
-        fill : ${props => props.theme.color.blue_1}
+        fill: ${(props) => props.theme.blue_1};
     }
-`
+`;
 
 export const LeftSide = styled.div`
     display: flex;
@@ -35,7 +32,7 @@ export const LeftSide = styled.div`
     text-align: left;
     font-weight: 400;
     width: 80%;
-`
+`;
 
 export const Input = styled.input`
     border-radius: 0.5rem;
@@ -44,17 +41,16 @@ export const Input = styled.input`
     box-sizing: border-box;
     border: none;
     outline: none;
-    background-color: ${color.dark_bg_5};
+    background-color: ${props => props.theme.bg_5};
     color: white;
 
-    &::placeholder{
-        color: ${color.green_2};
+    &::placeholder {
+        color: ${props => props.theme.green_2};
     }
-`
-
+`;
 
 export const RightSide = styled.div`
     & svg {
-        fill: ${props => props.theme.color.dark_svg_2};
+        fill: ${(props) => props.theme.svg_2};
     }
-`
+`;

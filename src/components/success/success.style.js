@@ -2,21 +2,19 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     width: 400px;
-    background-color: ${props => props.theme.color.dark_bg_2};
+    background-color: ${(props) => props.theme.bg_2};
     border-radius: 0.5rem;
     display: flex;
     flex-direction: column;
     padding: 10px;
-    
-    *{
+
+    * {
         margin: 15px 0;
     }
 
-    p{
+    p {
         margin: 0;
     }
-
-
 `;
 
 export const Header = styled.div`
@@ -34,4 +32,4 @@ export const Title = styled.h2`
     font-size: 1.825rem;
     color: white;
     font-weight: bold;
-`
+`;

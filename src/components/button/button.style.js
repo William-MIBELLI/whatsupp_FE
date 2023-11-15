@@ -3,9 +3,9 @@ import styled from 'styled-components'
 export const BaseButton = styled.button`
     width: 100%;
     text-align: center;
-    background-color: ${props => props.theme.color.green_1};
+    background-color: ${props => props.theme.green_1};
     padding: 1rem;
-    color: lightgrey;
+    color: ${props => props.theme.text_1};
     font-weight: bold;
     border-radius: 2rem;
     border: none;
@@ -13,7 +13,7 @@ export const BaseButton = styled.button`
     cursor: pointer;
 
     &:hover{
-        background-color: ${props => props.theme.color.green_2};
+        background-color: ${props => props.theme.green_2};
     }
 `
 
@@ -23,6 +23,6 @@ export const HomeButton = styled(BaseButton)`
     border-radius: 50%;
 
     &:active{
-        background-color: ${props => props.theme.color.dark_hover_1}
+        background-color: ${props => props.theme.hover_1}
     }
 `

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const StyledFormWrapper = styled.div`
-    background-color: ${props => props.theme.color.dark_bg_1};
+    background-color: ${props => props.theme.bg_1};
     height: 100vh;
     display: flex;
     align-items: center;

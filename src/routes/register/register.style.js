@@ -1,20 +1,20 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Footer = styled.div`
-
     a {
-        color: white;
+        color: ${props => props.theme.text_1};
         text-decoration: none;
 
-        &:hover{
+        &:hover {
             font-weight: bold;
             text-decoration: underline;
         }
     }
 
-    p {
-        margin-bottom: 0.5rem;
-        font-style: italic;
-        color: ${props => props.theme.color.dark_text_3};
-    }
+`;
+
+export const Description = styled.p`
+    margin-bottom: 0.5rem;
+    font-style: italic;
+    color: ${(props) => props.theme.text_3};
 `

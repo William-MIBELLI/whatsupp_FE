@@ -8,10 +8,13 @@ import Button from "../../components/button/button";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../store/user/user.selector";
 import { Link, useNavigate } from "react-router-dom";
-import { Footer } from "./register.style";
+import { Footer, Description } from "./register.style";
 import { fetchUserAsync } from "../../store/user/user.action";
 import Picture from "../../components/auth/picture/picture";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import PrimaryText from "../../components/primary-text/primaryText";
+import Switch from 'react-switch'
+import { SelectThemeContext } from "../../App";
 
 const Register = () => {
     const {
@@ -23,8 +26,10 @@ const Register = () => {
         mode: "all",
     });
     
-    const [picture, setPicture] = useState()
     const { isLoading, error, loggedIn } = useSelector(selectUser);
+    const { theme, setTheme } = useContext(SelectThemeContext)
+
+    const [picture, setPicture] = useState()
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
@@ -88,9 +93,12 @@ const Register = () => {
                 {error && <p>{error.toString()}</p>}
                 <Button type="submit" text={"Signup"} loading={isLoading} />
                 <Footer>
-                    <p>Get an account ? </p>
-                    <Link to={"/login"}>Login</Link>
+                    <Description>Get an account ? </Description>
+                    <Link to={"/login"}>
+                        <PrimaryText>Login</PrimaryText>
+                    </Link>
                 </Footer>
+                <Switch onChange={(checked) => setTheme(checked)} checked={theme} width={40} height={20}/>
             </AuthForm>
         </FormContainer>
     );

@@ -97,7 +97,7 @@ const Conversation = ({ convoId }) => {
             </LeftSide>
             <RightSide>
                 {latestMessage?.createdAt
-                    ? handleDate(latestMessage?.createdAt)
+                    ? <p>{handleDate(latestMessage?.createdAt) }</p>
                     : ""}
             </RightSide>
         </Component>

@@ -1,8 +1,9 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Component = styled.div`
-    max-height: calc(100vh - 220px);
+    max-height: calc(100vh - 310px);
     overflow-y: auto;
+    
 
     &::-webkit-scrollbar {
         width: 5px;
@@ -10,6 +11,6 @@ export const Component = styled.div`
     }
 
     &::-webkit-scrollbar-thumb {
-        background-color: ${props => props.theme.color.dark_bg_2};
+        background-color: ${(props) => props.theme.bg_2};
     }
-`
+`;

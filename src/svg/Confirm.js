@@ -1,8 +1,7 @@
-import { theme } from "../utils/theme";
+import { globalTheme } from "../utils/theme";
 
 const ConfirmIcon = ({ className }) => {
-
-    const { color } = theme
+    const { color } = theme;
 
     return (
         <svg
@@ -25,4 +24,4 @@ const ConfirmIcon = ({ className }) => {
     );
 };
 
-export default ConfirmIcon
+export default ConfirmIcon;

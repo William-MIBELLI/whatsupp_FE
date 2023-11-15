@@ -54,7 +54,7 @@ const ChatHeader = () => {
                 {
                     !isGroup && (
                         <ImageButton clickHandler={() => onVideoCall(user)}>
-                            <VideoIcon/>
+                            <VideoIcon />
                         </ImageButton>
                     )
                 }

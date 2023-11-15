@@ -4,7 +4,7 @@ import SecondaryText from '../../components/secondary-text/secondaryText'
 export const Footer = styled.div`
 
     a {
-        color: white;
+        color: ${props => props.theme.text_1};
         text-decoration: none;
 
         &:hover{
@@ -13,11 +13,12 @@ export const Footer = styled.div`
         }
     }
 
-    p {
-        margin-bottom: 0.5rem;
+`
+
+export const Description = styled.p`
+margin-bottom: 0.5rem;
         font-style: italic;
-        color: ${props => props.theme.color.dark_text_3};
-    }
+        color: ${props => props.theme.text_2};
 `
 
 export const ForgetPassDiv = styled.div`
@@ -30,6 +31,7 @@ export const ForgetPassText = styled(SecondaryText)`
 
     &:hover{
         font-weight: bold;
-        color: white;
+        color: ${props => props.theme.text_1};
     }
 `
+

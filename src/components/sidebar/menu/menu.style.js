@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Component = styled.ul`
     list-style: none;
@@ -6,9 +6,8 @@ export const Component = styled.ul`
     right: 0;
     top: 100%;
     padding-left: 0;
-    background-color: ${props => props.theme.color.dark_bg_2};
-    
-`
+    background-color: ${(props) => props.theme.bg_2};
+`;
 
 export const MenuItem = styled.li`
     height: 3rem;
@@ -18,7 +17,7 @@ export const MenuItem = styled.li`
     align-items: center;
     cursor: pointer;
 
-    &:hover{   
-        background-color: ${props => props.theme.color.dark_bg_1};
+    &:hover {
+        background-color: ${(props) => props.theme.bg_1};
     }
-`
+`;

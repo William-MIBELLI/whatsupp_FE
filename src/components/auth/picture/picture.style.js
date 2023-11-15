@@ -2,9 +2,9 @@ import styled from 'styled-components'
 import Button from '../../button/button'
 
 export const StyledPicture = styled.div`
-    background-color: ${props => props.theme.color.dark_bg_6};
+    background-color: ${props => props.theme.bg_6};
     border-radius: 0.5rem;
-    color: ${props => props.theme.color.green_2};
+    color: ${props => props.theme.green_2};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,8 +14,8 @@ export const StyledPicture = styled.div`
     margin: 0.5rem auto;
 
     &:hover{
-        background-color: ${props => props.theme.color.dark_bg_5};
-        color: ${props => props.theme.color.green_1};
+        background-color: ${props => props.theme.bg_5};
+        color: ${props => props.theme.green_1};
     }
 `
 
@@ -35,11 +35,11 @@ export const PreviewContainer = styled.div`
 `
 export const RemoveButton = styled(Button)`
     padding: 0.4rem 0.7rem;
-    background-color: ${props => props.theme.color.dark_bg_1};
+    background-color: ${props => props.theme.bg_1};
     width: auto;
     margin-top: 0.5rem;
 
     &:hover{
-        background-color: ${props => props.theme.color.red_1};
+        background-color: ${props => props.theme.red_1};
     }
 `

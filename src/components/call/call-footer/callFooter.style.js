@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import { ArrowIcon, CallIcon } from "../../../svg";
-import ImageButton from "../../image-button/imageButton";
 
 export const Container = styled.div`
-    background-color: ${props => props.theme.color.dark_bg_3};
+    background-color: ${props => props.theme.bg_3};
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -17,7 +16,7 @@ export const Container = styled.div`
     justify-content: center;
 
     svg{
-        fill: white;
+        fill: ${props => props.theme.svg_1};
     }
 
 `
@@ -41,6 +40,6 @@ export const IconContainer = styled.div`
 `
 
 export const Call = styled(CallIcon)`
-    fill: ${props => props.theme.color.red_1};
+    fill: ${props => props.theme.red_1};
     cursor: pointer;
 `

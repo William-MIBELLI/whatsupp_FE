@@ -14,7 +14,7 @@ export const Container = styled.div`
     max-width: 760px;
     min-width: 420px;
     padding: 1.5rem;
-    background-color: ${props => props.theme.color.dark_bg_2};
+    background-color: ${props => props.theme.bg_2};
     border-radius: 0.75rem;
 
     & > * {
@@ -25,7 +25,7 @@ export const Container = styled.div`
 
 export const Header = styled.div`
     text-align: center;
-    color: ${props => props.theme.color.dark_text_1}
+    color: ${props => props.theme.text_1}
 `
 
 export const Title = styled.h2`
@@ -39,5 +39,5 @@ export const Title = styled.h2`
 export const Description = styled.p`
     margin-top: 0;
     font-size: 0.875rem;
-    color: ${props => props.theme.color.dark_text_2};
+    color: ${props => props.theme.text_2};
 `
