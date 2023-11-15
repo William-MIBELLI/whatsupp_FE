@@ -30,6 +30,6 @@ export const Header = styled.div`
 
 export const Title = styled.h2`
     font-size: 1.825rem;
-    color: white;
+    color: ${props => props.theme.text_1};
     font-weight: bold;
 `;

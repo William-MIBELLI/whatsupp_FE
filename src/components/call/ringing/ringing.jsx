@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { selectCall } from "../../../store/call/call.selector";
 
 const Ringing = ({ declineCall, acceptCall }) => {
-    const { red_1, green_1: green } = theme.color;
+    const { red_1, green_1: green } = globalTheme.dark;
     const { caller } = useSelector(selectCall);
 
     return (

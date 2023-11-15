@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    background-color: ${(props) => props.theme.bg_5};
+    background-color: ${(props) => props.theme.bg_1};
     position: fixed;
     border-radius: 5px;
     display: flex;
