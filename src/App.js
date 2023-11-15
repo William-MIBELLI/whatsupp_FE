@@ -15,6 +15,7 @@ import { logoutOutUser } from "./store/user/user.action";
 import ForgetPassword from "./routes/forget-password/forgetPassword";
 import ResetPassword from "./routes/reset-password/resetPassword";
 import ChangePassword from "./routes/change-password/changePassword";
+import DeleteAccount from "./routes/delete-accound/deleteAccount";
 
 const socket = new io(process.env.REACT_APP_API_ENDPOINT);
 export const SocketContext = createContext(null);
@@ -41,7 +42,8 @@ function App() {
                             <Route index path="home" element={<HomeDefault/> } />
                             <Route path="conversation" element={<ChatContainer/> } />
                             <Route path="settings" element={<Settings />} />
-                            <Route path="change-password" element={<ChangePassword/> } />
+                            <Route path="change-password" element={<ChangePassword />} />
+                            <Route path="delete-account" element={<DeleteAccount/> } />
                         </Route>
                     </Route>
                     <Route element={<UnLoggedRoute />}>

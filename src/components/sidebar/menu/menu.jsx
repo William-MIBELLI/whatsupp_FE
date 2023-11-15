@@ -1,21 +1,26 @@
 import { Component, MenuItem } from "./menu.style";
 import SecondaryText from '../../secondary-text/secondaryText'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutOutUser } from "../../../store/user/user.action";
 import { clearChat } from "../../../store/chat/chat.action";
 import { useContext } from "react";
 import { CreateNewGroupContext } from "../sidebar";
 import { Link } from "react-router-dom";
+import { SocketContext } from "../../../App";
+import { selectCurrentUser } from "../../../store/user/user.selector";
 
 const Menu = ({ blurHandler }) => {
 
     const dispatch = useDispatch()
-    const  { setCreateNewGroup }  = useContext(CreateNewGroupContext)
+    const { setCreateNewGroup } = useContext(CreateNewGroupContext)
+    const { socket } = useContext(SocketContext)
+    const { _id: userId } = useSelector(selectCurrentUser)
 
 
     const onLogouthandler = () => {
         dispatch(clearChat())
         dispatch(logoutOutUser())
+        socket.emit('user-logout', userId)
     }
 
     const onCreateGroupHandler = () => {

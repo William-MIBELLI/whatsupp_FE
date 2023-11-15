@@ -59,6 +59,7 @@ const Home = () => {
 
     //Emit user-connection socket UNIQUEMENT quand l'user se connecte
     useEffect(() => {
+        console.log('useeffect sur current user ', firstConnection)
         if (currentUser._id !== currentUserRef.current._id || firstConnection.current) {
             firstConnection.current = false
             socket.emit("user-connection", currentUser._id);     
@@ -120,6 +121,22 @@ const Home = () => {
         setSoundStatus(true)
         setVideoStatus(true)
     });
+
+    //USER DELETED
+    useEffect(() => {
+        socket.on('user-deleted', (data) => {
+            const { userId, convoId } = data
+            console.log('user-deleted ', data)
+            const { chat } = store.getState();
+            const { activeConversation, conversations } = chat;
+            if (convoId === activeConversation?._id) {
+                navigate('/home')
+                dispatch(fetchConversationsAsync(currentUser.accessToken));
+            } else {
+                dispatch(removeConversation(conversations, convoId));
+            }
+        })
+    },[])
 
     //GROUP DELETED
     useEffect(() => {

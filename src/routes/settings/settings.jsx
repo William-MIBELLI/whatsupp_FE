@@ -10,25 +10,29 @@ import {
     PictureContainer,
     StyledAuthInput,
     StyledSucces,
-    TurnOffSuccess
+    TurnOffSuccess,
+    DeleteAccountLink,
+    Main
 } from "./settings.style";
 import { selectCurrentUser } from "../../store/user/user.selector";
-import { useState} from "react";
+import { useContext, useState} from "react";
 import Picture from "../../components/auth/picture/picture";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updateSchema } from "../../utils/validation";
 import { Link } from "react-router-dom";
 import Button from "../../components/button/button";
-import { updateUserOnDb } from "../../service/api.service";
-import { updateCurrentUser } from "../../store/user/user.action";
+import { deleteUserOnDb, updateUserOnDb } from "../../service/api.service";
+import { logoutOutUser, updateCurrentUser } from "../../store/user/user.action";
 import ErrorMEssage from "../../components/error/error";
+import { SocketContext } from "../../App";
 
 
 const Settings = () => {
-    const { name, status, accessToken } = useSelector(selectCurrentUser);
+    const { name, status, accessToken, _id: userId } = useSelector(selectCurrentUser);
     const [newPicture, setNewPicture] = useState();
     const dispatch = useDispatch();
+    const { socket } = useContext(SocketContext)
     
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -61,6 +65,18 @@ const Settings = () => {
         setError(true);
     };
 
+    //Suppression du compte
+    const onDeleteClickHandler = async () => {
+        console.log('click delete')
+        const r = await deleteUserOnDb(accessToken)
+        if (r) {
+            console.log('on logout user ', userId)
+            socket.emit('user-logout', userId)
+            dispatch(logoutOutUser())
+            
+        }
+    }
+
     return (
         <Container>
             {success ? (
@@ -79,41 +95,49 @@ const Settings = () => {
                         <SecondaryText>
                             You can manage your user's informations here.
                         </SecondaryText>
-                    </Header>
-                    <Form onSubmit={handleSubmit(onSubmitHandler)}>
-                        <StyledAuthInput
-                            errors={errors?.name?.message}
-                            label={"Your name"}
-                            name={"name"}
-                            register={register}
-                            type={"text"}
-                        />
-                        <StyledAuthInput
-                            errors={errors?.status?.message}
-                            label={"Your status"}
-                            name={"status"}
-                            register={register}
-                            type={"text"}
-                        />
-                        <PictureContainer>
-                            <Picture setPicture={setNewPicture} />
-                        </PictureContainer>
-                        <Button
-                            text={"Save changes"}
-                            type={"submit"}
-                            loading={loading}
-                        />
-                        {error && (
-                            <ErrorMEssage message='Something goes wrong, please try again.'/>
-                        )}
-                    </Form>
-                    <Footer>
-                        <Link to={"/change-password"}>
-                            <ChangePassword>
-                                Change your password
-                            </ChangePassword>
-                        </Link>
-                    </Footer>
+                        </Header>
+                        <Main>
+                            <Form onSubmit={handleSubmit(onSubmitHandler)}>
+                                <StyledAuthInput
+                                    errors={errors?.name?.message}
+                                    label={"Your name"}
+                                    name={"name"}
+                                    register={register}
+                                    type={"text"}
+                                />
+                                <StyledAuthInput
+                                    errors={errors?.status?.message}
+                                    label={"Your status"}
+                                    name={"status"}
+                                    register={register}
+                                    type={"text"}
+                                />
+                                <PictureContainer>
+                                    <Picture setPicture={setNewPicture} />
+                                </PictureContainer>
+                                <Button
+                                    text={"Save changes"}
+                                    type={"submit"}
+                                    loading={loading}
+                                />
+                                {error && (
+                                    <ErrorMEssage message='Something goes wrong, please try again.'/>
+                                )}
+                            </Form>
+                                <Footer>
+                                <Link to={"/change-password"}>
+                                    <ChangePassword>
+                                        Change your password
+                                    </ChangePassword>
+                                    </Link>
+                                    <Link to={'/delete-account'}>
+                                        <DeleteAccountLink>
+                                            Delete your account
+                                        </DeleteAccountLink>
+                                    </Link>
+                            </Footer>
+
+                        </Main>
                 </>
             )}
         </Container>

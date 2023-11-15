@@ -31,7 +31,7 @@ export const Header = styled.div`
 
 export const Form = styled.form`
     display: flex;
-    width: 60%;
+    width: 100%;
     margin:0 auto;
     flex-direction: column;
     align-items: center;
@@ -69,8 +69,8 @@ export const PictureContainer = styled.div`
 export const ChangePassword = styled.div`
     background-color: ${color.dark_bg_1};
     color: ${color.red_1};
-    width: 60%;
     margin: 10px auto;
+    padding: 0 10px;
     border-radius: 0.5rem;
     height: 2.5rem;
     display: flex;
@@ -85,6 +85,16 @@ export const ChangePassword = styled.div`
     }
 `
 
+export const DeleteAccountLink = styled(ChangePassword)`
+    background: ${color.red_1};
+    color: ${color.dark_text_1};
+
+    &:hover{
+        background-color: ${color.dark_bg_1};
+        color: ${color.red_1};
+    }
+`
+
 export const Confirm = styled(ConfirmIcon)`
     cursor: pointer;
 
@@ -94,10 +104,12 @@ export const Confirm = styled(ConfirmIcon)`
 `
 
 export const Footer = styled.div`
-    position: absolute;
+    ${'' /* position: absolute;
     bottom: 20px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%); */}
+    display: flex;
+    justify-content: space-evenly;
     width: 100%;
 `
 
@@ -111,4 +123,13 @@ export const StyledSucces = styled(Success)`
 `
 export const TurnOffSuccess = styled(PrimaryText)`
     cursor: pointer;
+`
+
+export const Main = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 50%;
+    min-width: 370px;
 `

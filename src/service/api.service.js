@@ -397,3 +397,25 @@ export const updateUserOnDb = async (token, data, newPicture = undefined) => {
         return false
     }
 }
+
+export const deleteUserOnDb = async (token, data) => {
+
+    const fd = toFormData(data)
+
+    try {
+        const r = await fetch(`${url}/auth/delete-user`, {
+            method: 'DELETE',
+            body: fd,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        if (r.status !== 201) {
+            throw new Error('something goes wrong')
+        }
+        return true
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
