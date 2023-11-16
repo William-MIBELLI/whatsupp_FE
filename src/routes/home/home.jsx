@@ -52,6 +52,7 @@ const Home = () => {
     const currentUserRef = useRef(currentUser)
     const firstConnection = useRef(true)
 
+    console.log('currentUser : ', currentUser)
     
     useEffect(() => {
         setCall(callData);
@@ -67,7 +68,7 @@ const Home = () => {
         }
     }, [currentUser]);
 
-    //Listen receive-message socket
+    //MESSAGE RECEIVED
     useEffect(() => {
         socket.on("receive-message", (message) => {
             console.log('on recoit un mesage')
@@ -76,7 +77,10 @@ const Home = () => {
                 (c) => c._id === message.conversation._id
             );
             if (existingConv) {
-                dispatch(handleReceivedMessage(message, chat));
+                dispatch(handleReceivedMessage(message, chat, currentUser._id));
+                if (existingConv._id === chat.activeConversation?._id) { //Le message est dans la activeConvo, on reset unreadMsg dans la db
+                    socket.emit('reset-unreadByUsers', { convoId: existingConv._id, userId: currentUser._id })
+                }
             } else {
                 dispatch(fetchConversationsAsync(currentUser.accessToken));
             }

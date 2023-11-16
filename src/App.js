@@ -19,6 +19,8 @@ import DeleteAccount from "./routes/delete-accound/deleteAccount";
 import { ThemeProvider } from "styled-components";
 import { globalTheme } from "./utils/theme";
 
+
+//  !!!!!!!! TODO start socket dans home, ca permettra de le kill plus proprement
 const socket = new io(process.env.REACT_APP_API_ENDPOINT);
 export const SocketContext = createContext(null);
 export const SelectThemeContext = createContext(false)

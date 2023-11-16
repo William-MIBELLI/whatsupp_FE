@@ -19,7 +19,7 @@ export const handleDate = (date) => {
         return momentDate.format("DD/MM/YYYY");
     };
 
-    if (time === "a few seconds") return "Now";
+    if (time === "a few seconds ago") return "Now";
 
     if (time.search("minute") !== -1) {
         const mins = time.split(" ")[0];

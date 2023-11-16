@@ -49,8 +49,6 @@ const ChatFooter = () => {
         }
     }, [state])
 
-    console.log('emoji theme : ', Theme)
-
     //Envoi du message
     const onSubmitHandler = async (event) => {
         event.preventDefault();

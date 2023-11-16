@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getSender, handleDate } from "../../../utils/helper";
 import {
+    Badge,
     Component,
     ContactName,
     ImgContainer,
@@ -35,12 +36,12 @@ const Conversation = ({ convoId }) => {
     const convo = useSelector(selectConversationById(convoId));
     const typingUsers = useSelector(selectTypingUser)
 
-    const { latestMessage, isGroup, name: groupName, pictureUrl: groupPicture } = convo;
+    const { latestMessage, isGroup, name: groupName, pictureUrl: groupPicture, unreadByUsers } = convo;
     const sender = getSender(convo, userId);
     const pictureUrl = isGroup ? groupPicture : sender.pictureUrl;
     const [typing, setTyping] = useState(false)
+    const [unreadMsg, setUnreadMsg] = useState(null)
 
-    console.log('ONLINEUSER : ', onlineUsers)
 
     //Fetch la conversation en activeConversation
     const onClickHandler = async () => {
@@ -60,10 +61,18 @@ const Conversation = ({ convoId }) => {
                 convoId
             )
         );
+        //Je pense que c'est inutile, à vérifier
+        socket.emit('reset-unreadByUsers', {convoId, userId})
         if (r) {
             navigate('conversation')   
         }
     };
+
+    //On récupère le msgCount dans redux
+    useEffect(() => {
+        const u = unreadByUsers.find(item => item.userId === userId)
+        setUnreadMsg(u)
+    },[unreadByUsers])
 
     useEffect(() => {
         const findTypingUser = typingUsers.includes(convoId)
@@ -101,6 +110,9 @@ const Conversation = ({ convoId }) => {
                 {latestMessage?.createdAt
                     ? <p>{handleDate(latestMessage?.createdAt) }</p>
                     : ""}
+                {
+                    unreadMsg?.msgCount > 0 && <Badge>{unreadMsg?.msgCount > 9 ? '9+' : unreadMsg?.msgCount}</Badge>
+                }
             </RightSide>
         </Component>
     );

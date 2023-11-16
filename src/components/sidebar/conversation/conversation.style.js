@@ -70,12 +70,31 @@ export const LastMessage = styled(SecondaryText)`
 
 export const RightSide = styled.div`
     display: flex;
-    align-items: right;
-    padding: 0 19px;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    padding-right: 10px;
     overflow: hidden;
     font-size: small;
     color: ${(props) => props.theme.text_2};
+
+    p{
+        margin: 5px 0;
+    }
 `;
+
+export const Badge = styled.div`
+    background-color: ${props => props.theme.red_1};
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
 
 export const TypingText = styled.p`
     color: ${(props) => props.theme.green_1};
