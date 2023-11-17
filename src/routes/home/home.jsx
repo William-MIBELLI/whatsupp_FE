@@ -52,7 +52,6 @@ const Home = () => {
     const currentUserRef = useRef(currentUser)
     const firstConnection = useRef(true)
 
-    console.log('currentUser : ', currentUser)
     
     useEffect(() => {
         setCall(callData);
@@ -61,7 +60,6 @@ const Home = () => {
 
     //Emit user-connection socket UNIQUEMENT quand l'user se connecte
     useEffect(() => {
-        console.log('useeffect sur current user ', firstConnection)
         if (currentUser._id !== currentUserRef.current._id || firstConnection.current) {
             firstConnection.current = false
             socket.emit("user-connection", currentUser._id);     
@@ -71,14 +69,14 @@ const Home = () => {
     //MESSAGE RECEIVED
     useEffect(() => {
         socket.on("receive-message", (message) => {
-            console.log('on recoit un mesage')
             const { chat } = store.getState();
             const existingConv = chat.conversations.find(
                 (c) => c._id === message.conversation._id
             );
             if (existingConv) {
                 dispatch(handleReceivedMessage(message, chat, currentUser._id));
-                if (existingConv._id === chat.activeConversation?._id) { //Le message est dans la activeConvo, on reset unreadMsg dans la db
+                if (existingConv._id === chat.activeConversation?._id && chat.activeConversation?.isDisplayed) { 
+                    //Le message est dans la activeConvo et elle est affichée, on reset unreadMsg dans la db
                     socket.emit('reset-unreadByUsers', { convoId: existingConv._id, userId: currentUser._id })
                 }
             } else {
@@ -97,7 +95,6 @@ const Home = () => {
     //Listen TYPING
     useEffect(() => {
         socket.on("typing", (convoId) => {
-            console.log('on recoit typing')
             const { chat } = store.getState();
             dispatch(addTypingUser(convoId, chat.typingUsers));
         });
@@ -120,7 +117,6 @@ const Home = () => {
 
     //call ENDED
     socket.on("callEnded", () => {
-        console.log("call ended");
         dispatch(declineCall());
         streamRef?.current?.getTracks()?.forEach((t) => t.stop());
         setSoundStatus(true)
@@ -130,8 +126,7 @@ const Home = () => {
     //USER DELETED
     useEffect(() => {
         socket.on('user-deleted', (data) => {
-            const { userId, convoId } = data
-            console.log('user-deleted ', data)
+            const { convoId } = data
             const { chat } = store.getState();
             const { activeConversation, conversations } = chat;
             if (convoId === activeConversation?._id) {
@@ -257,7 +252,6 @@ const Home = () => {
         });
 
         peer.on("close", () => {
-            console.log("close peer dans onvideocall");
             socket.off("callAccepted");
         });
 
@@ -271,14 +265,12 @@ const Home = () => {
 
     //Activer ou couper le son pendant l'appel
     const onHandleCallSound = () => {
-        console.log("gestion du son");
         streamRef.current.getTracks()[0].enabled = !soundStatus
         setSoundStatus(!soundStatus)
     };
 
     //Activer ou couper la video pendant l'appel
     const onHandleCallVideo = () => {
-        console.log("gestion de la video", streamRef.current);
         streamRef.current.getTracks()[1].enabled = !videoStatus
         setVideoStatus(!videoStatus)
     };

@@ -12,12 +12,12 @@ const Message = ({ message, me, isGroup }) => {
             {
                 (me === false && isGroup)  && <SenderPic src={message.sender.pictureUrl}/>
             }
-            <Component me={me}>
+            <Component $me={me}>
                 <Content>
                     {
                         (files && files.length > 0) && files.map(f => {
                             return (
-                                <FileMessage file={f} me={me}/>
+                                <FileMessage file={f} $me={me}/>
                             )
                         })
                     }

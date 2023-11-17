@@ -29,10 +29,6 @@ const ChatMenu = ({ blurHandler }) => {
         }
     };
 
-    const onAddUserHandler = () => {
-        console.log("add user");
-    };
-
     const onLeaveGroupHandler = async () => {
         const res = await leaveGroupOnDb(accessToken, groupId);
         if (!res) {

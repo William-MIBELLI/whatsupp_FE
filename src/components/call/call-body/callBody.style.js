@@ -25,7 +25,7 @@ export const MyVideoContainer = styled.video`
     right: 20px;
     transition: all 0.2s ease-in;
 
-    ${({showFooter}) => showFooter ? TranslateVideo : ''}
+    ${({$showfooter}) => $showfooter ? TranslateVideo : ''}
 `
 
 export const TranslateVideo = css`

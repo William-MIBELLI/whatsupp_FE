@@ -15,29 +15,36 @@ import {
     Main
 } from "./settings.style";
 import { selectCurrentUser } from "../../store/user/user.selector";
-import { useContext, useState} from "react";
+import { useState, useEffect } from "react";
 import Picture from "../../components/auth/picture/picture";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updateSchema } from "../../utils/validation";
 import { Link } from "react-router-dom";
 import Button from "../../components/button/button";
-import { deleteUserOnDb, updateUserOnDb } from "../../service/api.service";
-import { logoutOutUser, updateCurrentUser } from "../../store/user/user.action";
+import { updateUserOnDb } from "../../service/api.service";
+import { updateCurrentUser } from "../../store/user/user.action";
 import ErrorMEssage from "../../components/error/error";
-import { SocketContext } from "../../App";
+import { toggleActiveConvoStatus } from "../../store/chat/chat.action";
+import { selectChat } from "../../store/chat/chat.selector";
 
 
 const Settings = () => {
-    const { name, status, accessToken, _id: userId } = useSelector(selectCurrentUser);
+    const { name, status, accessToken } = useSelector(selectCurrentUser);
+    const { activeConversation } = useSelector(selectChat)
     const [newPicture, setNewPicture] = useState();
     const dispatch = useDispatch();
-    const { socket } = useContext(SocketContext)
     
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
 
+
+    useEffect(() => { //On met lactiveConvo en isDisplayed : false pour afficher les notifs de nouveaux messages
+        if (activeConversation) {
+            dispatch(toggleActiveConvoStatus(false))
+        }
+    },[])
 
     const {
         register,
@@ -64,18 +71,6 @@ const Settings = () => {
         }
         setError(true);
     };
-
-    //Suppression du compte
-    const onDeleteClickHandler = async () => {
-        console.log('click delete')
-        const r = await deleteUserOnDb(accessToken)
-        if (r) {
-            console.log('on logout user ', userId)
-            socket.emit('user-logout', userId)
-            dispatch(logoutOutUser())
-            
-        }
-    }
 
     return (
         <Container>

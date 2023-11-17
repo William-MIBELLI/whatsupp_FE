@@ -61,8 +61,7 @@ const Conversation = ({ convoId }) => {
                 convoId
             )
         );
-        //Je pense que c'est inutile, à vérifier
-        socket.emit('reset-unreadByUsers', {convoId, userId})
+
         if (r) {
             navigate('conversation')   
         }
@@ -72,18 +71,28 @@ const Conversation = ({ convoId }) => {
     useEffect(() => {
         const u = unreadByUsers.find(item => item.userId === userId)
         setUnreadMsg(u)
-    },[unreadByUsers])
+    }, [unreadByUsers])
+
+
+    //On met unread message a 0
+    useEffect(() => {
+        if (activeConversation?._id === convo?._id) {
+            setUnreadMsg(0)      
+        }
+    },[activeConversation])
+    
 
     useEffect(() => {
         const findTypingUser = typingUsers.includes(convoId)
         setTyping(findTypingUser)
     }, [typingUsers])
 
+
     return (
         <Component onClick={onClickHandler}>
             <LeftSide>
                 <ImgContainer
-                    isonline={onlineUsers.find(
+                    $isonline={onlineUsers.find(
                         (c) => c.userId === sender?._id || ""
                     )}
                 >
@@ -97,7 +106,7 @@ const Conversation = ({ convoId }) => {
                                 typing...
                             </TypingText>
                             :
-                            <LastMessage>
+                            <LastMessage $unread={unreadMsg?.msgCount > 0}>
                                 {latestMessage?.message
                                     ? latestMessage?.message
                                     : sender.status}

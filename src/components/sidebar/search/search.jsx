@@ -21,7 +21,6 @@ const Search = ({ setKeyword }) => {
 
     //Reset linput search et réaffiche les convos
     const onReturnClick = () => {
-        console.log('click return')
         setSearch('')
         setKeyword('')
     }

@@ -26,6 +26,5 @@ export const setPartnerStream = stream => {
 }
 
 export const setAcceptedCall = () => {
-    console.log('on change isaccepted')
     return createAction(CALL_ACTION.SET_ACCEPTED_CALL)
 }

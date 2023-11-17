@@ -20,7 +20,7 @@ export const Container = styled.div`
     padding: 5px;
     border-radius: 5px;
 
-    ${({ me }) => (me ? Me : NotMe)};
+    ${({ $me }) => ($me ? Me : NotMe)};
 `;
 
 export const Mini = styled.img`

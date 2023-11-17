@@ -32,7 +32,6 @@ const ResetPassword = () => {
         const r = await resetPasswordOnDb({ ...data, token });
         setLoading(false);
         if (!r) {
-            console.log('on rentre dans error')
             return setError("failed to reset password, please try again");
         }
         return setSuccess(true);

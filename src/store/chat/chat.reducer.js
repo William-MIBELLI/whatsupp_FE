@@ -108,6 +108,19 @@ export const chatReducer = (state = initialState, action) => {
                 ...state,
                 activeConversation: payload
             }
+        case CHAT_ACTION_TYPE.TOGGLE_ACTIVE_CONVERSATION_STATUS:
+            return {
+                ...state,
+                activeConversation: {
+                    ...state.activeConversation,
+                    isDisplayed: payload
+                }
+            }
+        case CHAT_ACTION_TYPE.CLEAR_UNREAD_MESSAGE:
+            return {
+                ...state,
+                activeConversation: payload
+            }
         default:
             return state
     }

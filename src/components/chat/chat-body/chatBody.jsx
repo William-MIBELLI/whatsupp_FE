@@ -51,10 +51,6 @@ const ChatBody = () => {
         setDisplayFiles(files.length !== 0)
     },[files])
 
-    useEffect(() => {
-        console.log('endref : ', endRef.current.target)
-    },[endRef.current])
-
     return (
         <Component>
             <Container>

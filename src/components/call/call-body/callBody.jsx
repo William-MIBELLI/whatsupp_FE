@@ -22,7 +22,7 @@ const CallBody = ({ showFooter }) => {
     return (
         <Container>
             <PartnerVideoContainer playsInline ref={partnerVideo} autoPlay />
-            <MyVideoContainer playsInline showFooter={showFooter} ref={myVideo} autoPlay muted/>
+            <MyVideoContainer playsInline $showooter={showFooter} ref={myVideo} autoPlay muted/>
         </Container>
     )
 }

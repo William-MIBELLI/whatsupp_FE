@@ -32,7 +32,6 @@ const Status = () => {
 
     //On submit sir luser clique sur le bouton envoi
     const onSendStatus = async () => {
-        console.log("send status");
         const r = await dispatch(
             updateStatusAsync(user.accessToken, newStatus, user)
         );

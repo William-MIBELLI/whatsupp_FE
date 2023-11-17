@@ -78,13 +78,14 @@ export const ChangePassword = styled.div`
 
     &:hover {
         background-color: ${props => props.theme.red_1};
-        color: ${props => props.theme.text_1};
+        color: white;
     }
 `;
 
 export const DeleteAccountLink = styled(ChangePassword)`
     background: ${props => props.theme.red_1};
-    color: ${props => props.theme.text_1};
+    ${'' /* color: ${props => props.theme.text_1}; */}
+    color: white;
 
     &:hover {
         background-color: ${props => props.theme.bg_1};

@@ -7,7 +7,6 @@ export const registerUserOnServer = async (userData, picture) => {
     const url = process.env.REACT_APP_API_ENDPOINT;
     const fd = toFormData(userData);
     const pictureData = await uploadOnCloudinary(picture)
-    console.log('picture apres upload: ', pictureData)
     if (pictureData) {
         fd.append('picture', pictureData)
     }
@@ -94,7 +93,6 @@ export const getConversationsFromServer = async (token) => {
 
 export const searchUserOnDb = async (token, keyword) => {
     try {
-        console.log('keyword dans searchuser : ', keyword)
         const res = await fetch(`${url}/user/${keyword}`, {
             method: "GET",
             headers: {
@@ -181,7 +179,6 @@ export const sendMessageOnServer = async (token, values, files) => {
 
 const uploadFilesOnCloud = async (files) => {
     const filesUrl = []
-    console.log('file dans upload' , files)
     try {
         for (let i = 0; i < files.length; i++){
             const fd = new FormData()
@@ -362,7 +359,6 @@ export const changePasswordOnDb = async (token, data) => {
         }
         return true
     } catch (error) {
-        console.log(error)
         return false
     }
 }
@@ -379,7 +375,6 @@ export const updateUserOnDb = async (token, data, newPicture = undefined) => {
             }
             
         }
-        console.log('on lance la requete')
         const r = await fetch(`${url}/user/update-user`, {
             method: 'PUT',
             body: fd,
@@ -393,7 +388,6 @@ export const updateUserOnDb = async (token, data, newPicture = undefined) => {
         const { user } = await r.json() // On return user pour metre a jour le state
         return user
     } catch (error) {
-        console.log(error)
         return false
     }
 }
@@ -415,7 +409,6 @@ export const deleteUserOnDb = async (token, data) => {
         }
         return true
     } catch (error) {
-        console.log(error)
         return false
     }
 }

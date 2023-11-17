@@ -13,13 +13,11 @@ const FileInput = () => {
 
     //Click sur l'input
     const onCLickHandler = (event) => {
-        console.log("onclickhandler");
         inputRef.current.click();
     };
 
     //Controle et recuperation des fichiers de linput
     const onChangeHandler = async (event) => {
-        console.log("onchangehandler", event.target.files);
         const files = Array.from(event.target.files).filter((f) =>
             acceptedMimeType.includes(f.type)
         );

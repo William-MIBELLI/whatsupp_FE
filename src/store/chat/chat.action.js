@@ -7,10 +7,6 @@ import {
 import { createAction } from "../../utils/helper";
 import { CHAT_ACTION_TYPE } from "./chat.type";
 
-export const removeActiveConversation = () => {
-    return createAction(CHAT_ACTION_TYPE.REMOVE_ACTIVE_CONVERSATION);
-};
-
 const fetchConversationsStart = () => {
     return createAction(CHAT_ACTION_TYPE.FETCH_CONVERSATION_START);
 };
@@ -54,22 +50,33 @@ const fetchActiveConversationStart = () => {
 
 const fetchActiveConversationSuccess = (active, conversations, partnerId) => {
     const existingConv = conversations.find((c) => c._id === active._id);
-    if (!existingConv) {//Si la convo n'existe pas, on la push dans conversations
+    if (!existingConv) {
+        //Si la convo n'existe pas, on la push dans conversations
         const newConversations = [...conversations, active];
         return createAction(
             CHAT_ACTION_TYPE.FETCH_ACTIVE_CONVERSATION_SUCCESS,
-            { active, conversations: newConversations }
+            {
+                active: { ...active, isDisplayed: true },
+                conversations: newConversations,
+            }
         );
     }
-    const updatedConvo = conversations.map(convo => { //Sinon on resest unreadByUsers
-        return convo._id === active._id ? {
-            ...convo, unreadByUsers: convo.unreadByUsers.map(item => {
-            return item.userId !== partnerId ? {...item, msgCount: 0} : item
-        })} : convo
-    })
+    const updatedConvo = conversations.map((convo) => {
+        //Sinon on resest unreadByUsers
+        return convo._id === active._id
+            ? {
+                  ...convo,
+                  unreadByUsers: convo.unreadByUsers.map((item) => {
+                      return item.userId !== partnerId
+                          ? { ...item, msgCount: 0 }
+                          : item;
+                  }),
+              }
+            : convo;
+    });
     return createAction(CHAT_ACTION_TYPE.FETCH_ACTIVE_CONVERSATION_SUCCESS, {
-        active,
-        conversations: updatedConvo
+        active: { ...active, isDisplayed: true },
+        conversations: updatedConvo,
     });
 };
 
@@ -166,7 +173,7 @@ export const sendMessageAsync =
 export const handleReceivedMessage = (message, state, userId) => {
     const { activeConversation, conversations, messages } = state;
     const newConversations = getNewConversationsSorted(conversations, message); //On tri les convos afin davoir celle avec le dernier message reçue en haut
-    if (message.conversation._id === activeConversation?._id) {
+    if (message.conversation._id === activeConversation?._id && activeConversation?.isDisplayed) {
         const newMessages = [...messages, message]; //Si le message est dans la convo active, on push le message dans messages
         return createAction(CHAT_ACTION_TYPE.HANDLE_MESSAGE_RECEIVED, {
             conversations: newConversations,
@@ -182,8 +189,8 @@ export const handleReceivedMessage = (message, state, userId) => {
                   unreadByUsers: convo.unreadByUsers.map((item) => {
                       //On map sur unreadByUsers pour trouver le bon userId
                       return item.userId === userId
-                          ? { ...item, msgCount: item.msgCount + 1 }//Et on y ajoute 1
-                          : item; 
+                          ? { ...item, msgCount: item.msgCount + 1 } //Et on y ajoute 1
+                          : item;
                   }),
               }
             : convo; //Sinon on return la convo sans modif
@@ -249,6 +256,24 @@ export const removeConversation = (convos, convoIdToRemove) => {
     const newConvo = convos.filter((c) => c._id !== convoIdToRemove);
     return createAction(CHAT_ACTION_TYPE.REMOVE_CONVERSATION, newConvo);
 };
+
+export const removeActiveConversation = () => {
+    return createAction(CHAT_ACTION_TYPE.REMOVE_ACTIVE_CONVERSATION);
+};
+
+export const toggleActiveConvoStatus = (status) => {
+    return createAction(
+        CHAT_ACTION_TYPE.TOGGLE_ACTIVE_CONVERSATION_STATUS,
+        status
+    );
+};
+
+export const clearUnreadMsg = (convo, userId) => {
+    const updatedUnreadByUsers = convo.unreadByUsers.map(item => {
+        return item.userId === userId ? { ...item, msgCount: 0} : item
+    })
+    return createAction(CHAT_ACTION_TYPE.CLEAR_UNREAD_MESSAGE, {...convo, unreadByUsers: updatedUnreadByUsers})
+}
 
 export const removeUser = (userId, convo) => {
     const { users } = convo;

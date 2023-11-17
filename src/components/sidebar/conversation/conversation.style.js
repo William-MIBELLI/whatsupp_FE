@@ -40,7 +40,7 @@ export const ImgContainer = styled.div`
         height: 100%;
     }
 
-    border: ${(props) => (props.isonline ? `4px solid ${props.theme.green_1}` : "")};
+    border: ${(props) => (props.$isonline ? `4px solid ${props.theme.green_1}` : "")};
 `;
 
 export const InfoContainer = styled.div`
@@ -66,6 +66,9 @@ export const LastMessage = styled(SecondaryText)`
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+
+    color: ${props => props.$unread ? props.theme.red_1 : ''};
+    font-style: ${props => props.$unread ? 'italic' : ''};
 `;
 
 export const RightSide = styled.div`

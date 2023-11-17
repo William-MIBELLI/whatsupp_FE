@@ -22,7 +22,7 @@ export const Component = styled.div`
     justify-content: space-between;
     word-break: break-word;
 
-    ${({ me }) => (me ? Me : NotMe)};
+    ${({ $me }) => ($me ? Me : NotMe)};
 `;
 
 export const Content = styled.div`

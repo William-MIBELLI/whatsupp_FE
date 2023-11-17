@@ -8,5 +8,10 @@ export const StyledSidebar = styled.div`
     user-select: none;
     overflow-y: hidden;
     background-color: ${props => props.theme.bg_sidebar}; 
+
+    @media only screen and (max-width: 580px){
+        display: none;
+    }
+
 `
 
