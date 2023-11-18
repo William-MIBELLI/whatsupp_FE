@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StyledHome = styled.div`
-    height: 100vh;
+    height: 100%;
     background-color: ${(props) => props.theme.bg_1};
     display: flex;
     justify-content: center;

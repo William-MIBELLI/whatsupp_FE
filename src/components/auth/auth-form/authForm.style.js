@@ -7,13 +7,13 @@ export const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow-y: auto;
     width: 100%;
 
 `
 export const Container = styled.div`
     width: 100%;
-    max-width: 550px;
+    max-width: 400px;
     min-width: 220px;
     padding: 1.5rem;
     background-color: ${props => props.theme.bg_2};

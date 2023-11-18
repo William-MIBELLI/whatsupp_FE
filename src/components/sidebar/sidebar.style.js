@@ -29,8 +29,10 @@ const Display = css`
     position: absolute;
     height: 100%;
     width: 80vw;
+    height: 100vh;
     max-width: 100%;
-    background-color: ${props => props.theme.bg_sidebar}
+    background-color: ${props => props.theme.bg_sidebar};
+    background-color: blue;
 `
 
 // export const StyledSidebar = styled.div`
