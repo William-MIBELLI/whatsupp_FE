@@ -15,4 +15,8 @@ export const Container = styled.div`
     display: flex;
     padding: 40px;
     box-sizing: border-box;
+
+    @media only screen and (max-width: 900px){
+        padding: 0;
+    }
 `;

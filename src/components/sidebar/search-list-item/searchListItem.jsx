@@ -6,6 +6,8 @@ import { fetchActiveConversationAsync } from "../../../store/chat/chat.action";
 import { selectCurrentUser } from "../../../store/user/user.selector";
 import { selectChat } from "../../../store/chat/chat.selector";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { CreateNewGroupContext } from "../sidebar";
 
 const SearchListItem = ({ user, setKeyword }) => {
 
@@ -13,10 +15,12 @@ const SearchListItem = ({ user, setKeyword }) => {
     const pictureUrl = user.pictureUrl
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { setHide } = useContext(CreateNewGroupContext)
     const { accessToken } = useSelector(selectCurrentUser)
     const { conversations } = useSelector(selectChat)
 
     const onClickHandler = async () => {
+        setHide(true)
         await dispatch(fetchActiveConversationAsync(accessToken, user._id, conversations))
         setKeyword('')
         navigate('/conversation')

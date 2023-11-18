@@ -8,11 +8,13 @@ export const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    width: 100%;
+
 `
 export const Container = styled.div`
     width: 100%;
-    max-width: 760px;
-    min-width: 420px;
+    max-width: 550px;
+    min-width: 220px;
     padding: 1.5rem;
     background-color: ${props => props.theme.bg_2};
     border-radius: 0.75rem;
@@ -20,7 +22,7 @@ export const Container = styled.div`
     & > * {
         margin-top: 2rem;
     }
-
+ 
 `
 
 export const Header = styled.div`

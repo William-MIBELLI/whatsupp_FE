@@ -21,7 +21,9 @@ import { globalTheme } from "./utils/theme";
 
 
 //  !!!!!!!! TODO start socket dans home, ca permettra de le kill plus proprement
-const socket = new io(process.env.REACT_APP_API_ENDPOINT);
+const socket = new io(process.env.REACT_APP_API_ENDPOINT, {
+    autoConnect: true
+});
 export const SocketContext = createContext(null);
 export const SelectThemeContext = createContext(false)
 
@@ -37,6 +39,11 @@ function App() {
                 dispatch(logoutOutUser())
             }
         })
+    })
+
+    useEffect(() => {
+        console.log('start page')
+        return () => console.log('refresh page')
     })
 
     return (

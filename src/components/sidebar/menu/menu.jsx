@@ -12,7 +12,7 @@ import { selectCurrentUser } from "../../../store/user/user.selector";
 const Menu = ({ blurHandler }) => {
 
     const dispatch = useDispatch()
-    const { setCreateNewGroup } = useContext(CreateNewGroupContext)
+    const { setCreateNewGroup, setHide } = useContext(CreateNewGroupContext)
     const { socket } = useContext(SocketContext)
     const { _id: userId } = useSelector(selectCurrentUser)
 
@@ -40,7 +40,7 @@ const Menu = ({ blurHandler }) => {
                 onClick={() => setDisplaySettings(true)}
             </MenuItem> */}
             <Link to={'settings'}>
-                <MenuItem >
+                <MenuItem onClick={() => setHide(true)}>
                     <SecondaryText>Settings</SecondaryText>
                 </MenuItem>
             </Link>

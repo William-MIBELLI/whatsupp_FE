@@ -52,11 +52,10 @@ const Home = () => {
     const currentUserRef = useRef(currentUser)
     const firstConnection = useRef(true)
 
-    
+
     useEffect(() => {
         setCall(callData);
     }, [callData]);
-
 
     //Emit user-connection socket UNIQUEMENT quand l'user se connecte
     useEffect(() => {
@@ -83,6 +82,10 @@ const Home = () => {
                 dispatch(fetchConversationsAsync(currentUser.accessToken));
             }
         });
+
+        return () => {  //Pour ne pas recevoir les messages en doublon quand luser se déco/reco
+            socket.off('receive-message')
+        }
     }, []);
 
     //On met a jour onlineUsers

@@ -24,12 +24,14 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../../App";
 import { useNavigate } from "react-router-dom";
+import { CreateNewGroupContext } from "../sidebar";
 
 const Conversation = ({ convoId }) => {
 
     const dispatch = useDispatch();
     const { socket } = useContext(SocketContext)
     const navigate = useNavigate()
+    const { setHide } = useContext(CreateNewGroupContext)
 
     const { accessToken, _id: userId } = useSelector(selectCurrentUser);
     const { conversations, onlineUsers, activeConversation } = useSelector(selectChat);
@@ -45,6 +47,7 @@ const Conversation = ({ convoId }) => {
 
     //Fetch la conversation en activeConversation
     const onClickHandler = async () => {
+        setHide(true)
         const receiver_id = getReceiverId(convo.users, userId);
         //On emit stopTyping pour eviter certains cas où le typing saffiche sur la mauvaise convo
         if (activeConversation) {

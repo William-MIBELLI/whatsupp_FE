@@ -8,6 +8,10 @@ export const Component = styled.div`
     align-items: center;
     justify-content: space-between;
     position: relative;
+
+    @media only screen and (max-width: 900px){
+        padding-top: 10px;
+    }
 `;
 
 export const Side = styled.div`

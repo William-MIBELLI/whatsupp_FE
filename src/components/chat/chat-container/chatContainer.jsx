@@ -8,6 +8,7 @@ import { useContext, useEffect } from "react";
 import { clearUnreadMsg, toggleActiveConvoStatus } from "../../../store/chat/chat.action";
 import { selectCurrentUser } from "../../../store/user/user.selector";
 import { SocketContext } from "../../../App";
+import SideButton from "../../side-button/sideButton";
 
 const ChatContainer = () => {
 
@@ -30,7 +31,7 @@ const ChatContainer = () => {
         <Component>
             <ChatHeader />
             <ChatBody />
-            <ChatFooter/>
+            <ChatFooter />
         </Component>
     )
 }

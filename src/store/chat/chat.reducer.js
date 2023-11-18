@@ -5,7 +5,7 @@ const initialState = {
     isLoading: false,
     error: undefined,
     conversations: [],
-    activeConversation: undefined,
+    activeConversation: null,
     messages: [],
     notifications: [],
     onlineUsers: [],

@@ -1,6 +1,6 @@
 import SidebarHeader from "./header/sidebarHeader";
 import Search from "./search/search";
-import { StyledSidebar } from "./sidebar.style";
+import { Component, StyledSidebar } from "./sidebar.style";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../store/user/user.selector";
 import { fetchConversationsAsync } from "../../store/chat/chat.action";
@@ -12,6 +12,7 @@ import { searchUserOnDb } from "../../service/api.service";
 import { createContext, useContext } from "react";
 import NewGroupSearch from "./new-group-search/newGroupSearch";
 import Status from "./status/status";
+import SideButton from "../side-button/sideButton";
 
 export const CreateNewGroupContext = createContext()
 
@@ -21,6 +22,7 @@ const Sidebar = () => {
     const [searchResult, setSearchResult] = useState([])
     const dispatch = useDispatch();
     const [createNewGroup, setCreateNewGroup] = useState(false)
+    const [ hide, setHide] = useState(true)
 
     useEffect(() => {
         dispatch(fetchConversationsAsync(accessToken));
@@ -38,22 +40,32 @@ const Sidebar = () => {
     }, [keyword])
     
     useEffect(() => {
-    },[createNewGroup])
+    }, [createNewGroup])
+    
+    const onSideButtonClick = () => {
+        setHide(!hide)
+    }
 
     return (
-        <CreateNewGroupContext.Provider value={{setCreateNewGroup, createNewGroup}}>
-            <StyledSidebar>
-                <SidebarHeader />
-                <Status/>
+        <CreateNewGroupContext.Provider value={{ setCreateNewGroup, createNewGroup, setHide }}>
+            <Component $hide={hide}>
+                <StyledSidebar >
+                    <SidebarHeader />
+                    <Status/>
+                    {
+                        createNewGroup ? <NewGroupSearch /> : (
+                            <>
+                                <Search setKeyword={setKeyword} />
+                                {keyword ? <SearchList result={searchResult} setKeyword={setKeyword} /> : <Conversations />}
+                            </>
+                        )
+                    }
+                </StyledSidebar>
                 {
-                    createNewGroup ? <NewGroupSearch /> : (
-                        <>
-                            <Search setKeyword={setKeyword} />
-                            {keyword ? <SearchList result={searchResult} setKeyword={setKeyword} /> : <Conversations />}
-                        </>
-                    )
+
                 }
-            </StyledSidebar>
+                <SideButton hide={hide} clickHandler={onSideButtonClick}/>
+            </Component>
         </CreateNewGroupContext.Provider>
     );
 };

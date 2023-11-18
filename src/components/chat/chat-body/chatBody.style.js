@@ -32,3 +32,8 @@ export const EndDiv = styled.div`
     padding: 0;
     height: 0;
 `;
+
+// export const SpinnerContainer = styled.div`
+//     margin: auto;
+//     background-color: red;
+// `
