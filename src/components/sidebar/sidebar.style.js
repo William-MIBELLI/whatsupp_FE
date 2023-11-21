@@ -29,24 +29,8 @@ const Display = css`
     position: absolute;
     height: 100%;
     width: 80vw;
-    height: 100vh;
+    height: 100dvh;
     max-width: 100%;
     background-color: ${props => props.theme.bg_sidebar};
-    background-color: blue;
 `
 
-// export const StyledSidebar = styled.div`
-//     width: 40%;
-//     max-width: 450px;
-//     min-width: 240px;
-//     height: 100%;
-//     user-select: none;
-//     overflow-y: hidden;
-//     position: relative;
-//     background-color: ${props => props.theme.bg_sidebar};
-
-//     @media only screen and (max-width: 650px){
-//         display: none;
-//     }
-
-// `

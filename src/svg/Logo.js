@@ -1,6 +1,7 @@
-export default function Logo() {
+export default function Logo({ className}) {
   return (
     <svg
+      className={className}
       viewBox="0 0 303 172"
       width={360}
       preserveAspectRatio="xMidYMid meet"

@@ -42,7 +42,7 @@ const DeleteAccount = () => {
         <Title>Delete Your account</Title>
         <Disclaimer>Be care, delete your account is an irrevocable action. </Disclaimer>
         <Disclaimer>All your messages, your conversations, and your files will be deleted.</Disclaimer>
-        <SecondaryText>If you are sure about it, please juste provides your credentials below.</SecondaryText>
+        <SecondaryText>If you are sure about it, please just provides your credentials below.</SecondaryText>
         <Form onSubmit={handleSubmit(onSubmitHandler)}>
             <AuthInput
                 name={'email'}

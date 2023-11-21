@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Logo } from "../../svg";
 
 export const Component = styled.main`
     width: 100%;
@@ -9,6 +10,10 @@ export const Component = styled.main`
     align-items: center;
     justify-content: center;
 `;
+
+export const StyledLogo = styled(Logo)`
+    width: 80%;
+`
 
 export const Container = styled.div`
     display: flex;
@@ -23,5 +28,14 @@ export const Container = styled.div`
 
     p {
         margin: 0;
+    }
+
+    @media only screen and (max-width: 500px){
+        p{
+            font-size: 0.6rem;
+        }
+        h1{
+            font-size: 1.5rem;
+        }
     }
 `;
