@@ -40,7 +40,8 @@ export const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 currentUser: {},
-                loggedIn: false
+                loggedIn: false,
+                error: payload
             }
         case USER_ACTION_TYPE.UPDATE_STATUT_SUCCESS:
             return {

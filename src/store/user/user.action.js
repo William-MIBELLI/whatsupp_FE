@@ -62,8 +62,8 @@ export const loginUserAsync = (userData) => async (dispatch) => {
     }
 }
 
-export const logoutOutUser = () => {
-    return createAction(USER_ACTION_TYPE.LOGOUT_USER)
+export const logoutOutUser = (error = undefined) => {
+    return createAction(USER_ACTION_TYPE.LOGOUT_USER, error)
 }
 
 const updateStatusStart = () => {

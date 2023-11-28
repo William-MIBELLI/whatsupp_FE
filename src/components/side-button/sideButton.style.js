@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    background-color: ${props => props.theme.text_2};
+    background-color: ${props => props.theme.green_1};
     position: absolute;
-    top: 50%;
+    top: 20%;
     left: 100%;
     height: 100px;
     width: 50px;

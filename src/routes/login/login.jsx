@@ -23,6 +23,7 @@ import PrimaryText from "../../components/primary-text/primaryText";
 import Switch from "react-switch";
 import { SelectThemeContext } from "../../App";
 import { ThemeContext } from "styled-components";
+import ErrorMEssage from "../../components/error/error";
 
 const Login = () => {
     const {
@@ -75,7 +76,7 @@ const Login = () => {
                     type={"password"}
                     errors={errors?.password?.message}
                 />
-                {error && <p>{error.toString()}</p>}
+                {error && <ErrorMEssage message={error.toString()}/>}
                 <ForgetPassDiv>
                     <Link to="/forget-password">
                         <ForgetPassText>Forget your password ?</ForgetPassText>
@@ -94,7 +95,7 @@ const Login = () => {
                         checked={theme}
                         width={53}
                         height={25}
-                        checkedIcon={<SwitchIcon>😎</SwitchIcon>}
+                        checkedIcon={<SwitchIcon>💡</SwitchIcon>}
                         uncheckedIcon={<SwitchIcon>🌚</SwitchIcon>}
                         onColor={color.green_1}
                     />

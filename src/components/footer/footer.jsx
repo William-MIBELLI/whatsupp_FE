@@ -20,7 +20,7 @@ const Footer = () => {
                 className="react-switch"
                 height={20}
                 width={40}
-                checkedIcon={<SwitchIcon>😎</SwitchIcon>}
+                checkedIcon={<SwitchIcon>💡</SwitchIcon>}
                 uncheckedIcon={<SwitchIcon>🌚</SwitchIcon>}
                 onColor={color.green_1}
             />

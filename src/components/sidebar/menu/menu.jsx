@@ -8,6 +8,7 @@ import { CreateNewGroupContext } from "../sidebar";
 import { Link } from "react-router-dom";
 import { SocketContext } from "../../../App";
 import { selectCurrentUser } from "../../../store/user/user.selector";
+import { logoutUserOnServer } from '../../../service/api.service'
 
 const Menu = ({ blurHandler }) => {
 
@@ -17,7 +18,8 @@ const Menu = ({ blurHandler }) => {
     const { _id: userId } = useSelector(selectCurrentUser)
 
 
-    const onLogouthandler = () => {
+    const onLogouthandler = async () => {
+        await logoutUserOnServer()
         dispatch(clearChat())
         dispatch(logoutOutUser())
         socket.emit('user-logout', userId)

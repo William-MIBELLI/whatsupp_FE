@@ -43,7 +43,7 @@ const ChatHeader = () => {
                     {
                         isGroup && <div>
                             {
-                                users.map(user => <span style={{color: 'grey', fontSize: '0.7rem'}}>{ user.name} </span>)
+                                users.map(user => <span key={Math.random()} style={{color: 'grey', fontSize: '0.7rem'}}>{ user.name} </span>)
                             }
                         </div> 
                     }
